@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Thread;
+use App\Models\Reply;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -10,26 +11,30 @@ class ThreadsTest extends TestCase
 {
     use DatabaseMigrations;
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
+    public function setUp():void
+    {
+        parent::setUp();
+
+        $this->thread = Thread::factory()->create();
+    }
+
     public function testUserCanSeeAllThreads()
     {
-        $thread = Thread::factory()->create();
-
-        $response = $this->get('/threads');
-
-        $response->assertSee($thread->title);
+        $this->get('/threads')
+            ->assertSee($this->thread->title);
     }
 
     public function testUserCanSeeSingleThread()
     {
-        $thread = Thread::factory()->create();
+        $this->get('/threads/' . $this->thread->id)
+            ->assertSee($this->thread->title);
+    }
 
-        $response = $this->get('/threads/' . $thread->id);
+    public function testUserCanSeeThreadReplies()
+    {
+        $reply = Reply::factory()->create(['thread_id' => $this->thread->id]);
 
-        $response->assertSee($thread->title);
+        $this->get('/threads/' . $this->thread->id)
+            ->assertSee($reply->body);
     }
 }
