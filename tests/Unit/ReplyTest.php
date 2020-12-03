@@ -2,7 +2,8 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
+// use PHPUnit\Framework\TestCase; this is causing an error
+use Tests\TestCase;
 use App\Models\Reply;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 

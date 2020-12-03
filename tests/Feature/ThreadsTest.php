@@ -5,11 +5,12 @@ namespace Tests\Feature;
 use App\Models\Thread;
 use App\Models\Reply;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ThreadsTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseMigrations, RefreshDatabase;
 
     public function setUp():void
     {
@@ -26,7 +27,7 @@ class ThreadsTest extends TestCase
 
     public function testUserCanSeeSingleThread()
     {
-        $this->get('/threads/' . $this->thread->id)
+        $this->get($this->thread->path())
             ->assertSee($this->thread->title);
     }
 
@@ -34,7 +35,7 @@ class ThreadsTest extends TestCase
     {
         $reply = Reply::factory()->create(['thread_id' => $this->thread->id]);
 
-        $this->get('/threads/' . $this->thread->id)
+        $this->get($this->thread->path())
             ->assertSee($reply->body);
     }
 }
