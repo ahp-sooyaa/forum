@@ -51,16 +51,35 @@
               </div>
               <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div class="flex-shrink-0 flex items-center">
-                  <img class="block lg:hidden h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow">
-                  <img class="hidden lg:block h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg" alt="Workflow">
+                  <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Logo">
+                  <div class="hidden lg:block text-xl text-white font-bold ml-2">Forum</div>
                 </div>
                 @auth
                   <div class="hidden sm:block sm:ml-6">
                     <div class="flex space-x-4">
-                      <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-900">Dashboard</a>
-                      <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">Team</a>
-                      <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">Projects</a>
-                      <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">Calendar</a>
+                      <a href="#" class="nav-link">All Threads</a>
+                      <dropdown btn-name="Channels">
+                        <template v-slot:button>
+                          <button type="button" class="flex nav-link">
+                            Channels
+                            <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                          </button>
+                        </template>
+                        <template v-slot:menu>
+                          <div class="py-1">
+                              <a href="#" class="dropdown-link">Account settings</a>
+                              <a href="#" class="dropdown-link">Support</a>
+                              <a href="#" class="dropdown-link">License</a>
+                              <form method="POST" action="#">
+                                  <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">
+                                  Sign out
+                                  </button>
+                              </form>
+                          </div>
+                        </template>
+                      </dropdown>
                     </div>
                   </div>
                 @endauth
@@ -85,29 +104,30 @@
                 <!-- Profile dropdown -->
                   <div class="ml-3 relative">
                     <div>
-                        <div class="bg-gray-800 hover:bg-gray-700 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" id="user-menu" aria-haspopup="true">
-                            <span class="sr-only">Open user menu</span>
-                            <img class="h-9 w-9 border-2 border-gray-800 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                            <span class="inline-block px-3 py-2 text-sm font-medium text-gray-300 hover:text-white">
-                                {{Auth::user()->name}}
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <!--
-                      Profile dropdown panel, show/hide based on dropdown state.
-
-                      Entering: "transition ease-out duration-100"
-                        From: "transform opacity-0 scale-95"
-                        To: "transform opacity-100 scale-100"
-                      Leaving: "transition ease-in duration-75"
-                        From: "transform opacity-100 scale-100"
-                        To: "transform opacity-0 scale-95"
-                    -->
-                    <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Your Profile</a>
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</a>
+                        <dropdown btn-name="Channels">
+                          <template v-slot:button>
+                            <div class="bg-gray-800 hover:bg-gray-700 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" id="user-menu" aria-haspopup="true">
+                                <span class="sr-only">Open user menu</span>
+                                <img class="h-9 w-9 border-2 border-gray-800 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                                <span class="inline-block px-3 py-2 text-sm font-medium text-gray-300 hover:text-white">
+                                    {{Auth::user()->name}}
+                                </span>
+                            </div>
+                          </template>
+                          <template v-slot:menu>
+                            <div class="py-1">
+                                <a href="#" class="dropdown-link">Your Profile</a>
+                                <a href="#" class="dropdown-link">Setting</a>
+                                <form method="POST" action="{{route('logout')}}">
+                                    @csrf
+                                    
+                                    <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
+                                      Sign out
+                                    </button>
+                                </form>
+                            </div>
+                          </template>
+                        </dropdown>
                     </div>
                   </div>
                 @endguest

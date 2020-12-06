@@ -16,10 +16,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/threads', 'ThreadsController@index');
-Route::get('/threads/{thread}', 'ThreadsController@show');
-Route::post('/threads/{thread}/replies', 'RepliesController@store')->middleware('auth');
+/**
+ * thread routes
+ */
+Route::resource('threads', 'ThreadsController')->except(['show']);
+Route::get('threads/{channel:slug}', 'ThreadsController@index');
+Route::get('threads/{channel}/{thread}', 'ThreadsController@show');
+
+/**
+ * thread's replies routes
+ */
+Route::resource('threads.replies', 'RepliesController')->except(['store']);
+Route::post('threads/{channel}/{thread}/replies', 'RepliesController@store');

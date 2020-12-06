@@ -2,8 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Thread;
-use App\Models\Reply;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -16,7 +14,7 @@ class ThreadsTest extends TestCase
     {
         parent::setUp();
 
-        $this->thread = Thread::factory()->create();
+        $this->thread = create('Thread');
     }
 
     public function testUserCanSeeAllThreads()
@@ -33,9 +31,21 @@ class ThreadsTest extends TestCase
 
     public function testUserCanSeeThreadReplies()
     {
-        $reply = Reply::factory()->create(['thread_id' => $this->thread->id]);
+        $reply = create('Reply', ['thread_id' => $this->thread->id]);
 
         $this->get($this->thread->path())
             ->assertSee($reply->body);
+    }
+
+    public function testUserCanFilterThreadsByChannel()
+    {
+        $channel = create('Channel');
+
+        $threadInChannel = create('Thread', ['channel_id' => $channel->id]);
+        $thread = create('Thread');
+
+        $this->get("/threads/{$channel->slug}")
+            ->assertSee($threadInChannel->title)
+            ->assertDontSee($thread->title);
     }
 }

@@ -2,9 +2,7 @@
 
 namespace Tests\Unit;
 
-// use PHPUnit\Framework\TestCase;
-
-use App\Models\Thread;
+use App\Models\Channel;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -18,12 +16,12 @@ class ThreadTest extends TestCase
     {
         parent::setUp();
 
-        $this->thread = Thread::factory()->create();
+        $this->thread = create('Thread');
     }
 
     public function testThreadHasPath()
     {
-        $this->assertEquals('/threads/' . $this->thread->id, $this->thread->path());
+        $this->assertEquals("/threads/{$this->thread->channel->slug}/{$this->thread->id}", $this->thread->path());
     }
 
     /**
@@ -33,6 +31,15 @@ class ThreadTest extends TestCase
     public function testThreadHasManyReplies()
     {
         $this->assertInstanceOf(Collection::class, $this->thread->replies);
+    }
+
+    /**
+    * Testing database relationship between thread & channel
+    *
+    */
+    public function testThreadBelongsToChannel()
+    {
+        $this->assertInstanceOf(Channel::class, $this->thread->channel);
     }
 
     /**

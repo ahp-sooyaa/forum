@@ -44,4 +44,9 @@ class User extends Authenticatable
     {
         return 'user path';
     }
+
+    public function threads()
+    {
+        return $this->hasMany(Thread::class);
+    }
 }
