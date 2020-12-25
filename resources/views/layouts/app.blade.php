@@ -7,10 +7,16 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Forum') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script>
+      window.App = {!!json_encode([
+        'signIn' => Auth::check(),
+        'user' => Auth::user()
+      ])!!};
+    </script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -22,137 +28,14 @@
 <body>
     <div id="app">
         <!-- This example requires Tailwind CSS v2.0+ -->
-        <nav class="bg-gray-800">
-          <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-            <div class="relative flex items-center justify-between h-16">
-              <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                <!-- Mobile menu button-->
-                <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-expanded="false">
-                  <span class="sr-only">Open main menu</span>
-                  <!-- Icon when menu is closed. -->
-                  <!--
-                    Heroicon name: menu
+        <v-navbar :channels="{{$channels}}"></v-navbar>
 
-                    Menu open: "hidden", Menu closed: "block"
-                  -->
-                  <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                  <!-- Icon when menu is open. -->
-                  <!--
-                    Heroicon name: x
-
-                    Menu open: "block", Menu closed: "hidden"
-                  -->
-                  <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-              <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                <div class="flex-shrink-0 flex items-center">
-                  <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Logo">
-                  <div class="hidden lg:block text-xl text-white font-bold ml-2">Forum</div>
-                </div>
-                @auth
-                  <div class="hidden sm:block sm:ml-6">
-                    <div class="flex space-x-4">
-                      <a href="#" class="nav-link">All Threads</a>
-                      <dropdown btn-name="Channels">
-                        <template v-slot:button>
-                          <button type="button" class="flex nav-link">
-                            Channels
-                            <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
-                          </button>
-                        </template>
-                        <template v-slot:menu>
-                          <div class="py-1">
-                              <a href="#" class="dropdown-link">Account settings</a>
-                              <a href="#" class="dropdown-link">Support</a>
-                              <a href="#" class="dropdown-link">License</a>
-                              <form method="POST" action="#">
-                                  <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900" role="menuitem">
-                                  Sign out
-                                  </button>
-                              </form>
-                          </div>
-                        </template>
-                      </dropdown>
-                    </div>
-                  </div>
-                @endauth
-              </div>
-
-              <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                @guest
-                  <div class="flex justify-between w-28">
-                    <a class="text-indigo-200 hover:text-white" href="{{ route('login') }}">{{ __('Login') }}</a>
-
-                    <a class="text-indigo-200 hover:text-white" href="{{ route('register') }}">{{ __('Register') }}</a>
-                  </div>
-                @else
-                  <button class="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                    <span class="sr-only">View notifications</span>
-                    <!-- Heroicon name: bell -->
-                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                    </svg>
-                  </button>
-
-                <!-- Profile dropdown -->
-                  <div class="ml-3 relative">
-                    <div>
-                        <dropdown btn-name="Channels">
-                          <template v-slot:button>
-                            <div class="bg-gray-800 hover:bg-gray-700 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" id="user-menu" aria-haspopup="true">
-                                <span class="sr-only">Open user menu</span>
-                                <img class="h-9 w-9 border-2 border-gray-800 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                                <span class="inline-block px-3 py-2 text-sm font-medium text-gray-300 hover:text-white">
-                                    {{Auth::user()->name}}
-                                </span>
-                            </div>
-                          </template>
-                          <template v-slot:menu>
-                            <div class="py-1">
-                                <a href="#" class="dropdown-link">Your Profile</a>
-                                <a href="#" class="dropdown-link">Setting</a>
-                                <form method="POST" action="{{route('logout')}}">
-                                    @csrf
-                                    
-                                    <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
-                                      Sign out
-                                    </button>
-                                </form>
-                            </div>
-                          </template>
-                        </dropdown>
-                    </div>
-                  </div>
-                @endguest
-              </div>
-            </div>
-          </div>
-
-          <!--
-            Mobile menu, toggle classes based on menu state.
-
-            Menu open: "block", Menu closed: "hidden"
-          -->
-          <div class="hidden sm:hidden">
-            <div class="px-2 pt-2 pb-3 space-y-1">
-              <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-900">Dashboard</a>
-              <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Team</a>
-              <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Projects</a>
-              <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Calendar</a>
-            </div>
-          </div>
-        </nav>
-
-        <main class="py-4">
+        <main class="p-4">
             @yield('content')
         </main>
+
+        <footer class="h-48 bg-gray-800">hi</footer>
+        <v-flash-noti message="{{ session('flash') }}"/>
     </div>
 </body>
 </html>

@@ -2,17 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,12 +11,31 @@ Auth::routes();
 /**
  * thread routes
  */
-Route::resource('threads', 'ThreadsController')->except(['show']);
+Route::resource('threads', 'ThreadsController')->except(['show', 'destroy']);
 Route::get('threads/{channel:slug}', 'ThreadsController@index');
 Route::get('threads/{channel}/{thread}', 'ThreadsController@show');
+Route::delete('threads/{channel}/{thread}', 'ThreadsController@destroy');
 
 /**
  * thread's replies routes
  */
 Route::resource('threads.replies', 'RepliesController')->except(['store']);
 Route::post('threads/{channel}/{thread}/replies', 'RepliesController@store');
+
+/**
+ * favorite replies routes
+ */
+Route::post('replies/{reply}/favorite', 'FavoritesController@store')->name('favorites.store');
+Route::delete('replies/{reply}/favorite', 'FavoritesController@destroy')->name('favorites.destroy');
+
+/**
+ * reply routes
+ */
+Route::resource('replies', 'RepliesController');
+// Route::patch('replies/{reply}', 'RepliesController@update')->name('replies.update');
+// Route::delete('replies/{reply}', 'RepliesController@destroy')->name('replies.destroy');
+
+/**
+ * profile routes
+ */
+Route::get('profiles/{user:name}', 'ProfilesController@show');

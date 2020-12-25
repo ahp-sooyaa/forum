@@ -2,14 +2,28 @@
 
 namespace App\Models;
 
+use App\Traits\RecordActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
-    use HasFactory;
+    use HasFactory, RecordActivity;
 
     protected $guarded = [];
+
+    protected $with = ['creator', 'channel'];
+
+    protected $withCount = ['replies'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($thread) {
+            $thread->replies->each->delete();
+        });
+    }
 
     public function path()
     {
@@ -31,8 +45,18 @@ class Thread extends Model
         return $this->belongsTo(Channel::class);
     }
 
+    public function activities()
+    {
+        return $this->morphMany(Activity::class, 'subject');
+    }
+
     public function addReply($reply)
     {
         return $this->replies()->create($reply);
+    }
+
+    public function scopeFilter($query, $filters)
+    {
+        return $filters->apply($query);
     }
 }

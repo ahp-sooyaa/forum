@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ThreadRequest;
 use App\Models\Channel;
 use App\Models\Thread;
+use App\Filters\ThreadFilter;
 
 class ThreadsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('index', 'show');
+        $this->middleware('auth')->except(['index', 'show']);
     }
 
     /**
@@ -18,12 +19,12 @@ class ThreadsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Channel $channel)
+    public function index(Channel $channel, ThreadFilter $filters)
     {
-        if ($channel->exists) {
-            $threads = $channel->threads()->latest()->get();
-        } else {
-            $threads = Thread::latest()->get();
+        $threads = $this->getThreads($channel, $filters);
+
+        if (request()->wantsJson()) {
+            return $threads;
         }
 
         return view('threads.index', compact('threads'));
@@ -47,21 +48,25 @@ class ThreadsController extends Controller
      */
     public function store(ThreadRequest $request)
     {
-        $thread = auth()->user()->threads()->create($request->all());
+        $thread = auth_user()->threads()->create($request->all());
 
-        return redirect($thread->path());
+        return redirect($thread->path())
+                ->with('flash', 'Your Thread has been published!');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  $channelId
+     * @param  String $channelSlug
      * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function show($channelId, Thread $thread)
+    public function show($channelSlug, Thread $thread)
     {
-        return view('threads.show', compact('thread'));
+        return view('threads.show', [
+            'thread' => $thread,
+            'replies' => $thread->replies
+        ]);
     }
 
     /**
@@ -93,8 +98,25 @@ class ThreadsController extends Controller
      * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Thread $thread)
+    public function destroy($channelSlug, Thread $thread)
     {
-        //
+        $this->authorize('delete', $thread);
+
+        $thread->delete();
+
+        return back()->with('flash', 'Your Thread has been Deleted');
+    }
+
+    public function getThreads($channel, $filters)
+    {
+        $threads = Thread::latest();
+
+        if ($channel->exists) {
+            $threads->where('channel_id', $channel->id);
+        }
+
+        $threads = $threads->filter($filters)->get();
+
+        return $threads;
     }
 }

@@ -2,19 +2,25 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
-    use DatabaseMigrations, RefreshDatabase;
+    use RefreshDatabase;
 
     public function testUserHasManyThreads()
     {
         $user = create('User');
 
         $this->assertInstanceOf(Collection::class, $user->threads);
+    }
+
+    public function testUserHasManyReplies()
+    {
+        $user = create('User');
+
+        $this->assertInstanceOf(Collection::class, $user->replies);
     }
 }

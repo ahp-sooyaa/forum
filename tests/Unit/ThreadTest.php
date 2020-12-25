@@ -5,12 +5,12 @@ namespace Tests\Unit;
 use App\Models\Channel;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ThreadTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function setUp() :void
     {
@@ -31,6 +31,15 @@ class ThreadTest extends TestCase
     public function testThreadHasManyReplies()
     {
         $this->assertInstanceOf(Collection::class, $this->thread->replies);
+    }
+
+    /**
+    * Testing database relationship between thread & reply
+    *
+    */
+    public function testThreadMorphManyActivities()
+    {
+        $this->assertInstanceOf(Collection::class, $this->thread->activities);
     }
 
     /**

@@ -1,18 +1,18 @@
 <?php
 
-function create($class, $attributes = [])
+function create($class, $attributes = [], $times = null)
 {
-    return modelName($class)::factory()->create($attributes);
+    return modelName($class)::factory($times)->create($attributes);
 }
 
-function make($class, $attributes = [])
+function make($class, $attributes = [], $times = null)
 {
-    return modelName($class)::factory()->make($attributes);
+    return modelName($class)::factory($times)->make($attributes);
 }
 
-function raw($class, $attributes = [])
+function raw($class, $attributes = [], $times = null)
 {
-    return modelName($class)::factory()->raw($attributes);
+    return modelName($class)::factory($times)->raw($attributes);
 }
 
 function modelName($class)

@@ -31,6 +31,8 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $withCount = ['threads', 'replies'];
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -42,11 +44,21 @@ class User extends Authenticatable
 
     public function path()
     {
-        return 'user path';
+        return "/profiles/{$this->name}";
     }
 
     public function threads()
     {
         return $this->hasMany(Thread::class);
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(Reply::class);
+    }
+
+    public function activities()
+    {
+        return $this->hasMany(Activity::class);
     }
 }

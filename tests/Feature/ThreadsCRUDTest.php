@@ -2,13 +2,20 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Models\Activity;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ThreadsCRUDTest extends TestCase
 {
-    use DatabaseMigrations, RefreshDatabase;
+    use RefreshDatabase;
+
+    public function setUp():void
+    {
+        parent::setUp();
+
+        $this->thread = create('Thread');
+    }
 
     public function testGuestsCanNotCreateThreads()
     {
@@ -62,5 +69,97 @@ class ThreadsCRUDTest extends TestCase
 
         return $this->post('/threads', $thread->toArray())
                     ->assertSessionHasErrors($column);
+    }
+
+    /**
+     * Read Threads Tests
+     */
+    public function testUserCanSeeAllThreads()
+    {
+        $this->get('/threads')
+            ->assertSee($this->thread->title);
+    }
+
+    public function testUserCanSeeSingleThread()
+    {
+        $this->get($this->thread->path())
+            ->assertSee($this->thread->title);
+    }
+
+    public function testUserCanSeeThreadReplies()
+    {
+        $reply = create('Reply', ['thread_id' => $this->thread->id]);
+
+        $this->get($this->thread->path())
+            ->assertSee($reply->body);
+    }
+
+    public function testUserCanFilterThreadsByChannel()
+    {
+        $this->withoutExceptionHandling();
+
+        $channel = create('Channel');
+
+        $threadInChannel = create('Thread', ['channel_id' => $channel->id]);
+        $threadNotInChannel = create('Thread');
+
+        $this->get("/threads/{$channel->slug}")
+            ->assertSee($threadInChannel->title)
+            ->assertDontSee($threadNotInChannel->title);
+    }
+
+    public function testUserCanFilterThreadsByName()
+    {
+        $this->signIn(create('User', ['name' => 'JohnDoe']));
+
+        $threadByJohn = create('Thread', ['user_id' => auth()->id()]);
+        $threadNotByJohn = create('Thread');
+
+        $this->get('/threads?by=JohnDoe')
+            ->assertSee($threadByJohn->title)
+            ->assertDontSee($threadNotByJohn->title);
+    }
+
+    public function testUserCanFilterThreadsByPopularity()
+    {
+        $threadWithThreeReplies = create('Thread');
+        create('Reply', ['thread_id' => $threadWithThreeReplies->id], 3);
+
+        $threadWithTwoReplies = create('Thread');
+        create('Reply', ['thread_id' => $threadWithTwoReplies->id], 2);
+
+        $threadWithOneReplies = $this->thread;
+
+        $response = $this->getJson('/threads?popular=1')->json();
+
+        $this->assertEquals([3, 2, 0], array_column($response, 'replies_count'));
+    }
+
+    /**
+     * Delete Threads Tests
+     */
+    public function testAnUnauthorizedUserCanNotDeleteThreads()
+    {
+        $this->delete($this->thread->path())
+            ->assertRedirect('login');
+
+        $this->signIn();
+        $this->delete($this->thread->path())
+            ->assertStatus(403);
+    }
+
+    public function testAnAuthorizedUserCanDeleteThreads()
+    {
+        $this->signIn();
+
+        $thread = create('Thread', ['user_id' => auth_id()]);
+        $reply = create('Reply', ['thread_id' => $thread->id]);
+
+        $this->delete($thread->path());
+
+        $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+
+        $this->assertEquals(0, Activity::count());
     }
 }

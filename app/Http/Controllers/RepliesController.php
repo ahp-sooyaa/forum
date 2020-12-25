@@ -43,12 +43,12 @@ class RepliesController extends Controller
      */
     public function store($channelId, Thread $thread, ReplyRequest $request)
     {
-        $thread->addReply([
+        $reply = $thread->addReply([
             'body' => $request->body,
             'user_id' => auth()->id()
         ]);
 
-        return back();
+        return $reply->load(['owner', 'thread'])->loadCount('favorites');
     }
 
     /**
@@ -82,7 +82,7 @@ class RepliesController extends Controller
      */
     public function update(ReplyRequest $request, Reply $reply)
     {
-        //
+        $reply->update(['body' => $request->body]);
     }
 
     /**
@@ -93,6 +93,8 @@ class RepliesController extends Controller
      */
     public function destroy(Reply $reply)
     {
-        //
+        $this->authorize('delete', $reply);
+
+        $reply->delete();
     }
 }
