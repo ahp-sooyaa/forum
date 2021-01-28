@@ -1,8 +1,10 @@
 <template>
     <div>
-        <div v-for="(reply, index) in replies">
+        <div v-for="(reply, index) in replies" :key="reply.id">
             <v-reply :data="reply" @destroyed="remove(index)"></v-reply>
         </div>
+
+        <v-paginator :dataSet="dataSet" @updated="fetch"></v-paginator>
         <v-new-reply @addedReply="add"/>
     </div>
 </template>
@@ -10,26 +12,48 @@
 <script>
     import VReply from './VReply.vue'
     import VNewReply from './VNewReply.vue'
-    export default {
-        props: ['data'],
+    import collection from '../mixins/collection'
+    import VPaginator from './VPaginator.vue'
 
-        components: { VReply, VNewReply },
+    export default {
+        components: { VReply, VNewReply, VPaginator},
+
+        mixins: [ collection ],
 
         data(){
             return {
-                replies: this.data
+                dataSet: false,
+                replies: [],
+                endPoint: `${location.pathname}/replies?page=`
             }
         },
 
+        created() {
+            this.fetch()
+        },
+
         methods: {
-            remove(index){
-                this.replies.splice(index, 1)
-                this.$emit('deleted')
+            fetch(page){
+                if(! page){
+                    let query = location.search.match(/page=(\d+)/);
+
+                    page = query ? query[1] : '1'
+                }
+                axios.get(this.endPoint + page)
+                    .then(response => {
+                        this.dataSet = response.data
+                        this.replies = response.data.data
+                    })
             },
-            add(reply){
-                this.replies.push(reply)
-                this.$emit('created')
-            }
+            // remove(index){
+            //     // this.replies.splice(this.replies.findIndex(reply => reply.id == id), 1)
+            //     this.replies.splice(index, 1)
+            //     this.$emit('deleted')
+            // },
+            // add(reply){
+            //     this.replies.push(reply)
+            //     this.$emit('created')
+            // }
         }
     }
 </script>

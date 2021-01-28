@@ -4,7 +4,7 @@
         <div class="relative flex items-center justify-between h-16">
           <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <!-- Mobile menu button-->
-            <button @click="isOpen = !isOpen" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-expanded="false">
+            <button @click="isOpen = !isOpen" class="inline-flex items-center justify-center p-2 rounded-md text-white bg-gray-700 focus:outline-none" aria-expanded="false">
               <span class="sr-only">Open main menu</span>
               <!-- Icon when menu is closed. -->
               <!--
@@ -82,7 +82,7 @@
                         <svg class="h-5 w-5 mr-1 -ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
-                        New Thread
+                        New Discussion
                       </button>
                     </a>
 
@@ -125,14 +125,14 @@
 
         Menu open: "block", Menu closed: "hidden"
       -->
-      <div v-if="isOpen" class="block md:hidden">
+      <div v-if="isOpen" class="block sm:hidden">
         <div class="px-2 pt-2 pb-3 space-y-1">
             <a href="/threads/create">
               <button class="flex btn-indigo text-sm font-medium">
                 <svg class="h-5 w-5 mr-1 -ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
-                New Thread
+                New Discussion
               </button>
             </a>
             <v-dropdown>

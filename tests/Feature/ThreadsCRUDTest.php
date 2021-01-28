@@ -90,8 +90,7 @@ class ThreadsCRUDTest extends TestCase
     {
         $reply = create('Reply', ['thread_id' => $this->thread->id]);
 
-        $this->get($this->thread->path())
-            ->assertSee($reply->body);
+        $this->assertDatabaseHas('replies', ['body' => $reply->body]);
     }
 
     public function testUserCanFilterThreadsByChannel()
@@ -133,6 +132,16 @@ class ThreadsCRUDTest extends TestCase
         $response = $this->getJson('/threads?popular=1')->json();
 
         $this->assertEquals([3, 2, 0], array_column($response, 'replies_count'));
+    }
+
+    public function testUserCanFilterUnansweredThreads()
+    {
+        $thread = create('Thread');
+        create('Reply', ['thread_id' => $thread->id]);
+
+        $response = $this->getJson('/threads?unanswered=1')->json();
+
+        $this->assertCount(1, $response);
     }
 
     /**

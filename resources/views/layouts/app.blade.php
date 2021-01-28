@@ -27,10 +27,9 @@
 </head>
 <body>
     <div id="app">
-        <!-- This example requires Tailwind CSS v2.0+ -->
         <v-navbar :channels="{{$channels}}"></v-navbar>
 
-        <main class="p-4">
+        <main class="p-4 min-h-screen">
             @yield('content')
         </main>
 

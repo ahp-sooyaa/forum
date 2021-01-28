@@ -18,9 +18,9 @@ class RepliesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($channelId, Thread $thread)
     {
-        //
+        return $thread->replies()->paginate(1);
     }
 
     /**
@@ -96,5 +96,8 @@ class RepliesController extends Controller
         $this->authorize('delete', $reply);
 
         $reply->delete();
+
+        //You can use model boot method to track crud events & add logic to boot method
+        // $reply->thread->decrement('replies_count');
     }
 }

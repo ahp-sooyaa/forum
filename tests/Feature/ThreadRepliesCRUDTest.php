@@ -33,8 +33,8 @@ class ThreadRepliesCRUDTest extends TestCase
 
         $this->post("{$this->thread->path()}/replies", $reply->toArray());
 
-        $this->get($this->thread->path())
-            ->assertSee($reply->body);
+        $this->assertDatabaseHas('replies', ['body' => $reply->body]);
+        $this->assertEquals(1, $this->thread->fresh()->replies_count);
     }
 
     public function testReplyRequiresBody()
@@ -86,5 +86,6 @@ class ThreadRepliesCRUDTest extends TestCase
         $this->delete("/replies/{$reply->id}");
 
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+        $this->assertEquals(0, $this->thread->fresh()->replies_count);
     }
 }

@@ -5,7 +5,7 @@
         <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
             <div class="py-8">
                 <div class="w-full mx-auto px-8">
-                    <div class="md:flex text-center justify-between items-start">
+                    <div class="md:flex justify-between items-start">
                         <div class="md:flex">
                             <div class="mb-0 md:mb-3 mr-3">
                                 <svg class="mx-auto w-20 h-20 rounded-full text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -80,7 +80,13 @@
                     </div>
                 </div>
             @empty
-                No threads yet!
+                <div class="text-center">
+                    <div class="text-3xl text-gray-600 tracking-wide mb-3">Start Your first Discussions</div>
+
+                    <a href="{{route('threads.create')}}">
+                        <div class="btn-indigo inline-block">New Discussion</div>
+                    </a>
+                </div>
             @endforelse
         </div>
     </div>

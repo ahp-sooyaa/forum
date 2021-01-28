@@ -14,7 +14,7 @@ class Thread extends Model
 
     protected $with = ['creator', 'channel'];
 
-    protected $withCount = ['replies'];
+    // protected $withCount = ['replies'];
 
     protected static function boot()
     {
@@ -52,7 +52,11 @@ class Thread extends Model
 
     public function addReply($reply)
     {
-        return $this->replies()->create($reply);
+        $reply = $this->replies()->create($reply);
+
+        // $this->increment('replies_count');
+
+        return $reply;
     }
 
     public function scopeFilter($query, $filters)
