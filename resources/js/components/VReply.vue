@@ -80,10 +80,14 @@
         methods: {
             update(){
                 axios.patch(this.endPoint, {body: this.data.body})
-                .then(response => {
-                    this.isEdit= false,
-                    flash('Your reply has been updated!')
-                });
+                    .then(response => {
+                        this.isEdit= false,
+                        flash('Your reply has been updated!')
+                    })
+                    .catch(error => {
+                        this.isEdit = false
+                        flash(error.response.data, 'red')
+                    })
             },
             destroy(){
                 axios.delete(this.endPoint)

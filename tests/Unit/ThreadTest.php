@@ -4,9 +4,11 @@ namespace Tests\Unit;
 
 use App\Models\Channel;
 use App\Models\User;
+use App\Notifications\ThreadWasUpdated;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Notification;
 
 class ThreadTest extends TestCase
 {
@@ -68,5 +70,49 @@ class ThreadTest extends TestCase
         ]);
 
         $this->assertCount(1, $this->thread->replies);
+    }
+
+    public function testANotificationSentToAllSubscribedUsers()
+    {
+        Notification::fake();
+
+        $this->signIn();
+
+        $this->thread
+            ->subscribe()
+            ->addReply([
+                'body' => 'hello body',
+                'user_id' => 1
+            ]);
+
+        Notification::assertSentTo(auth_user(), ThreadWasUpdated::class);
+    }
+
+    public function testThreadCanCheckIfAuthenticatedUserHasReadAllReplies()
+    {
+        $this->signIn();
+
+        $thread = create('Thread');
+
+        $this->assertTrue($thread->updatedSince());
+
+        auth_user()->read($thread);
+
+        $this->assertFalse($thread->updatedSince());
+    }
+
+    public function testThreadCanBeSubscribedByUser()
+    {
+        $this->thread->subscribe($userId = 1);
+
+        $this->assertEquals(1, $this->thread->subscriptions()->where('user_id', $userId)->count());
+    }
+
+    public function testThreadCanBeUnSubscribedByUser()
+    {
+        $this->thread->subscribe($userId = 1);
+        $this->thread->unsubscribe($userId);
+
+        $this->assertEquals(0, $this->thread->subscriptions()->where('user_id', $userId)->count());
     }
 }

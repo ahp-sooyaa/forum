@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+// use PHPUnit\Framework\TestCase;
+
 class ThreadRepliesCRUDTest extends TestCase
 {
     use RefreshDatabase;
@@ -27,7 +29,7 @@ class ThreadRepliesCRUDTest extends TestCase
 
     public function testAnAuthenticatedUserCanAddRepliesInThreads()
     {
-        $this->withoutExceptionHandling()->signIn();
+        $this->signIn();
 
         $reply = create('Reply');
 
@@ -87,5 +89,20 @@ class ThreadRepliesCRUDTest extends TestCase
 
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
         $this->assertEquals(0, $this->thread->fresh()->replies_count);
+    }
+
+    public function testSpamRepliesCanNotBeAdded()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->signIn();
+
+        $reply = create('Reply', [
+            'body' => 'ddddddd'
+        ]);
+
+        $this->expectException(\Exception::class);
+
+        $this->post("{$this->thread->path()}/replies", $reply->toArray());
     }
 }

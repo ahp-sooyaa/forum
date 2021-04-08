@@ -24,6 +24,18 @@ Route::get('threads/{channel}/{thread}/replies', 'RepliesController@index');
 Route::post('threads/{channel}/{thread}/replies', 'RepliesController@store');
 
 /**
+ * thread's subscription routes
+ */
+Route::post('threads/{channel}/{thread}/subscriptions', 'ThreadsSubscriptionController@store');
+Route::delete('threads/{channel}/{thread}/subscriptions', 'ThreadsSubscriptionController@destroy');
+
+/**
+ * notification routes
+ */
+Route::delete('profiles/{user:name}/notifications/{notification}', 'NotificationsController@destroy');
+Route::get('profiles/{user:name}/notifications', 'NotificationsController@index');
+
+/**
  * favorite replies routes
  */
 Route::post('replies/{reply}/favorite', 'FavoritesController@store')->name('favorites.store');

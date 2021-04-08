@@ -1,9 +1,11 @@
 <script>
     import VReplies from '../components/VReplies'
+    import VSubscribe from '../components/VSubscribe'
+    
     export default {
         props: ['initialRepliesCount'],
 
-        components: {VReplies},
+        components: {VReplies, VSubscribe},
 
         data(){
             return {

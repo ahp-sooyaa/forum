@@ -28,9 +28,9 @@ class AppServiceProvider extends ServiceProvider
         // View::share('channels', Channel::all()); this will cause errors in all test cases.
 
         View::composer('*', function ($view) {
-            $channels = \Cache::rememberForever('channels', function () {
-                return Channel::all();
-            });
+            // $channels = \Cache::rememberForever('channels', function () {
+            $channels = Channel::all();
+            // });
             $view->with('channels', $channels);
         });
     }

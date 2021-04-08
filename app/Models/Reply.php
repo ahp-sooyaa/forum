@@ -62,14 +62,15 @@ class Reply extends Model
         return $this->belongsto(Thread::class);
     }
 
-    public function isFavorited()
-    {
-        return $this->favorites->contains('user_id', auth_id());
-    }
+    // public function isFavorited()
+    // {
+    //     return $this->favorites->contains('user_id', auth_id());
+    // }
 
+    // you can write directly without include isFavorited()
     public function getIsFavoritedAttribute()
     {
-        return $this->isFavorited();
+        return $this->favorites->contains('user_id', auth_id());
     }
 
     public function favorite()

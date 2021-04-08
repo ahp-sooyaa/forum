@@ -30,6 +30,7 @@
                         </svg>
                         <span v-text="repliesCount"></span>
                     </div>
+                    <v-subscribe :data="{{json_encode($thread->isSubscribed)}}"></v-subscribe>
                 </div>
             </div>
             <div class="flex items-start bg-gray-800 p-5 mt-3 mb-5 rounded-2xl text-white shadow-md">

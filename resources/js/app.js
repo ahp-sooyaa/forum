@@ -10,8 +10,9 @@ window.Vue = require('vue');
 
 window.events = new Vue();
 
-window.flash = function (message) {
-    window.events.$emit('flash', message);
+// level green mean success
+window.flash = function (message, level = 'green') {
+    window.events.$emit('flash', {message, level});
 };
 /**
  * The following block of code may be used to automatically register your

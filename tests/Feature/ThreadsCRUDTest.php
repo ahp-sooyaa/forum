@@ -30,13 +30,15 @@ class ThreadsCRUDTest extends TestCase
 
     public function testAnAuthenticatedUserCanCreateThreads()
     {
-        $this->withoutExceptionHandling()->signIn();
+        $this->signIn();
 
         $thread = make('Thread');
 
-        $reponse = $this->post('/threads', $thread->toArray());
+        $response = $this->post('/threads', $thread->toArray());
 
-        $this->get($reponse->headers->get('Location'))
+        // dd($response->headers->get('Location')); this is returning null so this cause problem
+
+        $this->get($response->headers->get('Location'))
             ->assertSee($thread->title)
             ->assertSee($thread->body);
     }

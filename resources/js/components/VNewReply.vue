@@ -52,13 +52,19 @@
         methods: {
             addReply(){
                 axios.post(this.endPoint, {body: this.body})
-                    .then(response => {
+                    .catch(error => {
+                        this.isOpen = false
+                        this.body = ''
+
+                        flash(error.response.data, 'red')
+                    })
+                    .then(({data}) => {
                         this.body = ''
                         this.isOpen = false
 
                         flash('Your reply has been posted!')
 
-                        this.$emit('addedReply', response.data)
+                        this.$emit('addedReply', data)
                     })
             },
             openModal(){
