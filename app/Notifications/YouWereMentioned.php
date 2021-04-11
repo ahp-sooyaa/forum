@@ -5,11 +5,10 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
-class ThreadWasUpdated extends Notification
+class YouWereMentioned extends Notification
 {
     use Queueable;
 
-    protected $thread;
     protected $reply;
 
     /**
@@ -17,9 +16,8 @@ class ThreadWasUpdated extends Notification
      *
      * @return void
      */
-    public function __construct($thread, $reply)
+    public function __construct($reply)
     {
-        $this->thread = $thread;
         $this->reply = $reply;
     }
 
@@ -43,11 +41,7 @@ class ThreadWasUpdated extends Notification
     public function toArray($notifiable)
     {
         return [
-            // 'message' => [
-            //     'owner' => $this->reply->owner->name,
-            //     'thread' => $this->thread->title
-            // ],
-            'message' => $this->reply->owner->name . ' replied to ' . $this->thread->title,
+            'message' => $this->reply->owner->name . ' mentioned you in ' . $this->reply->thread->title,
             'link' => $this->reply->path()
         ];
     }

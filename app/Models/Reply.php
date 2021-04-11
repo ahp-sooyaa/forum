@@ -60,7 +60,7 @@ class Reply extends Model
 
     public function thread()
     {
-        return $this->belongsto(Thread::class);
+        return $this->belongsTo(Thread::class);
     }
 
     // public function isFavorited()

@@ -34,9 +34,10 @@ class ThreadsCRUDTest extends TestCase
 
         $thread = make('Thread');
 
+        // dd($thread->path());
         $response = $this->post('/threads', $thread->toArray());
 
-        // dd($response->headers->get('Location')); this is returning null so this cause problem
+        //dd($response->headers); //this is returning null so this cause problem
 
         $this->get($response->headers->get('Location'))
             ->assertSee($thread->title)

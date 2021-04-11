@@ -48,7 +48,8 @@ class ThreadsController extends Controller
      */
     public function store(ThreadRequest $request)
     {
-        $thread = auth_user()->threads()->create($request->all());
+        // dd($request->except(['isSubscribed', 'subscriptions']));
+        $thread = auth_user()->threads()->create($request->except(['isSubscribed', 'subscriptions']));
 
         return redirect($thread->path())
                 ->with('flash', 'Your Thread has been published!');

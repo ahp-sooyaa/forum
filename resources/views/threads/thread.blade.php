@@ -19,9 +19,11 @@
         {{$thread->body}}
     </p>
 
-    @if ($thread->updatedSince())
-        <p class="text-indigo-300">This thread has been updated since you last read</p>
-    @endif
+    @auth
+        @if ($thread->updatedSince())
+            <p class="text-indigo-300">This thread has been updated since you last read</p>
+        @endif
+    @endauth
 
     @can('delete', $thread)
         <form action="{{$thread->path()}}" method="POST">

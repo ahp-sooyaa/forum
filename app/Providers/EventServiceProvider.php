@@ -8,6 +8,7 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 use App\Events\ThreadHasNewReply;
 use App\Listeners\NotifyThreadSubscribers;
+use App\Listeners\NotifyMentionedUsers;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -21,8 +22,9 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         ThreadHasNewReply::class => [
-            NotifyThreadSubscribers::class
-        ],
+            NotifyThreadSubscribers::class,
+            NotifyMentionedUsers::class
+        ]
     ];
 
     /**

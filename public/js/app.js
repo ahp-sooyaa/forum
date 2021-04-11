@@ -2386,12 +2386,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       isOpen: false,
       notifications: [],
-      endPoint: '/profiles/' + window.App.user.name + '/notifications'
+      endPoint: "/profiles/" + window.App.user.name + "/notifications"
     };
   },
   created: function created() {
@@ -2403,7 +2423,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     markAsRead: function markAsRead(notification) {
-      axios["delete"]('/profiles/' + App.user.name + '/notifications/' + notification.id);
+      axios["delete"]("/profiles/" + App.user.name + "/notifications/" + notification.id);
       notifications = [];
     }
   }
@@ -60944,23 +60964,17 @@ var render = function() {
                         }
                       },
                       [
-                        _c("span", { staticClass: "font-bold" }, [
-                          _vm._v(_vm._s(notification.data.message.owner))
-                        ]),
-                        _vm._v(" replied to\n                "),
-                        _c("span", { staticClass: "font-bold" }, [
-                          _vm._v(_vm._s(notification.data.message.thread))
-                        ])
+                        _vm._v(
+                          "\n        " +
+                            _vm._s(notification.data.message) +
+                            "\n      "
+                        )
                       ]
                     )
                   }),
                   0
                 )
-              : _c("div", [
-                  _vm._v(
-                    "\n            You have no notifications at this time.\n        "
-                  )
-                ])
+              : _c("div", [_vm._v("You have no notifications at this time.")])
           ]
         )
       : _vm._e()
