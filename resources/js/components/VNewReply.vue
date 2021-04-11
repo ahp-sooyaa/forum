@@ -55,8 +55,14 @@
                     .catch(error => {
                         this.isOpen = false
                         this.body = ''
-
-                        flash(error.response.data, 'red')
+                        
+                        if(error.response.data.message){
+                            flash(error.response.data.errors.body[0], 'red')
+                        } else {
+                            flash(error.response.data, 'red')
+                        }
+                        // console.log(error.response.data)
+                        // console.log(error.response.data.errors.body[0])
                     })
                     .then(({data}) => {
                         this.body = ''

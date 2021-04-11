@@ -44,7 +44,7 @@
 
             @if ($errors)
                 @foreach($errors->all() as $error)
-                    {{$error}}
+                    <div class="text-red-500">{{$error}}</div>
                 @endforeach
             @endif
         </form>

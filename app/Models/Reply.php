@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\RecordActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Reply extends Model
 {
@@ -89,4 +90,9 @@ class Reply extends Model
     // {
     //     return $this->owner->name == $thread->creator->name;
     // }
+
+    public function wasJustPublished()
+    {
+        return $this->created_at->gt(Carbon::now()->subMinute());
+    }
 }

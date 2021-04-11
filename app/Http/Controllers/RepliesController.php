@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ReplyRequest;
+use App\Http\Requests\CreateReplyRequest;
+use App\Http\Requests\UpdateReplyRequest;
 use App\Models\Reply;
 use App\Models\Thread;
-use App\Inspections\Spam;
+use Illuminate\Support\Facades\Gate;
 
 class RepliesController extends Controller
 {
@@ -42,18 +43,20 @@ class RepliesController extends Controller
      * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function store($channelId, Thread $thread, ReplyRequest $request, Spam $spam)
+    public function store($channelId, Thread $thread, CreateReplyRequest $request)
     {
-        try {
-            $spam->detect($request->body);
+        // if (Gate::denies('create', new Reply)) {
+        //     return response('Posting frequently. take a break', 429);
+        // }
 
-            $reply = $thread->addReply([
-                'body' => $request->body,
-                'user_id' => auth()->id()
-            ]);
-        } catch (\Exception $e) {
-            return response('Sorry, your reply could not be saved', 422);
-        }
+        // try {
+        $reply = $thread->addReply([
+            'body' => $request->body,
+            'user_id' => auth()->id()
+        ]);
+        // } catch (\Exception $e) {
+        //     return response('Sorry, your reply could not be saved. Contained spam', 422);
+        // }
 
         return $reply->load(['owner', 'thread'])->loadCount('favorites');
     }
@@ -87,15 +90,13 @@ class RepliesController extends Controller
      * @param  \App\Models\Reply  $reply
      * @return \Illuminate\Http\Response
      */
-    public function update(ReplyRequest $request, Reply $reply, Spam $spam)
+    public function update(UpdateReplyRequest $request, Reply $reply)
     {
-        try {
-            $spam->detect($request->body);
-
-            $reply->update(['body' => $request->body]);
-        } catch (\Exception $e) {
-            return response('Sorry you could not be updated', 422);
-        }
+        // try {
+        $reply->update(['body' => $request->body]);
+        // } catch (\Exception $e) {
+        //     return response('Sorry you could not be updated', 422);
+        // }
     }
 
     /**

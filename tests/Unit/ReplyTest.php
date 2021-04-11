@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Models\User;
 use App\Models\Thread;
+use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -44,5 +45,16 @@ class ReplyTest extends TestCase
     public function testReplyBelongsToThread()
     {
         $this->assertInstanceOf(Thread::class, $this->reply->thread);
+    }
+
+    public function testIfReplyWasJustPublished()
+    {
+        $reply = create('Reply');
+
+        $this->assertTrue($reply->wasJustPublished());
+
+        $reply->created_at = Carbon::now()->subMonth();
+
+        $this->assertFalse($reply->wasJustPublished());
     }
 }

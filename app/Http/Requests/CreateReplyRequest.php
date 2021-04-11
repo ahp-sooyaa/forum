@@ -2,9 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Exceptions\ThrottleException;
+use App\Models\Reply;
+use App\Rules\SpamFree;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
-class ReplyRequest extends FormRequest
+class CreateReplyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +17,12 @@ class ReplyRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('create', new Reply);
+    }
+
+    protected function failedAuthorization()
+    {
+        throw new ThrottleException('You are replying too much. Take a break');
     }
 
     /**
@@ -24,7 +33,7 @@ class ReplyRequest extends FormRequest
     public function rules()
     {
         return [
-            'body' => 'required'
+            'body' => ['required', new SpamFree]
         ];
     }
 }

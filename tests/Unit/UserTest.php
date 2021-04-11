@@ -23,4 +23,13 @@ class UserTest extends TestCase
 
         $this->assertInstanceOf(Collection::class, $user->replies);
     }
+
+    public function testUserCanFetchLatestReply()
+    {
+        $user = create('User');
+
+        $reply = create('Reply', ['user_id' => $user->id]);
+
+        $this->assertEquals($reply->id, $user->lastReply->id);
+    }
 }

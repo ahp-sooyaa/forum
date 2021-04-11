@@ -86,7 +86,14 @@
                     })
                     .catch(error => {
                         this.isEdit = false
-                        flash(error.response.data, 'red')
+
+                        console.log(error)
+                        // flash(error.response.data.errors.body[0], 'red')
+                        if(error.response.data.message){
+                            flash(error.response.data.errors.body[0], 'red')
+                        } else {
+                            flash(error.response.data, 'red')
+                        }
                     })
             },
             destroy(){

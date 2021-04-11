@@ -6,7 +6,6 @@ use App\Http\Requests\ThreadRequest;
 use App\Models\Channel;
 use App\Models\Thread;
 use App\Filters\ThreadFilter;
-use App\Inspections\Spam;
 
 class ThreadsController extends Controller
 {
@@ -47,10 +46,8 @@ class ThreadsController extends Controller
      * @param  \App\Http\Requests\ThreadRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ThreadRequest $request, Spam $spam)
+    public function store(ThreadRequest $request)
     {
-        $spam->detect($request->title);
-
         $thread = auth_user()->threads()->create($request->all());
 
         return redirect($thread->path())

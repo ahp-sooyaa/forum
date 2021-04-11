@@ -2,10 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Exceptions\ThrottleException;
+use App\Models\Reply;
 use App\Rules\SpamFree;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
-class ThreadRequest extends FormRequest
+class UpdateReplyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +28,6 @@ class ThreadRequest extends FormRequest
     public function rules()
     {
         return [
-            'channel_id' => 'required|exists:channels,id',
-            'title' => ['required', new SpamFree],
             'body' => ['required', new SpamFree]
         ];
     }

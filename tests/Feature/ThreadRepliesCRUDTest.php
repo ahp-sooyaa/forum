@@ -54,6 +54,7 @@ class ThreadRepliesCRUDTest extends TestCase
      */
     public function testAuthorizedUserCanUpdateReplies()
     {
+        $this->withoutExceptionHandling();
         $this->signIn();
         $reply = create('Reply', ['user_id' => auth_id()]);
 
@@ -93,16 +94,39 @@ class ThreadRepliesCRUDTest extends TestCase
 
     public function testSpamRepliesCanNotBeAdded()
     {
-        $this->withoutExceptionHandling();
-
         $this->signIn();
 
         $reply = create('Reply', [
-            'body' => 'ddddddd'
+            'body' => 'google customer support'
         ]);
 
-        $this->expectException(\Exception::class);
+        // $this->expectException(\Exception::class);
 
+        // $this->post("{$this->thread->path()}/replies", $reply->toArray())
+        //     ->assertStatus(422);
+
+        // Check validation error message
+        $this->post("{$this->thread->path()}/replies", $reply->toArray())
+                ->assertSessionHasErrors('body');
+
+        // Check validation exception
+        $this->withoutExceptionHandling();
+        $this->expectException('Illuminate\Validation\ValidationException');
         $this->post("{$this->thread->path()}/replies", $reply->toArray());
+    }
+
+    public function testUserCanNotRepliesMoreThanOncePerMinute()
+    {
+        $this->signIn();
+
+        $reply = make('Reply', [
+            'body' => 'Not spam reply'
+        ]);
+
+        $this->post("{$this->thread->path()}/replies", $reply->toArray())
+            ->assertStatus(201);
+
+        $this->post("{$this->thread->path()}/replies", $reply->toArray())
+            ->assertStatus(429);
     }
 }

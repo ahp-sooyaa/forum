@@ -2322,7 +2322,14 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         _this.isOpen = false;
         _this.body = '';
-        flash(error.response.data, 'red');
+
+        if (error.response.data.message) {
+          flash(error.response.data.errors.body[0], 'red');
+        } else {
+          flash(error.response.data, 'red');
+        } // console.log(error.response.data)
+        // console.log(error.response.data.errors.body[0])
+
       }).then(function (_ref) {
         var data = _ref.data;
         _this.body = '';
@@ -2645,7 +2652,13 @@ __webpack_require__.r(__webpack_exports__);
         _this.isEdit = false, flash('Your reply has been updated!');
       })["catch"](function (error) {
         _this.isEdit = false;
-        flash(error.response.data, 'red');
+        console.log(error); // flash(error.response.data.errors.body[0], 'red')
+
+        if (error.response.data.message) {
+          flash(error.response.data.errors.body[0], 'red');
+        } else {
+          flash(error.response.data, 'red');
+        }
       });
     },
     destroy: function destroy() {
