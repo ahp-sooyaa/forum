@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Channel;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ChannelFactory extends Factory
@@ -21,9 +22,11 @@ class ChannelFactory extends Factory
      */
     public function definition()
     {
+        $name = $this->faker->sentence();
+        
         return [
-            'name' => $this->faker->sentence(),
-            'slug' => $this->faker->sentence()
+            'name' => $name,
+            'slug' => Str::slug($name)
         ];
     }
 }

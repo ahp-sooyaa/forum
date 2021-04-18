@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Redis;
 
 class ThreadTest extends TestCase
 {
@@ -23,7 +24,9 @@ class ThreadTest extends TestCase
 
     public function testThreadHasPath()
     {
-        $this->assertEquals("/threads/{$this->thread->channel->slug}/{$this->thread->id}", $this->thread->path());
+        $this->assertEquals(
+            "/threads/{$this->thread->channel->slug}/{$this->thread->slug}", $this->thread->path()
+        );
     }
 
     /**
@@ -114,5 +117,22 @@ class ThreadTest extends TestCase
         $this->thread->unsubscribe($userId);
 
         $this->assertEquals(0, $this->thread->subscriptions()->where('user_id', $userId)->count());
+    }
+
+    public function testThreadRecordsVisits()
+    {
+        $thread = create('Thread');
+
+        $thread->resetVisits();
+
+        $this->assertSame(0, $thread->visits());
+
+        $thread->recordVisit();
+
+        $this->assertEquals(1, $thread->visits());
+
+        $thread->recordVisit();
+
+        $this->assertEquals(2, $thread->visits());
     }
 }

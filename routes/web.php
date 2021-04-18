@@ -6,28 +6,28 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 /**
  * thread routes
  */
 Route::resource('threads', 'ThreadsController')->except(['show', 'destroy']);
 Route::get('threads/{channel:slug}', 'ThreadsController@index');
-Route::get('threads/{channel}/{thread}', 'ThreadsController@show');
-Route::delete('threads/{channel}/{thread}', 'ThreadsController@destroy');
+Route::get('threads/{channel}/{thread:slug}', 'ThreadsController@show');
+Route::delete('threads/{channel}/{thread:slug}', 'ThreadsController@destroy');
 
 /**
  * thread's replies routes
  */
 Route::resource('threads.replies', 'RepliesController')->except(['store', 'index']);
-Route::get('threads/{channel}/{thread}/replies', 'RepliesController@index');
-Route::post('threads/{channel}/{thread}/replies', 'RepliesController@store');
+Route::get('threads/{channel}/{thread:slug}/replies', 'RepliesController@index');
+Route::post('threads/{channel}/{thread:slug}/replies', 'RepliesController@store');
 
 /**
  * thread's subscription routes
  */
-Route::post('threads/{channel}/{thread}/subscriptions', 'ThreadsSubscriptionController@store');
-Route::delete('threads/{channel}/{thread}/subscriptions', 'ThreadsSubscriptionController@destroy');
+Route::post('threads/{channel}/{thread:slug}/subscriptions', 'ThreadsSubscriptionController@store');
+Route::delete('threads/{channel}/{thread:slug}/subscriptions', 'ThreadsSubscriptionController@destroy');
 
 /**
  * notification routes
@@ -51,4 +51,6 @@ Route::resource('replies', 'RepliesController');
 /**
  * profile routes
  */
-Route::get('profiles/{user:name}', 'ProfilesController@show');
+Route::get('profiles/{user:name}', 'ProfilesController@show')->name('profile');
+
+Route::get('/api/users', 'Api\UsersController@index');

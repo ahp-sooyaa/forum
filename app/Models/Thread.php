@@ -6,10 +6,12 @@ use App\Traits\RecordActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Events\ThreadHasNewReply;
+use App\Traits\RecordThreadVisits;
+use Illuminate\Support\Str;
 
 class Thread extends Model
 {
-    use HasFactory, RecordActivity;
+    use HasFactory, RecordActivity, RecordThreadVisits;
 
     protected $guarded = [];
 
@@ -30,7 +32,7 @@ class Thread extends Model
 
     public function path()
     {
-        return "/threads/{$this->channel->slug}/{$this->id}";
+        return "/threads/{$this->channel->slug}/{$this->slug}";
     }
 
     public function replies()

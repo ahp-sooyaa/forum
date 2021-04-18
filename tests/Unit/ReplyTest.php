@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\User;
+use App\Models\Reply;
 use App\Models\Thread;
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -56,5 +57,26 @@ class ReplyTest extends TestCase
         $reply->created_at = Carbon::now()->subMonth();
 
         $this->assertFalse($reply->wasJustPublished());
+    }
+
+    public function testCanDetectMentionedUsers()
+    {
+        $reply = new Reply([
+            'body' => 'hello @Jane & @Jone'
+        ]);
+
+        $this->assertEquals(['Jane', 'Jone'], $reply->mentionedUsers());
+    }
+
+    public function testMentionedUsernameWrapWithinAnchorTag()
+    {
+        $reply = new Reply([
+            'body' => 'hello @Jane-Doe!'
+        ]);
+
+        $this->assertEquals(
+            'hello <a href="/profiles/Jane-Doe">@Jane-Doe</a>!',
+            $reply->body
+        );
     }
 }

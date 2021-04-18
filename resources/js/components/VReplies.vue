@@ -4,8 +4,9 @@
             <v-reply :data="reply" @destroyed="remove(index)"></v-reply>
         </div>
 
-        <v-paginator :dataSet="dataSet" @updated="fetch"></v-paginator>
         <v-new-reply @addedReply="add"/>
+
+        <v-paginator :dataSet="dataSet" @updated="fetch"></v-paginator>
     </div>
 </template>
 

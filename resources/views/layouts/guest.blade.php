@@ -11,12 +11,6 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script>
-      window.App = {!!json_encode([
-        'signIn' => Auth::check(),
-        'user' => Auth::user()
-      ])!!};
-    </script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -28,13 +22,11 @@
 </head>
 <body>
     <div id="app">
-        <v-navbar :channels="{{$channels}}"></v-navbar>
 
-        <main class="p-4 min-h-screen">
+        <main>
             @yield('content')
         </main>
 
-        <footer class="h-48 bg-gray-800">hi</footer>
         <v-flash-noti message="{{ session('flash') }}"/>
     </div>
 </body>

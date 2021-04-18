@@ -2,26 +2,25 @@
 
 @section('content')
     <v-thread-show :initial-replies-count="{{$thread->replies_count}}" inline-template>
-        <div class="w-full lg:w-3/5 mx-auto md:px-6">
+        <div class="w-full lg:w-4/5 mx-auto md:px-6">
             {{-- <div class="flex items-center justify-between"> --}}
-                <a class="flex items-center text-gray-300 hover:text-gray-400" href="/threads">
-                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <a href="/threads" class="z-10 fixed bottom-7 left-7 btn-indigo text-sm rounded-full w-16 h-16">
+                    <svg class="my-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                       <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                     </svg>
-                    Back
                 </a>
-                <button @click="reply" class="fixed bottom-7 right-7 btn-indigo text-sm rounded-full w-16 h-16">
+                {{-- <button @click="reply" class="fixed bottom-7 right-7 btn-indigo text-sm rounded-full w-16 h-16">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
-                </button>
+                </button> --}}
             {{-- </div> --}}
-            <div class="flex mt-7 justify-start items-end">
+            <div class="h-14 flex mt-7 justify-start items-end">
                 <div class="w-8 h-8 ml-5 mr-3 border-t-4 border-l-4 border-gray-300 block align-bottom"></div>
-                <div class="flex items-center justify-between w-full bg-gray-800 px-6 py-4 rounded-2xl text-gray-300 shadow-md">
-                    <div class="text-sm">
+                <div class="h-12 flex items-center justify-between w-full bg-gray-800 px-6 py-4 rounded-2xl text-gray-300 shadow-md">
+                    <div class="text-sm hidden md:inline-block">
                         <a href="{{$thread->creator->path()}}">{{ucfirst($thread->creator->name)}}</a> started this conversation {{$thread->created_at->diffForHumans()}}.
-                        <span class="hidden md:inline-block">{{$thread->replies_count}} people have replied.</span>
+                        {{$thread->replies_count}} people have replied.
                     </div>
                     <div class="flex items-center">
                         <svg class="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">

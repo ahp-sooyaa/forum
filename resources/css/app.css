@@ -56,12 +56,40 @@
     .timeline-icon::after {
         @apply content border-2 border-indigo-400 border-solid absolute top-10 -left-12;
     }
+
+    .tribute-container {
+        @apply absolute top-0 left-0 h-auto max-h-52 max-w-2xl overflow-auto block z-auto;
+    }
+
+    .tribute-container ul {
+        @apply mt-2 p-0 bg-gray-100;
+    }
+
+    .tribute-container li {
+        @apply p-5 cursor-pointer;
+    }
+
+    .tribute-container li.highlight {
+        @apply bg-gray-200;
+    }
+
+    .tribute-container li span {
+        @apply font-bold;
+    }
+
+    .tribute-container li.no-match {
+        @apply cursor-default;
+    }
+
+    .tribute-container .menu-highlighted {
+        @apply font-bold;
+    }
 }
 
 @tailwind utilities;
 
 @layer utilities {
-    .h-calc{
+    .h-calc {
         height: calc(100% - 20px);
     }
 

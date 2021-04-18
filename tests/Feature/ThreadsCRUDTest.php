@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Activity;
+use App\Models\Thread;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -34,10 +36,7 @@ class ThreadsCRUDTest extends TestCase
 
         $thread = make('Thread');
 
-        // dd($thread->path());
         $response = $this->post('/threads', $thread->toArray());
-
-        //dd($response->headers); //this is returning null so this cause problem
 
         $this->get($response->headers->get('Location'))
             ->assertSee($thread->title)
@@ -54,6 +53,22 @@ class ThreadsCRUDTest extends TestCase
         $this->validatePublishThread(['body' => null], 'body');
     }
 
+    public function testThreadSlugMustBeUnique()
+    {
+        $this->signIn();
+
+        $thread = create('Thread', ['title' => 'Thread slug','slug' => 'thread-slug']);
+
+        $this->assertEquals($thread->fresh()->slug, 'thread-slug');
+
+        $this->post('/threads', $thread->toArray());
+
+        $this->assertCount(2, Thread::whereTitle('Thread slug')->get()); 
+        //actually i should slug but slug is using unique id so i can't guess about that id in test case
+        // e.g after created post that should redirect to thread->path() /threads/channelSlug/thread-slug_uniqueid
+        // that unique id is problem to guess in test
+    }
+
     public function testThreadRequiresChannelId()
     {
         create('Channel');
@@ -64,7 +79,7 @@ class ThreadsCRUDTest extends TestCase
         $this->validatePublishThread(['channel_id' => 9999], 'channel_id');
     }
 
-    public function validatePublishThread($overrides = [], $column)
+    public function validatePublishThread(Array $overrides = null, $column)
     {
         $this->signIn();
 
@@ -133,8 +148,8 @@ class ThreadsCRUDTest extends TestCase
         $threadWithOneReplies = $this->thread;
 
         $response = $this->getJson('/threads?popular=1')->json();
-
-        $this->assertEquals([3, 2, 0], array_column($response, 'replies_count'));
+        // dd($response['data']); becoz laravel is returning pagination collection & we only need data from response not pagination data such as current page
+        $this->assertEquals([3, 2, 0], array_column($response['data'], 'replies_count'));
     }
 
     public function testUserCanFilterUnansweredThreads()
@@ -144,7 +159,7 @@ class ThreadsCRUDTest extends TestCase
 
         $response = $this->getJson('/threads?unanswered=1')->json();
 
-        $this->assertCount(1, $response);
+        $this->assertCount(1, $response['data']);
     }
 
     /**

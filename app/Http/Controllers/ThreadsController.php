@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ThreadRequest;
+use Illuminate\Support\Str;
 use App\Models\Channel;
 use App\Models\Thread;
 use App\Filters\ThreadFilter;
+use App\TrendingThreads;
 
 class ThreadsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show']);
+        $this->middleware(['auth', 'verified'])->except(['index', 'show']);
     }
 
     /**
@@ -19,7 +21,7 @@ class ThreadsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Channel $channel, ThreadFilter $filters)
+    public function index(Channel $channel, ThreadFilter $filters, TrendingThreads $trending)
     {
         $threads = $this->getThreads($channel, $filters);
 
@@ -27,7 +29,10 @@ class ThreadsController extends Controller
             return $threads;
         }
 
-        return view('threads.index', compact('threads'));
+        return view('threads.index', [
+            'threads' => $threads,
+            'trendings' =>$trending->get()
+        ]);
     }
 
     /**
@@ -48,8 +53,10 @@ class ThreadsController extends Controller
      */
     public function store(ThreadRequest $request)
     {
-        // dd($request->except(['isSubscribed', 'subscriptions']));
-        $thread = auth_user()->threads()->create($request->except(['isSubscribed', 'subscriptions']));
+        $validated = $request->validated();
+        $validated['slug'] = Str::slug($request->title).'_'.uniqid();
+        
+        $thread = auth_user()->threads()->create($validated);
 
         return redirect($thread->path())
                 ->with('flash', 'Your Thread has been published!');
@@ -62,11 +69,15 @@ class ThreadsController extends Controller
      * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function show($channelSlug, Thread $thread)
+    public function show($channelSlug, Thread $thread, TrendingThreads $trending)
     {
         if (auth()->check()) {
             auth_user()->read($thread);
         }
+
+        $trending->set($thread);
+
+        $thread->recordVisit();
 
         return view('threads.show', compact('thread'));
     }
@@ -111,14 +122,12 @@ class ThreadsController extends Controller
 
     public function getThreads($channel, $filters)
     {
-        $threads = Thread::latest();
+        $threads = Thread::latest()->filter($filters);
 
         if ($channel->exists) {
             $threads->where('channel_id', $channel->id);
         }
 
-        $threads = $threads->filter($filters)->get();
-
-        return $threads;
+        return $threads->paginate(10);
     }
 }

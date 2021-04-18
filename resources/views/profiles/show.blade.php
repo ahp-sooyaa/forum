@@ -6,19 +6,20 @@
             <div class="py-8">
                 <div class="w-full mx-auto px-8">
                     <div class="md:flex justify-between items-start">
-                        <div class="md:flex">
+                        <div class="md:flex items-start">
                             <div class="mb-0 md:mb-3 mr-3">
-                                <svg class="mx-auto w-20 h-20 rounded-full text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd" />
-                                </svg>
+                                <img class="mx-auto mb-3 md:mb-0 rounded-full w-32 h-32 border-8 border-gray-700" src="https://gravatar.com/avatar/{{md5($profileUser->email)}}?s=60" alt="{{$profileUser->name}}'s avatar">
                             </div>
-                            <div class="mb-3 md:mb-0 bg-gray-700 rounded-xl px-5 py-4 shadow-inner">
+                            <div class="mb-3 md:mb-0 bg-gray-700 rounded-xl px-5 py-4 shadow-inner text-center">
                                 <div class="text-xl text-white">
                                     {{$profileUser->name}}
                                 </div>
                                 <div class="text-sm text-gray-200 font-light">
                                     Member Since {{$profileUser->created_at->diffForHumans()}}
                                 </div>
+                                <button class="border-2 mt-3 text-sm font-bold text-white border-gray-500 py-1 px-4 rounded-3xl">
+                                    Edit profile
+                                </button>
                             </div>
                         </div>
                         <div class="flex justify-between">

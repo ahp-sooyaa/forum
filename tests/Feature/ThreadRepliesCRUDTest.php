@@ -100,11 +100,6 @@ class ThreadRepliesCRUDTest extends TestCase
             'body' => 'google customer support'
         ]);
 
-        // $this->expectException(\Exception::class);
-
-        // $this->post("{$this->thread->path()}/replies", $reply->toArray())
-        //     ->assertStatus(422);
-
         // Check validation error message
         $this->post("{$this->thread->path()}/replies", $reply->toArray())
                 ->assertSessionHasErrors('body');

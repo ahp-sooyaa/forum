@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Illuminate\Support\Str;
 use App\Models\Channel;
 use App\Models\Thread;
 use App\Models\User;
@@ -23,10 +24,13 @@ class ThreadFactory extends Factory
      */
     public function definition()
     {
+        $title = $this->faker->sentence();
+        
         return [
+            'slug' => Str::slug($title),
             'user_id' => User::factory(),
             'channel_id' => Channel ::factory(),
-            'title' => $this->faker->sentence(),
+            'title' => $title,
             'body' => $this->faker->paragraph()
         ];
     }
