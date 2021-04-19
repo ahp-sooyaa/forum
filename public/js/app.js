@@ -2356,11 +2356,6 @@ __webpack_require__.r(__webpack_exports__);
   //   created() {
   //     window.events.$on("reply", this.openModal);
   //   },
-  computed: {
-    signIn: function signIn() {
-      return window.App.signIn;
-    }
-  },
   mounted: function mounted() {
     var tribute = new tributejs__WEBPACK_IMPORTED_MODULE_0___default.a({
       // column to search against in the object (accepts function or string)
@@ -2697,6 +2692,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2708,37 +2718,38 @@ __webpack_require__.r(__webpack_exports__);
     return {
       body: this.data.body,
       endPoint: "/replies/".concat(this.data.id),
-      isEdit: false
+      isEdit: false,
+      isBest: this.data.isBest,
+      reply: this.data
     };
   },
   computed: {
     date: function date() {
       return moment__WEBPACK_IMPORTED_MODULE_0___default()(this.data.created_at).fromNow();
     },
-    signIn: function signIn() {
-      return window.App.signIn;
-    },
-    canUpdate: function canUpdate() {
-      if (window.App.user) {
-        return this.data.owner.id == window.App.user.id;
-      }
-    },
     isOp: function isOp() {
       return this.data.thread.creator.id == this.data.owner.id;
     }
   },
+  created: function created() {
+    var _this = this;
+
+    window.events.$on('markedBestReply', function (id) {
+      _this.isBest = id == _this.data.id;
+    });
+  },
   methods: {
     update: function update() {
-      var _this = this;
+      var _this2 = this;
 
       axios.patch(this.endPoint, {
         body: this.body
       }).then(function (response) {
-        _this.isEdit = false, _this.data.body = _this.body;
+        _this2.isEdit = false, _this2.data.body = _this2.body;
         flash('Your reply has been updated!');
       })["catch"](function (error) {
-        _this.isEdit = false;
-        _this.body = _this.data.body;
+        _this2.isEdit = false;
+        _this2.body = _this2.data.body;
 
         if (error.response.data.message) {
           flash(error.response.data.errors.body[0], 'red');
@@ -2748,14 +2759,14 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     destroy: function destroy() {
-      var _this2 = this;
-
-      axios["delete"](this.endPoint).then(function (response) {
-        // $(this.$el).fadeOut(300)
-        _this2.$emit('destroyed', _this2.data.id);
-
-        flash('Your reply has been deleted!');
-      });
+      axios["delete"](this.endPoint);
+      this.$emit('destroyed', this.data.id);
+      flash('Your reply has been deleted!');
+    },
+    markBestReply: function markBestReply() {
+      this.isBest = true;
+      window.events.$emit('markedBestReply', this.data.id);
+      axios.post(this.endPoint + '/best');
     }
   }
 });
@@ -60935,7 +60946,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "mb-3" }, [
-    _vm.signIn
+    _vm.$signIn
       ? _c("div", [
           _c(
             "div",
@@ -61352,7 +61363,10 @@ var render = function() {
   return _c(
     "div",
     {
-      staticClass: "flex bg-gray-800 p-5 mb-3 rounded-2xl text-white",
+      staticClass: "flex p-5 mb-3 rounded-2xl",
+      class: _vm.isBest
+        ? "bg-gray-200 text-black border-2 border-gray-300"
+        : "bg-gray-800 text-white",
       attrs: { id: "reply-" + _vm.data.id }
     },
     [
@@ -61370,10 +61384,17 @@ var render = function() {
             _c(
               "a",
               {
-                staticClass: "text-white text-base",
+                staticClass: "text-base",
+                class: _vm.isBest ? "text-black" : "text-white",
                 attrs: { href: "profiles/" + _vm.data.owner.name }
               },
-              [_vm._v(_vm._s(_vm.data.owner.name))]
+              [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(_vm.data.owner.name) +
+                    "\n                "
+                )
+              ]
             ),
             _vm._v(" "),
             _vm.isOp
@@ -61421,7 +61442,7 @@ var render = function() {
                 "div",
                 { staticClass: "flex" },
                 [
-                  _vm.signIn
+                  _vm.$signIn
                     ? _c("v-favorite", { attrs: { data: this.data } })
                     : _vm._e(),
                   _vm._v(" "),
@@ -61440,7 +61461,6 @@ var render = function() {
                     {
                       staticClass:
                         "text-xs font-semibold border-2 bg-gray-500 hover:border-gray-500 border-gray-600 rounded-xl inline-block px-2 md:px-3 ml-2",
-                      attrs: { type: "button" },
                       on: {
                         click: function($event) {
                           _vm.isEdit = false
@@ -61463,11 +61483,11 @@ var render = function() {
                 "div",
                 { staticClass: "flex" },
                 [
-                  _vm.signIn
+                  _vm.$signIn
                     ? _c("v-favorite", { attrs: { data: this.data } })
                     : _vm._e(),
                   _vm._v(" "),
-                  _vm.canUpdate
+                  _vm.authorize("updateReply", _vm.reply)
                     ? _c("div", [
                         _c(
                           "button",
@@ -61501,7 +61521,32 @@ var render = function() {
                           ]
                         )
                       ])
-                    : _vm._e()
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value:
+                            !_vm.isBest &&
+                            _vm.authorize("markBestReply", _vm.reply),
+                          expression:
+                            "!isBest && authorize('markBestReply', reply)"
+                        }
+                      ],
+                      staticClass:
+                        "justify-self-end text-xs font-semibold border-2 bg-gray-500 hover:border-gray-500 border-gray-600 rounded-xl inline-block px-2 md:px-3 ml-auto",
+                      on: { click: _vm.markBestReply }
+                    },
+                    [
+                      _vm._v(
+                        "\n                    BestReply\n                "
+                      )
+                    ]
+                  )
                 ],
                 1
               )
@@ -73781,6 +73826,24 @@ webpackContext.id = "./resources/js sync recursive \\.vue$/";
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+
+var authorization = __webpack_require__(/*! ./authorization */ "./resources/js/authorization.js");
+
+Vue.prototype.authorize = function () {
+  if (!window.App.signIn) return false;
+
+  for (var _len = arguments.length, params = new Array(_len), _key = 0; _key < _len; _key++) {
+    params[_key] = arguments[_key];
+  }
+
+  if (typeof params[0] === 'string') {
+    return authorization[params[0]](params[1]);
+  }
+
+  return params[1](window.App.user);
+};
+
+Vue.prototype.$signIn = window.App.signIn;
 window.events = new Vue(); // level green mean success
 
 window.flash = function (message) {
@@ -73814,6 +73877,25 @@ Vue.component('v-thread-show', __webpack_require__(/*! ./pages/VThreadShow.vue *
 var app = new Vue({
   el: '#app'
 });
+
+/***/ }),
+
+/***/ "./resources/js/authorization.js":
+/*!***************************************!*\
+  !*** ./resources/js/authorization.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var user = window.App.user;
+module.exports = {
+  updateReply: function updateReply(reply) {
+    return reply.user_id == user.id;
+  },
+  markBestReply: function markBestReply(reply) {
+    return user.id == reply.thread.creator.id;
+  }
+};
 
 /***/ }),
 

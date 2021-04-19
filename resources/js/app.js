@@ -8,6 +8,20 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+let authorization = require('./authorization')
+
+Vue.prototype.authorize = function (...params) {
+    if(! window.App.signIn) return false;
+
+    if(typeof params[0] === 'string'){
+        return authorization[params[0]](params[1]);
+    }
+
+    return params[1](window.App.user);
+};
+
+Vue.prototype.$signIn = window.App.signIn;
+
 window.events = new Vue();
 
 // level green mean success

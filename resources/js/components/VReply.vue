@@ -1,10 +1,19 @@
 <template>
-    <div :id="'reply-'+data.id" class="flex bg-gray-800 p-5 mb-3 rounded-2xl text-white">
+    <div 
+        :id="'reply-'+data.id" 
+        class="flex p-5 mb-3 rounded-2xl" 
+        :class="isBest ? 'bg-gray-200 text-black border-2 border-gray-300' : 'bg-gray-800 text-white'"
+    >
         <img class="rounded-xl mr-3 w-16 h-16" :src="'https://gravatar.com/avatar/'+data.owner.email+'?s=60'" :alt="data.owner.name">
         <div class="w-full">
             <div class="mb-3">
                 <h3 class="font-semibold">
-                    <a class="text-white text-base" :href="'profiles/'+data.owner.name">{{data.owner.name}}</a>
+                    <a 
+                        :class="isBest ? 'text-black' : 'text-white'" 
+                        class="text-base" :href="'profiles/'+data.owner.name"
+                    >
+                        {{data.owner.name}}
+                    </a>
                     <span v-if="isOp" class="bg-indigo-500 inline-block rounded-xl px-2 text-sm">
                         op
                     </span>
@@ -18,11 +27,11 @@
                     v-model="body" rows="5"
                 ></textarea>
                 <div class="flex">
-                    <v-favorite v-if="signIn" :data="this.data"></v-favorite>
+                    <v-favorite v-if="$signIn" :data="this.data"></v-favorite>
                     <button @click="update" class="text-xs font-semibold border-2 bg-gray-500 hover:border-gray-500 border-gray-600 rounded-xl inline-block px-2 md:px-3 ml-2">
                         Update
                     </button>
-                    <button @click="isEdit = false" class="text-xs font-semibold border-2 bg-gray-500 hover:border-gray-500 border-gray-600 rounded-xl inline-block px-2 md:px-3 ml-2" type="button">
+                    <button @click="isEdit = false" class="text-xs font-semibold border-2 bg-gray-500 hover:border-gray-500 border-gray-600 rounded-xl inline-block px-2 md:px-3 ml-2">
                         Cancel
                     </button>
                 </div>
@@ -31,8 +40,8 @@
             <div v-else> 
                 <p class="mb-2 text-sm" v-html="body"></p>
                 <div class="flex">
-                    <v-favorite v-if="signIn" :data="this.data"></v-favorite>
-                    <div v-if="canUpdate">
+                    <v-favorite v-if="$signIn" :data="this.data"></v-favorite>
+                    <div v-if="authorize('updateReply', reply)">
                         <button @click="isEdit = true" class="h-full text-xs font-semibold border-2 bg-gray-500 hover:border-gray-500 border-gray-600 rounded-xl inline-block px-2 md:px-3 ml-2">
                             Edit
                         </button>
@@ -40,6 +49,12 @@
                             Delete
                         </button>
                     </div>
+                    <button v-show="!isBest && authorize('markBestReply', reply)" 
+                        @click="markBestReply" 
+                        class="justify-self-end text-xs font-semibold border-2 bg-gray-500 hover:border-gray-500 border-gray-600 rounded-xl inline-block px-2 md:px-3 ml-auto"
+                    >
+                        BestReply
+                    </button>
                 </div>
             </div>
         </div>
@@ -60,6 +75,8 @@
                 body: this.data.body,
                 endPoint: `/replies/${this.data.id}`,
                 isEdit: false,
+                isBest: this.data.isBest,
+                reply: this.data
             }
         },
 
@@ -67,17 +84,15 @@
             date() {
                 return moment(this.data.created_at).fromNow()
             },
-            signIn(){
-                return window.App.signIn;
-            },
-            canUpdate(){
-                if(window.App.user){
-                    return this.data.owner.id == window.App.user.id;
-                }
-            },
             isOp(){
                 return this.data.thread.creator.id == this.data.owner.id;
             }
+        },
+
+        created(){
+            window.events.$on('markedBestReply', id => {
+                this.isBest = (id == this.data.id)
+            })
         },
 
         methods: {
@@ -102,11 +117,16 @@
             },
             destroy(){
                 axios.delete(this.endPoint)
-                .then(response => {
-                    // $(this.$el).fadeOut(300)
-                    this.$emit('destroyed', this.data.id)
-                    flash('Your reply has been deleted!')
-                })
+
+                this.$emit('destroyed', this.data.id)
+                flash('Your reply has been deleted!')
+            },
+            markBestReply(){
+                this.isBest = true
+
+                window.events.$emit('markedBestReply', this.data.id)
+
+                axios.post(this.endPoint+'/best');
             }
         }
     }

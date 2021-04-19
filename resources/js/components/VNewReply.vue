@@ -1,6 +1,6 @@
 <template>
   <div class="mb-3">
-    <div v-if="signIn">
+    <div v-if="$signIn">
       <div
         class="mx-auto bg-gray-700 shadow-md p-5 rounded-3xl"
       >
@@ -57,12 +57,6 @@ export default {
 //   created() {
 //     window.events.$on("reply", this.openModal);
 //   },
-
-  computed: {
-    signIn() {
-      return window.App.signIn;
-    },
-  },
 
   mounted() {
     let tribute = new Tribute({
