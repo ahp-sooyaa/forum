@@ -31,6 +31,10 @@ class Reply extends Model
         static::deleting(function ($reply) {
             $reply->favorites->each->delete();
             $reply->thread->decrement('replies_count');
+
+            if($reply->isBest()){
+                $reply->thread->update(['best_reply_id'=> null]);
+            }
         });
 
         static::created(function ($reply) {
