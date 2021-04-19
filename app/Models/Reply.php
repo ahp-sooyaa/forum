@@ -86,11 +86,6 @@ class Reply extends Model
         $this->favorites()->where(['user_id' => auth_id()])->get()->each->delete();
     }
 
-    // public function isOp($thread)
-    // {
-    //     return $this->owner->name == $thread->creator->name;
-    // }
-
     public function wasJustPublished()
     {
         return $this->created_at->gt(Carbon::now()->subMinute());
@@ -106,5 +101,10 @@ class Reply extends Model
     public function setBodyAttribute($body)
     {
         $this->attributes['body'] = preg_replace('/@([\w\-]+)/', '<a href="/profiles/$1">$0</a>', $body);
+    }
+
+    public function isBest()
+    {
+        return $this->thread->best_reply_id == $this->id;
     }
 }

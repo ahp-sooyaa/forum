@@ -16,18 +16,6 @@ class ActivityTest extends TestCase
     {
         $this->signIn();
 
-        // $thread = create('Thread');
-
-        // $this->assertDatabaseHas('activities', [
-        //     'type' => 'created_thread',
-        //     'user_id' => auth()->id(),
-        //     'subject_id' => $thread->id,
-        //     'subject_type' => 'App\Models\Thread'
-        // ]);
-
-        // $activity = Activity::first();
-
-        // $this->assertEquals($activity->subject->id, $thread->id);
         $thread = create('Thread');
 
         $this->assertCount(1, $thread->activities);

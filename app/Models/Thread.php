@@ -101,4 +101,9 @@ class Thread extends Model
     {
         return $this->hasMany(ThreadSubscription::class);
     }
+
+    public function markBestReply($id)
+    {
+        $this->update(['best_reply_id' => $id]);
+    }
 }

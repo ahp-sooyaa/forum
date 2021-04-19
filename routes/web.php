@@ -24,6 +24,11 @@ Route::get('threads/{channel}/{thread:slug}/replies', 'RepliesController@index')
 Route::post('threads/{channel}/{thread:slug}/replies', 'RepliesController@store');
 
 /**
+ * best replies routes
+ */
+Route::post('replies/{reply}/best', 'BestRepliesController@store')->name('best-replies.store');
+
+/**
  * thread's subscription routes
  */
 Route::post('threads/{channel}/{thread:slug}/subscriptions', 'ThreadsSubscriptionController@store');
