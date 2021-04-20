@@ -24,7 +24,7 @@
         </div>
 
         @if (count($trendings))
-            <div class="hidden flex-none w-60 lg:w-70 lg:block bg-gray-100 border-2 py-7 px-3 rounded-3xl text-black h-full ml-3">
+            <div class="hidden flex-none w-60 lg:w-70 lg:block bg-gray-700 border-2 border-gray-800 py-7 px-3 rounded-3xl text-white h-full ml-3">
               <h2 class="font-semibold tracking-wider mb-3 text-center">Trending Threads</h2>
               <div class="space-y-2">
                 @foreach ($trendings as $trending)
@@ -32,7 +32,7 @@
                       <div class="flex-none rounded-full border-2 bg-indigo-600 text-white border-indigo-600 w-6 h-6 mr-2 text-center">
                         {{$loop->index + 1}}
                       </div>
-                      <a href="{{$trending->path}}" class="text-black hover:underline block">{{$trending->title}}</a>
+                      <a href="{{$trending->path}}" class="text-white hover:underline block">{{$trending->title}}</a>
                     </div>
                 @endforeach
               </div>

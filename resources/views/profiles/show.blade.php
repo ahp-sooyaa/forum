@@ -48,7 +48,7 @@
     </div>
     <div class="w-full md:w-4/5 lg:w-3/5 mx-auto px-2 sm:px-6 lg:px-8">
         <div class="flex justify-center">
-            <div class="text-xl text-gray-600 mb-8 px-5 py-1 border-b-2 border-indigo-400 inline-block mx-auto">
+            <div class="text-xl text-gray-300 mb-8 px-5 py-1 border-b-2 border-indigo-400 inline-block mx-auto">
                 Activity
             </div>
         </div>

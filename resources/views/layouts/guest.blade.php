@@ -17,7 +17,7 @@
         'user' => Auth::user()
       ])!!};
     </script>
-    
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -29,7 +29,7 @@
 <body>
     <div id="app">
 
-        <main>
+        <main class="bg-gray-800">
             @yield('content')
         </main>
 

@@ -2035,10 +2035,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['message'],
   data: function data() {
@@ -2644,6 +2640,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _VFavorite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VFavorite */ "./resources/js/components/VFavorite.vue");
+//
+//
+//
+//
+//
 //
 //
 //
@@ -60122,7 +60123,7 @@ var render = function() {
     "button",
     {
       staticClass:
-        "flex items-center bg-gray-500 hover:border-gray-500 border-gray-600 border-2 rounded-xl py-1 px-2 md:px-3 h-8",
+        "flex items-center bg-gray-800 border-gray-500 text-gray-400 border hover:border-gray-400 rounded-xl py-1 px-2 md:px-3 h-8",
       on: { click: _vm.toggleFavorite }
     },
     [
@@ -60217,13 +60218,13 @@ var render = function() {
         "div",
         {
           staticClass:
-            "bg-white border-2 shadow-lg rounded-lg fixed bottom-5 left-5 py-2 px-3",
+            "bg-white border-2 shadow-lg rounded-lg fixed top-2 inset-x-1/3 py-2 px-3",
           class: "border-" + _vm.level + "-400 text-" + _vm.level + "-500",
           attrs: { role: "alert" }
         },
         [
           _c("div", {
-            staticClass: "flex",
+            staticClass: "text-center",
             domProps: { textContent: _vm._s(_vm.body) }
           })
         ]
@@ -61357,16 +61358,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 var render = function() {
+  var this$1 = this
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
     "div",
     {
-      staticClass: "flex p-5 mb-3 rounded-2xl",
-      class: _vm.isBest
-        ? "bg-gray-200 text-black border-2 border-gray-300"
-        : "bg-gray-800 text-white",
+      staticClass:
+        "relative flex p-5 mb-3 rounded-2xl bg-gray-700 hover:bg-gray-800 border-2 text-white",
+      class: _vm.isBest ? "border-indigo-400" : "border-gray-800",
       attrs: { id: "reply-" + _vm.data.id }
     },
     [
@@ -61384,8 +61385,7 @@ var render = function() {
             _c(
               "a",
               {
-                staticClass: "text-base",
-                class: _vm.isBest ? "text-black" : "text-white",
+                staticClass: "text-base text-white",
                 attrs: { href: "profiles/" + _vm.data.owner.name }
               },
               [
@@ -61401,8 +61401,7 @@ var render = function() {
               ? _c(
                   "span",
                   {
-                    staticClass:
-                      "bg-indigo-500 inline-block rounded-xl px-2 text-sm"
+                    staticClass: "bg-white text-black rounded-xl px-2 text-sm"
                   },
                   [_vm._v("\n                    op\n                ")]
                 )
@@ -61450,7 +61449,7 @@ var render = function() {
                     "button",
                     {
                       staticClass:
-                        "text-xs font-semibold border-2 bg-gray-500 hover:border-gray-500 border-gray-600 rounded-xl inline-block px-2 md:px-3 ml-2",
+                        "text-xs font-semibold border bg-gray-800 border-gray-500 hover:border-gray-400 text-gray-400 rounded-xl inline-block px-2 md:px-3 ml-2",
                       on: { click: _vm.update }
                     },
                     [_vm._v("\n                    Update\n                ")]
@@ -61460,10 +61459,10 @@ var render = function() {
                     "button",
                     {
                       staticClass:
-                        "text-xs font-semibold border-2 bg-gray-500 hover:border-gray-500 border-gray-600 rounded-xl inline-block px-2 md:px-3 ml-2",
+                        "text-xs font-semibold border bg-red-700 text-red-300 border-red-500 rounded-xl inline-block px-2 md:px-3 ml-2",
                       on: {
-                        click: function($event) {
-                          _vm.isEdit = false
+                        click: function() {
+                          ;(_vm.isEdit = false), (_vm.body = this$1.data.body)
                         }
                       }
                     },
@@ -61487,13 +61486,13 @@ var render = function() {
                     ? _c("v-favorite", { attrs: { data: this.data } })
                     : _vm._e(),
                   _vm._v(" "),
-                  _vm.authorize("updateReply", _vm.reply)
+                  _vm.authorize("owns", _vm.reply)
                     ? _c("div", [
                         _c(
                           "button",
                           {
                             staticClass:
-                              "h-full text-xs font-semibold border-2 bg-gray-500 hover:border-gray-500 border-gray-600 rounded-xl inline-block px-2 md:px-3 ml-2",
+                              "h-full text-xs font-semibold bg-gray-800 border-gray-500 text-gray-400 hover:border-gray-400 border rounded-xl inline-block px-2 md:px-3 ml-2",
                             on: {
                               click: function($event) {
                                 _vm.isEdit = true
@@ -61511,7 +61510,7 @@ var render = function() {
                           "button",
                           {
                             staticClass:
-                              "h-full text-xs font-semibold border-2 bg-red-500 hover:border-red-500 border-red-600 rounded-xl inline-block px-2 md:px-3 ml-2",
+                              "h-full text-xs font-semibold bg-red-700 text-red-300 border border-red-500 rounded-xl inline-block px-2 md:px-3 ml-2",
                             on: { click: _vm.destroy }
                           },
                           [
@@ -61532,26 +61531,39 @@ var render = function() {
                           rawName: "v-show",
                           value:
                             !_vm.isBest &&
-                            _vm.authorize("markBestReply", _vm.reply),
+                            _vm.authorize("owns", _vm.reply.thread),
                           expression:
-                            "!isBest && authorize('markBestReply', reply)"
+                            "!isBest && authorize('owns', reply.thread)"
                         }
                       ],
                       staticClass:
-                        "justify-self-end text-xs font-semibold border-2 bg-gray-500 hover:border-gray-500 border-gray-600 rounded-xl inline-block px-2 md:px-3 ml-auto",
+                        "justify-self-end text-xs font-semibold hover:border-gray-400 border rounded-xl inline-block px-2 md:px-3 ml-auto",
                       on: { click: _vm.markBestReply }
                     },
-                    [
-                      _vm._v(
-                        "\n                    BestReply\n                "
-                      )
-                    ]
+                    [_vm._v("\n                    Best?\n                ")]
                   )
                 ],
                 1
               )
             ])
-      ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.isBest,
+              expression: "isBest"
+            }
+          ],
+          staticClass:
+            "absolute right-5 py-1 text-xs font-semibold bg-indigo-500 rounded-xl inline-block px-2 md:px-3 ml-auto"
+        },
+        [_vm._v("\n        Best Reply\n    ")]
+      )
     ]
   )
 }
@@ -73889,11 +73901,9 @@ var app = new Vue({
 
 var user = window.App.user;
 module.exports = {
-  updateReply: function updateReply(reply) {
-    return reply.user_id == user.id;
-  },
-  markBestReply: function markBestReply(reply) {
-    return user.id == reply.thread.creator.id;
+  owns: function owns(model) {
+    var prop = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'user_id';
+    return model[prop] == user.id;
   }
 };
 

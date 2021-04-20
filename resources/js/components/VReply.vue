@@ -1,20 +1,19 @@
 <template>
     <div 
         :id="'reply-'+data.id" 
-        class="flex p-5 mb-3 rounded-2xl" 
-        :class="isBest ? 'bg-gray-200 text-black border-2 border-gray-300' : 'bg-gray-800 text-white'"
+        class="relative flex p-5 mb-3 rounded-2xl bg-gray-700 hover:bg-gray-800 border-2 text-white" 
+        :class="isBest ? 'border-indigo-400' : 'border-gray-800'"
     >
         <img class="rounded-xl mr-3 w-16 h-16" :src="'https://gravatar.com/avatar/'+data.owner.email+'?s=60'" :alt="data.owner.name">
         <div class="w-full">
             <div class="mb-3">
                 <h3 class="font-semibold">
                     <a 
-                        :class="isBest ? 'text-black' : 'text-white'" 
-                        class="text-base" :href="'profiles/'+data.owner.name"
+                        class="text-base text-white" :href="'profiles/'+data.owner.name"
                     >
                         {{data.owner.name}}
                     </a>
-                    <span v-if="isOp" class="bg-indigo-500 inline-block rounded-xl px-2 text-sm">
+                    <span v-if="isOp" class="bg-white text-black rounded-xl px-2 text-sm">
                         op
                     </span>
                 </h3>
@@ -28,10 +27,10 @@
                 ></textarea>
                 <div class="flex">
                     <v-favorite v-if="$signIn" :data="this.data"></v-favorite>
-                    <button @click="update" class="text-xs font-semibold border-2 bg-gray-500 hover:border-gray-500 border-gray-600 rounded-xl inline-block px-2 md:px-3 ml-2">
+                    <button @click="update" class="text-xs font-semibold border bg-gray-800 border-gray-500 hover:border-gray-400 text-gray-400 rounded-xl inline-block px-2 md:px-3 ml-2">
                         Update
                     </button>
-                    <button @click="isEdit = false" class="text-xs font-semibold border-2 bg-gray-500 hover:border-gray-500 border-gray-600 rounded-xl inline-block px-2 md:px-3 ml-2">
+                    <button @click="()=>{isEdit = false ,body=this.data.body}" class="text-xs font-semibold border bg-red-700 text-red-300 border-red-500 rounded-xl inline-block px-2 md:px-3 ml-2">
                         Cancel
                     </button>
                 </div>
@@ -41,22 +40,28 @@
                 <p class="mb-2 text-sm" v-html="body"></p>
                 <div class="flex">
                     <v-favorite v-if="$signIn" :data="this.data"></v-favorite>
-                    <div v-if="authorize('updateReply', reply)">
-                        <button @click="isEdit = true" class="h-full text-xs font-semibold border-2 bg-gray-500 hover:border-gray-500 border-gray-600 rounded-xl inline-block px-2 md:px-3 ml-2">
+                    <div v-if="authorize('owns', reply)">
+                        <!-- bg-gray-200 hover:border-gray-400 border-gray-300 for light theme -->
+                        <button @click="isEdit = true" class="h-full text-xs font-semibold bg-gray-800 border-gray-500 text-gray-400 hover:border-gray-400 border rounded-xl inline-block px-2 md:px-3 ml-2">
                             Edit
                         </button>
-                        <button @click="destroy" class="h-full text-xs font-semibold border-2 bg-red-500 hover:border-red-500 border-red-600 rounded-xl inline-block px-2 md:px-3 ml-2">
+                        <button @click="destroy" class="h-full text-xs font-semibold bg-red-700 text-red-300 border border-red-500 rounded-xl inline-block px-2 md:px-3 ml-2">
                             Delete
                         </button>
                     </div>
-                    <button v-show="!isBest && authorize('markBestReply', reply)" 
+                    <button v-show="!isBest && authorize('owns', reply.thread)" 
                         @click="markBestReply" 
-                        class="justify-self-end text-xs font-semibold border-2 bg-gray-500 hover:border-gray-500 border-gray-600 rounded-xl inline-block px-2 md:px-3 ml-auto"
+                        class="justify-self-end text-xs font-semibold hover:border-gray-400 border rounded-xl inline-block px-2 md:px-3 ml-auto"
                     >
-                        BestReply
+                        Best?
                     </button>
                 </div>
             </div>
+        </div>
+        <div v-show="isBest"
+            class="absolute right-5 py-1 text-xs font-semibold bg-indigo-500 rounded-xl inline-block px-2 md:px-3 ml-auto"
+        >
+            Best Reply
         </div>
     </div>
 </template>

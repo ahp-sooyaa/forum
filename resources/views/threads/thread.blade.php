@@ -1,4 +1,4 @@
-<div class="md:flex mb-3 md:hover:bg-gray-200 bg-gray-100 border-2 p-7 rounded-3xl text-black justify-between items-start">
+<div class="md:flex mb-3 md:hover:bg-gray-800 bg-gray-700 hover:bg-gray-800 border-2 border-gray-800 text-white p-7 rounded-3xl justify-between items-start">
     <div class="flex justify-between items-center mb-5">
         <a href="{{route('profile', $thread->creator->name)}}" class="md:mr-5 flex items-center">
             <img class="flex-shrink-0 order-first rounded-xl w-16 h-16" src="https://gravatar.com/avatar/{{md5($thread->creator->email)}}?s=60" alt="{{$thread->creator->name}}'s avatar">
@@ -12,8 +12,8 @@
                     </svg>
                     {{$thread->replies_count}}
                 </div>
-                <div class="flex-shrink-0 block cursor-pointer border-2 border-indigo-600 bg-indigo-500 text-white rounded-full px-3 py-1 ml-3">
-                    {{Str::limit($thread->channel->name, 10,'')}}
+                <div class="flex-auto cursor-pointer bg-indigo-500 text-white rounded-full px-3 py-1 ml-3">
+                    {{Str::limit($thread->channel->name, 8,'')}}
                 </div>
             </div>
         </div>
@@ -28,7 +28,7 @@
                             {{Str::limit($thread->title, 200,'...')}}
                         </span>
                     @else
-                        <span class="font-semibold">{{Str::limit($thread->title, 200,'...')}}</span>
+                        <span class="font-semibold text-white">{{Str::limit($thread->title, 200,'...')}}</span>
                     @endif
                 </a>
             </div>
@@ -47,9 +47,9 @@
                         </svg>
                         {{$thread->visits()}}
                     </div>
-                    <div class="flex-shrink-0 w-20 text-center block cursor-pointer border-2 border-indigo-600 hover:bg-indigo-600 rounded-full px-3 py-1 text-sm ml-3">
-                        <a class="text-indigo-600 hover:text-white" href="/threads/{{$thread->channel->slug}}">
-                            {{Str::limit($thread->channel->name, 10,'')}}
+                    <div class="flex-auto text-center cursor-pointer bg-indigo-500 rounded-full px-3 py-1 text-sm ml-3">
+                        <a class="text-white hover:underline" href="/threads/{{$thread->channel->slug}}">
+                            {{Str::limit($thread->channel->name, 8,'')}}
                         </a>
                     </div>
                 </div>

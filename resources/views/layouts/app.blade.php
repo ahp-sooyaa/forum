@@ -30,7 +30,7 @@
     <div id="app">
         <v-navbar :channels="{{$channels}}"></v-navbar>
 
-        <main class="p-4 min-h-screen">
+        <main class="p-4 min-h-screen bg-gray-900">
             @yield('content')
         </main>
 
