@@ -61459,7 +61459,7 @@ var render = function() {
                     "button",
                     {
                       staticClass:
-                        "text-xs font-semibold border bg-red-700 text-red-300 border-red-500 rounded-xl inline-block px-2 md:px-3 ml-2",
+                        "text-xs font-semibold border bg-red-700 text-red-300 border-red-500 hover:border-red-400 rounded-xl inline-block px-2 md:px-3 ml-2",
                       on: {
                         click: function() {
                           ;(_vm.isEdit = false), (_vm.body = this$1.data.body)
@@ -61510,7 +61510,7 @@ var render = function() {
                           "button",
                           {
                             staticClass:
-                              "h-full text-xs font-semibold bg-red-700 text-red-300 border border-red-500 rounded-xl inline-block px-2 md:px-3 ml-2",
+                              "h-full text-xs font-semibold bg-red-700 text-red-300 border border-red-500 hover:border-red-400 rounded-xl inline-block px-2 md:px-3 ml-2",
                             on: { click: _vm.destroy }
                           },
                           [

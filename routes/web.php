@@ -16,6 +16,8 @@ Route::get('threads/{channel:slug}', 'ThreadsController@index');
 Route::get('threads/{channel}/{thread:slug}', 'ThreadsController@show');
 Route::delete('threads/{channel}/{thread:slug}', 'ThreadsController@destroy');
 
+Route::post('threads/{thread}/locked', 'LockedThreadsController@store')->name('locked-thread.store');
+
 /**
  * thread's replies routes
  */

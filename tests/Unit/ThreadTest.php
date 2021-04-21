@@ -121,18 +121,25 @@ class ThreadTest extends TestCase
 
     public function testThreadRecordsVisits()
     {
-        $thread = create('Thread');
+        $this->thread->resetVisits();
 
-        $thread->resetVisits();
+        $this->assertSame(0, $this->thread->visits());
 
-        $this->assertSame(0, $thread->visits());
+        $this->thread->recordVisit();
 
-        $thread->recordVisit();
+        $this->assertEquals(1, $this->thread->visits());
 
-        $this->assertEquals(1, $thread->visits());
+        $this->thread->recordVisit();
 
-        $thread->recordVisit();
+        $this->assertEquals(2, $this->thread->visits());
+    }
 
-        $this->assertEquals(2, $thread->visits());
+    public function testThreadMayBeLocked()
+    {
+        $this->assertFalse($this->thread->locked);
+
+        $this->thread->lock();
+
+        $this->assertTrue($this->thread->locked);
     }
 }

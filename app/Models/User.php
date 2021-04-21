@@ -78,4 +78,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Reply::class)->latest();
     }
+
+    public function isAdmin()
+    {
+        return in_array($this->name, ['aung', 'htet']);
+    }
 }

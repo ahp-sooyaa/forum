@@ -30,7 +30,7 @@
                     <button @click="update" class="text-xs font-semibold border bg-gray-800 border-gray-500 hover:border-gray-400 text-gray-400 rounded-xl inline-block px-2 md:px-3 ml-2">
                         Update
                     </button>
-                    <button @click="()=>{isEdit = false ,body=this.data.body}" class="text-xs font-semibold border bg-red-700 text-red-300 border-red-500 rounded-xl inline-block px-2 md:px-3 ml-2">
+                    <button @click="()=>{isEdit = false ,body=this.data.body}" class="text-xs font-semibold border bg-red-700 text-red-300 border-red-500 hover:border-red-400 rounded-xl inline-block px-2 md:px-3 ml-2">
                         Cancel
                     </button>
                 </div>
@@ -45,7 +45,7 @@
                         <button @click="isEdit = true" class="h-full text-xs font-semibold bg-gray-800 border-gray-500 text-gray-400 hover:border-gray-400 border rounded-xl inline-block px-2 md:px-3 ml-2">
                             Edit
                         </button>
-                        <button @click="destroy" class="h-full text-xs font-semibold bg-red-700 text-red-300 border border-red-500 rounded-xl inline-block px-2 md:px-3 ml-2">
+                        <button @click="destroy" class="h-full text-xs font-semibold bg-red-700 text-red-300 border border-red-500 hover:border-red-400 rounded-xl inline-block px-2 md:px-3 ml-2">
                             Delete
                         </button>
                     </div>
