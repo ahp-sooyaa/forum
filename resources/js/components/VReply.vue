@@ -45,7 +45,7 @@
                         <button @click="isEdit = true" class="h-full text-xs font-semibold bg-gray-800 border-gray-500 text-gray-400 hover:border-gray-400 border rounded-xl inline-block px-2 md:px-3 ml-2">
                             Edit
                         </button>
-                        <button @click="destroy" class="h-full text-xs font-semibold bg-red-700 text-red-300 border border-red-500 hover:border-red-400 rounded-xl inline-block px-2 md:px-3 ml-2">
+                        <button @click="destroy" class="h-full text-xs font-semibold bg-red-500 text-white border border-red-300 hover:border-red-200 rounded-xl inline-block px-2 md:px-3 ml-2">
                             Delete
                         </button>
                     </div>

@@ -2579,6 +2579,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2796,31 +2799,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: ['data'],
   computed: {
-    signIn: function signIn() {
-      return App.signIn;
-    },
     classes: function classes() {
-      return [this.active ? 'btn-indigo' : 'ring-1 ring-indigo-800 text-indigo-800 bg-white py-2 px-4', 'text-xs rounded-xl focus:outline-none focus:ring-0'];
+      return [this.active ? 'btn-indigo' : 'text-indigo-800 bg-white py-2 px-4', 'text-xs rounded-xl focus:outline-none focus:ring-0'];
     }
   },
   methods: {
     subscribe: function subscribe() {
       axios[this.active ? 'delete' : 'post'](location.pathname + '/subscriptions');
       this.active = !this.active;
-    } // toggleSubscribe(){
-    //     this.active ? this.unsubscribe() : this.subscribe()
-    // },
-    // subscribe(){
-    //     axios.post(location.pathname + '/subscriptions')
-    //     flash('Successfully Subscribed')
-    //     this.active = true
-    // },
-    // unsubscribe(){
-    //     axios.delete(location.pathname + '/subscriptions')
-    //     flash('Successfully UnSubscribed')
-    //     this.active = false
-    // }
-
+    }
   }
 });
 
@@ -2840,19 +2827,25 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['initialRepliesCount'],
+  props: ['data'],
   components: {
     VReplies: _components_VReplies__WEBPACK_IMPORTED_MODULE_0__["default"],
     VSubscribe: _components_VSubscribe__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
-      repliesCount: this.initialRepliesCount
+      repliesCount: this.data.replies_count,
+      locked: this.data.locked,
+      endPoint: "/threads/".concat(this.data.slug, "/locked")
     };
   },
   methods: {
-    reply: function reply() {
-      window.events.$emit('reply', 'open');
+    // reply(){
+    //     window.events.$emit('reply', 'open');
+    // }
+    lock: function lock() {
+      axios[this.locked ? 'delete' : 'post'](this.endPoint);
+      this.locked = !this.locked;
     }
   }
 });
@@ -61329,7 +61322,20 @@ var render = function() {
         )
       }),
       _vm._v(" "),
-      _c("v-new-reply", { on: { addedReply: _vm.add } }),
+      _vm.$parent.locked
+        ? _c(
+            "p",
+            {
+              staticClass:
+                "text-white text-center bg-red-500 rounded-2xl w-auto block py-5"
+            },
+            [
+              _vm._v(
+                "\n        This thread is locked. No more replies are not allowed.\n    "
+              )
+            ]
+          )
+        : _c("v-new-reply", { on: { addedReply: _vm.add } }),
       _vm._v(" "),
       _c("v-paginator", {
         attrs: { dataSet: _vm.dataSet },
@@ -61510,7 +61516,7 @@ var render = function() {
                           "button",
                           {
                             staticClass:
-                              "h-full text-xs font-semibold bg-red-700 text-red-300 border border-red-500 hover:border-red-400 rounded-xl inline-block px-2 md:px-3 ml-2",
+                              "h-full text-xs font-semibold bg-red-500 text-white border border-red-300 hover:border-red-200 rounded-xl inline-block px-2 md:px-3 ml-2",
                             on: { click: _vm.destroy }
                           },
                           [
@@ -61589,7 +61595,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.signIn
+  return _vm.$signIn
     ? _c("button", {
         class: _vm.classes,
         domProps: {
@@ -73904,6 +73910,9 @@ module.exports = {
   owns: function owns(model) {
     var prop = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'user_id';
     return model[prop] == user.id;
+  },
+  isAdmin: function isAdmin() {
+    return ['aung', 'htet'].includes(user.name);
   }
 };
 

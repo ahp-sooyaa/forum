@@ -13,9 +13,7 @@ class LockThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $thread = create('Thread');
-
-        $thread->lock();
+        $thread = create('Thread', ['locked' => true]);
 
         $reply = make('Reply', [
             'user_id' => auth_id(),
@@ -34,7 +32,19 @@ class LockThreadsTest extends TestCase
 
         $this->post(route('locked-thread.store', $thread));
 
-        $this->assertTrue(!!$thread->fresh()->locked);
+        $this->assertTrue($thread->fresh()->locked);
+    }
+
+    public function testOnlyAdministratorCanUnLockThread()
+    {
+        $this->signIn(create('User', ['name' => 'aung']));
+
+        $thread = create('Thread', ['locked' => true]);
+
+        $this->delete(route('locked-thread.destroy', $thread));
+
+        // $this->assertFalse(!!$thread->fresh()->locked); if there is no attribute casting !! should use to cast 1,0 to true, false
+        $this->assertFalse($thread->fresh()->locked);
     }
 
     public function testNonAdministratorCanNotLockThread()

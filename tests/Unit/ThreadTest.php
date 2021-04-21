@@ -133,13 +133,4 @@ class ThreadTest extends TestCase
 
         $this->assertEquals(2, $this->thread->visits());
     }
-
-    public function testThreadMayBeLocked()
-    {
-        $this->assertFalse($this->thread->locked);
-
-        $this->thread->lock();
-
-        $this->assertTrue($this->thread->locked);
-    }
 }

@@ -1,20 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <v-thread-show :initial-replies-count="{{$thread->replies_count}}" inline-template>
+    <v-thread-show :data="{{$thread}}" inline-template>
         <div class="w-full lg:w-4/5 mx-auto md:px-6">
-            {{-- <div class="flex items-center justify-between"> --}}
-                <a href="/threads" class="z-10 fixed bottom-7 left-7 btn-indigo text-sm rounded-full w-16 h-16">
-                    <svg class="my-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                    </svg>
-                </a>
-                {{-- <button @click="reply" class="fixed bottom-7 right-7 btn-indigo text-sm rounded-full w-16 h-16">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                </button> --}}
-            {{-- </div> --}}
+            <a href="/threads" class="z-10 fixed bottom-7 left-7 btn-indigo text-sm rounded-full w-16 h-16">
+                <svg class="my-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+            </a>
             <div class="h-14 flex mt-7 justify-start items-end">
                 <div class="w-8 h-8 ml-5 mr-3 border-t-4 border-l-4 border-gray-300 block align-bottom"></div>
                 <div class="h-12 flex items-center justify-between w-full bg-gray-800 px-6 py-4 rounded-2xl text-gray-300 shadow-md">
@@ -30,9 +23,15 @@
                         <span v-text="repliesCount"></span>
                     </div>
                     <v-subscribe :data="{{json_encode($thread->isSubscribed)}}"></v-subscribe>
+                    <button v-if="authorize('isAdmin')" 
+                        @click="lock" v-text="locked ? 'Unlock' : 'Lock'"
+                        class="text-xs rounded-xl focus:outline-none focus:ring-0 py-2 px-4"
+                        :class="locked ? 'text-white bg-red-500' : 'text-red-500 bg-white border border-red-500'"
+                    >
+                    </button>
                 </div>
             </div>
-            <div class="flex items-start bg-gray-800 p-5 mt-3 mb-5 rounded-2xl text-white shadow-md">
+            <div class="flex relative items-start bg-gray-800 p-5 mt-3 mb-5 rounded-2xl text-white shadow-md">
                 <img class="rounded-xl mr-3 w-16 h-16" src="https://gravatar.com/avatar/{{md5($thread->creator->email)}}?s=60" alt="{{$thread->creator->name}}'s avatar">
                 <div class="rounded-3xl w-full">
                     <div class="mb-3">
@@ -48,6 +47,9 @@
                         {{$thread->body}}
                     </p>
                 </div>
+                <svg v-if="locked" xmlns="http://www.w3.org/2000/svg" class="absolute right-6 text-red-500 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
             </div>
 
             <v-replies @deleted="repliesCount--" @created="repliesCount++"></v-replies>
