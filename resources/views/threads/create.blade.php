@@ -1,5 +1,15 @@
 @extends('layouts.app')
 
+@section('head')
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+
+    <script>
+      function onSubmit(token) {
+        document.getElementById("thread-create").submit();
+      }
+    </script>
+@endsection
+
 @section('content')
     <div class="bg-gray-800 w-full md:w-2/3 lg:w-1/2 h-auto mx-auto mt-30 p-7 rounded-3xl mt-14 text-gray-300 shadow-lg">
         <a href="/threads" class="z-10 fixed bottom-7 left-7 btn-indigo text-sm rounded-full w-16 h-16">
@@ -8,7 +18,7 @@
             </svg>
         </a>
         {{-- <h2 class="mb-3 text-3xl">New Threads</h2> --}}
-        <form action="{{route('threads.store')}}" method="POST">
+        <form id="thread-create" action="{{route('threads.store')}}" method="POST">
             @csrf
             <div class="mb-3">
                 <label for="channel_id" class="block text-sm font-medium text-gray-300">Channel</label>
@@ -37,9 +47,11 @@
                 </div>
             </div>
 
-            <button class="btn-indigo">
-                Publish
-            </button>
+            <button class="g-recaptcha btn-indigo" 
+                data-sitekey="6LcEHLYaAAAAAGLAYvJ_TeGR3y0FjT0AbLjGIHvj" 
+                data-callback='onSubmit' 
+                data-action='submit'
+            >Publish</button>
 
             @if ($errors)
                 @foreach($errors->all() as $error)

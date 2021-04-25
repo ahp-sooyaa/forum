@@ -2262,6 +2262,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['channels'],
   data: function data() {
@@ -60591,7 +60594,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("v-dropdown", {
                         staticClass: "ml-3",
-                        attrs: { width: "w-56", position: "right-0" },
+                        attrs: { width: "w-60", position: "right-0" },
                         scopedSlots: _vm._u([
                           {
                             key: "button",
@@ -60648,6 +60651,33 @@ var render = function() {
                               return [
                                 _c("div", { staticClass: "p-1" }, [
                                   _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "-mx-1 mb-2 border-b-2 border-gray-400 flex"
+                                    },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "-mb-0.5 font-semibold py-2 text-gray-700 border-b-2 border-indigo-400 flex-1 text-center"
+                                        },
+                                        [_vm._v("Me")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "-mb-0.5 font-semibold py-2 text-gray-700 flex-1 text-center"
+                                        },
+                                        [_vm._v("Notifications")]
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
                                     "a",
                                     {
                                       staticClass: "dropdown-link",
@@ -60655,7 +60685,7 @@ var render = function() {
                                         href: "/profiles/" + _vm.user.name
                                       }
                                     },
-                                    [_vm._v("Your Profile")]
+                                    [_vm._v("Your Profile h")]
                                   ),
                                   _vm._v(" "),
                                   _c(

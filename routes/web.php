@@ -8,13 +8,12 @@ Route::get('/', function () {
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 Auth::routes(['verify' => true]);
 
-Route::post('threads/{thread:slug}/locked', 'LockedThreadsController@store')->name('locked-thread.store');
-Route::delete('threads/{thread:slug}/locked', 'LockedThreadsController@destroy')->name('locked-thread.destroy');
-
 /**
  * thread routes
  */
 Route::resource('threads', 'ThreadsController')->except(['show', 'destroy']);
+Route::post('threads/{thread:slug}/locked', 'LockedThreadsController@store')->name('locked-thread.store');
+Route::delete('threads/{thread:slug}/locked', 'LockedThreadsController@destroy')->name('locked-thread.destroy');
 Route::get('threads/{channel:slug}', 'ThreadsController@index');
 Route::get('threads/{channel}/{thread:slug}', 'ThreadsController@show');
 Route::delete('threads/{channel}/{thread:slug}', 'ThreadsController@destroy');

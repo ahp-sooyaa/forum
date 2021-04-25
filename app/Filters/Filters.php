@@ -34,7 +34,7 @@ abstract class Filters
 
     public function getFilter()
     {
-        return $this->request->only($this->filters);
+        return array_filter($this->request->only($this->filters));
     }
 
     public function hasFilter($filter)

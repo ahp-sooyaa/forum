@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Activity;
 use App\Models\Thread;
-use Carbon\Carbon;
+use App\Rules\Recaptcha;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -17,6 +17,10 @@ class ThreadsCRUDTest extends TestCase
         parent::setUp();
 
         $this->thread = create('Thread');
+
+        $this->mock(Recaptcha::class, function ($mock) {
+            $mock->shouldReceive('passes')->andReturn(true);
+        });
     }
 
     public function testGuestsCanNotCreateThreads()
@@ -36,7 +40,7 @@ class ThreadsCRUDTest extends TestCase
 
         $thread = make('Thread');
 
-        $response = $this->post('/threads', $thread->toArray());
+        $response = $this->post('/threads', $thread->toArray() + ['g-recaptcha-response' => 'token']);
 
         $this->get($response->headers->get('Location'))
             ->assertSee($thread->title)
@@ -53,6 +57,13 @@ class ThreadsCRUDTest extends TestCase
         $this->validatePublishThread(['body' => null], 'body');
     }
 
+    public function testThreadRequireRecaptchaVerification()
+    {
+        unset(app()[Recaptcha::class]);
+
+        $this->validatePublishThread(['g-recaptcha-response' => 'invalid'], 'g-recaptcha-response');
+    }
+
     public function testThreadSlugMustBeUnique()
     {
         $this->signIn();
@@ -61,7 +72,10 @@ class ThreadsCRUDTest extends TestCase
 
         $this->assertEquals($thread->fresh()->slug, 'thread-slug');
 
-        $this->post('/threads', $thread->toArray());
+        $thread2 = make('Thread', ['title' => 'Thread slug','slug' => 'thread-slug']); 
+        // dd($thread2->toArray() + ['g-recaptcha-response' => 'token']); we need to check data if an error occured
+
+        $this->post('/threads', $thread2->toArray() + ['g-recaptcha-response' => 'token']);
 
         $this->assertCount(2, Thread::whereTitle('Thread slug')->get()); 
         //actually i should slug but slug is using unique id so i can't guess about that id in test case

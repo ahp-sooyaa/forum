@@ -8,27 +8,29 @@
                     <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
             </a>
-            <div class="h-14 flex mt-7 justify-start items-end">
+            <div class="flex mt-7 justify-start items-end">
                 <div class="w-8 h-8 ml-5 mr-3 border-t-4 border-l-4 border-gray-300 block align-bottom"></div>
-                <div class="h-12 flex items-center justify-between w-full bg-gray-800 px-6 py-4 rounded-2xl text-gray-300 shadow-md">
-                    <div class="text-sm hidden md:inline-block">
+                <div class="flex items-center justify-between w-full bg-gray-800 px-6 py-4 rounded-2xl text-gray-300 shadow-md">
+                    <div class="flex-1 text-sm hidden md:inline-block">
                         <a href="{{$thread->creator->path()}}">{{ucfirst($thread->creator->name)}}</a> started this conversation {{$thread->created_at->diffForHumans()}}.
                         {{$thread->replies_count}} people have replied.
                     </div>
-                    <div class="flex items-center">
+                    <div class="flex items-center ml-4">
                         <svg class="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                           <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" />
                           <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
                         </svg>
                         <span v-text="repliesCount"></span>
                     </div>
-                    <v-subscribe :data="{{json_encode($thread->isSubscribed)}}"></v-subscribe>
-                    <button v-if="authorize('isAdmin')" 
-                        @click="lock" v-text="locked ? 'Unlock' : 'Lock'"
-                        class="text-xs rounded-xl focus:outline-none focus:ring-0 py-2 px-4"
-                        :class="locked ? 'text-white bg-red-500' : 'text-red-500 bg-white border border-red-500'"
-                    >
-                    </button>
+                    <div class="flex ml-4">
+                        <v-subscribe :data="{{json_encode($thread->isSubscribed)}}"></v-subscribe>
+                        <button v-if="authorize('isAdmin')" 
+                            @click="lock" v-text="locked ? 'Unlock' : 'Lock'"
+                            class="ml-4 text-xs rounded-xl focus:outline-none focus:ring-0 py-2 px-4"
+                            :class="locked ? 'text-white bg-red-500' : 'text-red-500 bg-white border border-red-500'"
+                        >
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="flex relative items-start bg-gray-800 p-5 mt-3 mb-5 rounded-2xl text-white shadow-md">

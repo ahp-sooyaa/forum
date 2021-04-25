@@ -98,13 +98,12 @@
                     </a>
 
                   <!-- Profile dropdown -->
-                    <v-dropdown class="ml-3" :width="'w-56'" :position="'right-0'">
+                    <v-dropdown class="ml-3" :width="'w-60'" :position="'right-0'">
                       <template #button>
                         <div class="bg-gray-800 hover:bg-gray-700 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white cursor-pointer" id="user-menu" aria-haspopup="true">
                             <span class="sr-only">Open user menu</span>
                             <img class="h-9 w-9 border-2 border-gray-800 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
                             <span class="inline-block px-3 py-2 text-sm font-medium text-gray-300 hover:text-white">
-                                <!-- {{Auth::user()->name}} -->
                                 {{user.name}}
                             </span>
                         </div>
@@ -112,7 +111,11 @@
 
                       <template #menu>
                         <div class="p-1">
-                            <a :href="'/profiles/'+user.name" class="dropdown-link">Your Profile</a>
+                            <div class="-mx-1 mb-2 border-b-2 border-gray-400 flex">
+                              <div class="-mb-0.5 font-semibold py-2 text-gray-700 border-b-2 border-indigo-400 flex-1 text-center">Me</div>
+                              <div class="-mb-0.5 font-semibold py-2 text-gray-700 flex-1 text-center">Notifications</div>
+                            </div>
+                            <a :href="'/profiles/'+user.name" class="dropdown-link">Your Profile h</a>
                             <a :href="'/threads?by='+user.name" class="dropdown-link">Your Threads</a>
                             <a href="#" class="dropdown-link">Setting</a>
                             

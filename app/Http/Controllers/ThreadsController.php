@@ -53,9 +53,11 @@ class ThreadsController extends Controller
      */
     public function store(ThreadRequest $request)
     {
-        $validated = $request->validated();
+        // dd($request->validated());
+        // $validated = $request->except('g-recaptcha-response');
+        $validated = $request->except(['isSubscribed', 'subscriptions', 'g-recaptcha-response']);
         $validated['slug'] = Str::slug($request->title).'_'.uniqid();
-        
+
         $thread = auth_user()->threads()->create($validated);
 
         return redirect($thread->path())
