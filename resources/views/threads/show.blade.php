@@ -42,12 +42,32 @@
                         </h3>
                         <div class="text-gray-400 text-xs">Posted {{$thread->created_at->diffForHumans()}}</div>
                     </div>
-                    <div class="text-base font-semibold mb-5 bg-gray-700 p-3 rounded-lg">
-                        {{ $thread->title }}
+                    
+                    <div v-if="isEdit">
+                        <input type="text" v-model="title" class="text-input w-full mb-4">
+                        <textarea name="body" rows="5" 
+                            class="text-area w-full text-sm text-gray-700 mb-2"
+                            v-model="body"
+                        ></textarea>
+                        <button
+                            @click="update"
+                            class="text-xs font-semibold bg-gray-800 border-gray-500 text-gray-400 hover:border-gray-400 border rounded-xl inline-block px-2 py-2 md:px-3 mt-4"
+                        >Update</button>
+                        <button
+                            @click="()=>{isEdit = false ,body= data.body, title= data.title}"
+                            class="text-xs font-semibold bg-red-800 border-red-500 text-red-400 hover:border-red-400 border rounded-xl inline-block px-2 py-2 md:px-3 mt-4 focus:outline-none ml-3"
+                        >Cancel</button>
                     </div>
-                    <p class="text-gray-200 text-sm">
-                        {{$thread->body}}
-                    </p>
+                    <div v-else>
+                        <div class="text-base font-semibold mb-5 bg-gray-700 p-3 rounded-lg" v-text="title"></div>
+                        <p class="text-gray-200 text-sm" v-text="body"></p>
+                        <div v-if="authorize('owns', data)">
+                            <button
+                                @click="isEdit = true"
+                                class="text-xs font-semibold bg-gray-800 border-gray-500 text-gray-400 hover:border-gray-400 border rounded-xl inline-block px-2 py-2 md:px-3 mt-4"
+                            >Edit</button>
+                        </div>
+                    </div>
                 </div>
                 <svg v-if="locked" xmlns="http://www.w3.org/2000/svg" class="absolute right-6 text-red-500 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />

@@ -177,6 +177,54 @@ class ThreadsCRUDTest extends TestCase
     }
 
     /**
+     * Update Threads Tests
+     */
+    public function testAuthorizedUsersCanUpdateThreads()
+    {
+        $this->withoutExceptionHandling();
+        $this->signIn();
+
+        $thread = create('Thread', ['user_id' => auth_id()]);
+
+        $this->patch($thread->path(), ['title' => 'changed', 'body' => 'changed body']);
+
+        tap($thread->fresh(), function($thread){
+            $this->assertEquals('changed', $thread->title);
+            $this->assertEquals('changed body', $thread->body);
+        });
+    }
+
+    public function testUnAuthorizedUsersCanNotUpdateThreads()
+    {
+        $this->signIn();
+
+        $this->patch($this->thread->path(), ['title' => 'changed', 'body' => 'changed body'])
+            ->assertStatus(403);
+    }
+
+    public function testUpdateThreadRequiredTitle()
+    {
+        $this->signIn();
+
+        $thread = create('Thread', ['user_id' => auth_id()]);
+
+        $this->patch($thread->path(), [
+            'title' => null
+        ])->assertSessionHasErrors('title');
+    }
+
+    public function testUpdateThreadRequiredBody()
+    {
+        $this->signIn();
+
+        $thread = create('Thread', ['user_id' => auth_id()]);
+
+        $this->patch($thread->path(), [
+            'body' => null
+        ])->assertSessionHasErrors('body');
+    }
+
+    /**
      * Delete Threads Tests
      */
     public function testAnUnauthorizedUserCanNotDeleteThreads()

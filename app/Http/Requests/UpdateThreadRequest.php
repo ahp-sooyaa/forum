@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\Recaptcha;
 use App\Rules\SpamFree;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ThreadRequest extends FormRequest
+class UpdateThreadRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,10 +25,8 @@ class ThreadRequest extends FormRequest
     public function rules()
     {
         return [
-            'channel_id' => ['required','exists:channels,id'],
             'title' => ['required', new SpamFree],
-            'body' => ['required', new SpamFree],
-            'g-recaptcha-response' => ['required',  app(Recaptcha::class)]
+            'body' => ['required', new SpamFree]
         ];
     }
 }

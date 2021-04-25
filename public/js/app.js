@@ -2383,12 +2383,7 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         _this.isOpen = false;
         _this.body = "";
-
-        if (error.response.data.message) {
-          flash(error.response.data.errors.body[0], "red");
-        } else {
-          flash(error.response.data, "red");
-        }
+        flash(error.response.data.message, "red");
       }).then(function (_ref) {
         var data = _ref.data;
         _this.body = "";
@@ -2757,12 +2752,7 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         _this2.isEdit = false;
         _this2.body = _this2.data.body;
-
-        if (error.response.data.message) {
-          flash(error.response.data.errors.body[0], 'red');
-        } else {
-          flash(error.response.data, 'red');
-        }
+        flash(error.response.data.message, 'red');
       });
     },
     destroy: function destroy() {
@@ -2837,9 +2827,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      isEdit: false,
+      body: this.data.body,
+      title: this.data.title,
       repliesCount: this.data.replies_count,
       locked: this.data.locked,
-      endPoint: "/threads/".concat(this.data.slug, "/locked")
+      endPoint: "/locked-threads/".concat(this.data.slug)
     };
   },
   methods: {
@@ -2849,6 +2842,23 @@ __webpack_require__.r(__webpack_exports__);
     lock: function lock() {
       axios[this.locked ? 'delete' : 'post'](this.endPoint);
       this.locked = !this.locked;
+    },
+    update: function update() {
+      var _this = this;
+
+      axios.patch("/threads/".concat(this.data.channel.slug, "/").concat(this.data.slug, "/"), {
+        title: this.title,
+        body: this.body
+      }).then(function (response) {
+        _this.isEdit = false, _this.data.body = _this.body;
+        _this.data.title = _this.title;
+        flash('Your thread has been updated!');
+      })["catch"](function (error) {
+        _this.isEdit = false;
+        _this.body = _this.data.body;
+        _this.title = _this.data.title;
+        flash(error.response.data.message, 'red');
+      });
     }
   }
 });

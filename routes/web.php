@@ -11,12 +11,14 @@ Auth::routes(['verify' => true]);
 /**
  * thread routes
  */
-Route::resource('threads', 'ThreadsController')->except(['show', 'destroy']);
-Route::post('threads/{thread:slug}/locked', 'LockedThreadsController@store')->name('locked-thread.store');
-Route::delete('threads/{thread:slug}/locked', 'LockedThreadsController@destroy')->name('locked-thread.destroy');
+Route::resource('threads', 'ThreadsController')->except(['update','show', 'destroy']);
 Route::get('threads/{channel:slug}', 'ThreadsController@index');
-Route::get('threads/{channel}/{thread:slug}', 'ThreadsController@show');
-Route::delete('threads/{channel}/{thread:slug}', 'ThreadsController@destroy');
+Route::get('threads/{channel}/{thread:slug}', 'ThreadsController@show')->name('threads.show');
+Route::patch('threads/{channel}/{thread:slug}', 'ThreadsController@update')->name('threads.update');
+Route::delete('threads/{channel}/{thread:slug}', 'ThreadsController@destroy')->name('threads.destroy');
+
+Route::post('locked-threads/{thread:slug}', 'LockedThreadsController@store')->name('locked-thread.store');
+Route::delete('locked-threads/{thread:slug}', 'LockedThreadsController@destroy')->name('locked-thread.destroy');
 
 /**
  * thread's replies routes

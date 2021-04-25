@@ -39,7 +39,11 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (ThrottleException $e, $request) {
-            return response('Replying too much', 429);
+            $response = [
+                'message' => "You can't reply more than once per minute"
+            ];
+
+            return response($response, 429);
         });
     }
 }

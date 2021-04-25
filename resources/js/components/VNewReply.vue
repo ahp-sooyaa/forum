@@ -83,11 +83,7 @@ export default {
           this.isOpen = false;
           this.body = "";
 
-          if (error.response.data.message) {
-            flash(error.response.data.errors.body[0], "red");
-          } else {
-            flash(error.response.data, "red");
-          }
+          flash(error.response.data.message, "red");
         })
         .then(({ data }) => {
           this.body = "";

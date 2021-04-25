@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ThreadRequest;
+use App\Http\Requests\CreateThreadRequest;
 use Illuminate\Support\Str;
 use App\Models\Channel;
 use App\Models\Thread;
 use App\Filters\ThreadFilter;
+use App\Http\Requests\UpdateThreadRequest;
 use App\TrendingThreads;
 
 class ThreadsController extends Controller
@@ -51,10 +52,8 @@ class ThreadsController extends Controller
      * @param  \App\Http\Requests\ThreadRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ThreadRequest $request)
+    public function store(CreateThreadRequest $request)
     {
-        // dd($request->validated());
-        // $validated = $request->except('g-recaptcha-response');
         $validated = $request->except(['isSubscribed', 'subscriptions', 'g-recaptcha-response']);
         $validated['slug'] = Str::slug($request->title).'_'.uniqid();
 
@@ -102,9 +101,11 @@ class ThreadsController extends Controller
      * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function update(ThreadRequest $request, Thread $thread)
+    public function update($channelSlug , UpdateThreadRequest $request, Thread $thread)
     {
-        //
+        $this->authorize('update', $thread);
+
+        $thread->update($request->validated());
     }
 
     /**

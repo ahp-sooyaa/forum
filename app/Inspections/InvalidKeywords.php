@@ -2,6 +2,8 @@
 
 namespace App\Inspections;
 
+use Dotenv\Exception\ValidationException;
+
 class InvalidKeywords
 {
     protected $keywords = [
@@ -12,7 +14,7 @@ class InvalidKeywords
     {
         foreach ($this->keywords as $keyword) {
             if (stripos($body, $keyword) !== false) {
-                throw new \Exception('Your reply contains spam');
+                throw new ValidationException('Your reply contains spam');
             }
         }
     }

@@ -9,9 +9,12 @@
 
         data(){
             return {
+                isEdit: false,
+                body: this.data.body,
+                title: this.data.title,
                 repliesCount: this.data.replies_count,
                 locked: this.data.locked,
-                endPoint: `/threads/${this.data.slug}/locked`
+                endPoint: `/locked-threads/${this.data.slug}`
             }
         },
 
@@ -25,7 +28,24 @@
                 ](this.endPoint)
 
                 this.locked = !this.locked
-            }
+            },
+            update(){
+                axios.patch(`/threads/${this.data.channel.slug}/${this.data.slug}/`, { title: this.title, body: this.body})
+                    .then(response => {
+                        this.isEdit= false,
+                        this.data.body = this.body
+                        this.data.title = this.title
+
+                        flash('Your thread has been updated!')
+                    })
+                    .catch(error => {
+                        this.isEdit = false
+                        this.body = this.data.body
+                        this.title = this.data.title
+                        
+                        flash(error.response.data.message, 'red')
+                    })
+            },
         }
     }
 </script>
