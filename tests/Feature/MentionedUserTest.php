@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Rules\Recaptcha;
 
 class MentionedUserTest extends TestCase
 {
@@ -23,7 +24,11 @@ class MentionedUserTest extends TestCase
             'body' => '@Jone & @whodoesnotexist look at this.'
         ]);
 
-        $this->post("{$thread->path()}/replies", $reply->toArray());
+        $this->mock(Recaptcha::class, function ($mock) {
+            $mock->shouldReceive('passes')->andReturn(true);
+        });
+
+        $this->post("{$thread->path()}/replies", $reply->toArray() + ['g-recaptcha-response' => 'token']);
 
         $this->assertCount(1, $jone->notifications);
     }

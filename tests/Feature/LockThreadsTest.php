@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Rules\Recaptcha;
 
 class LockThreadsTest extends TestCase
 {
@@ -17,10 +18,14 @@ class LockThreadsTest extends TestCase
 
         $reply = make('Reply', [
             'user_id' => auth_id(),
-            'thread_id' => $thread->id
+            'thread_id' => $thread->id,
         ]);
 
-        $this->post("{$thread->path()}/replies" , $reply->toArray())
+        $this->mock(Recaptcha::class, function ($mock) {
+            $mock->shouldReceive('passes')->andReturn(true);
+        });
+
+        $this->post("{$thread->path()}/replies" , $reply->toArray()+ ['g-recaptcha-response' => 'token'])
             ->assertStatus(422);
     }
 

@@ -20,6 +20,8 @@
         {{-- <h2 class="mb-3 text-3xl">New Threads</h2> --}}
         <form id="thread-create" action="{{route('threads.store')}}" method="POST">
             @csrf
+            @honeypot
+            
             <div class="mb-3">
                 <label for="channel_id" class="block text-sm font-medium text-gray-300">Channel</label>
                 <select name="channel_id" class="text-input" required>

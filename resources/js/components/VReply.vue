@@ -1,5 +1,6 @@
 <template>
     <div 
+        @mouseover="hover = true" @mouseleave="hover = false"
         :id="'reply-'+data.id" 
         class="relative flex p-5 mb-3 rounded-2xl bg-gray-700 hover:bg-gray-800 border-2 text-white" 
         :class="isBest ? 'border-indigo-400' : 'border-gray-800'"
@@ -40,7 +41,7 @@
                 <p class="mb-2 text-sm" v-html="body"></p>
                 <div class="flex">
                     <v-favorite v-if="$signIn" :data="this.data"></v-favorite>
-                    <div v-if="authorize('owns', reply)">
+                    <div v-if="authorize('owns', reply) && hover">
                         <!-- bg-gray-200 hover:border-gray-400 border-gray-300 for light theme -->
                         <button @click="isEdit = true" class="h-full text-xs font-semibold bg-gray-800 border-gray-500 text-gray-400 hover:border-gray-400 border rounded-xl inline-block px-2 md:px-3 ml-2">
                             Edit
@@ -49,7 +50,7 @@
                             Delete
                         </button>
                     </div>
-                    <button v-show="!isBest && authorize('owns', reply.thread)" 
+                    <button v-show="!isBest && authorize('owns', reply.thread) && hover" 
                         @click="markBestReply" 
                         class="justify-self-end text-xs font-semibold hover:border-gray-400 border rounded-xl inline-block px-2 md:px-3 ml-auto"
                     >
@@ -78,6 +79,7 @@
         data(){
             return {
                 body: this.data.body,
+                hover: false,
                 endPoint: `/replies/${this.data.id}`,
                 isEdit: false,
                 isBest: this.data.isBest,
@@ -120,7 +122,7 @@
                 axios.delete(this.endPoint)
 
                 this.$emit('destroyed', this.data.id)
-                flash('Your reply has been deleted!')
+                flash('Your reply has been deleted!', 'red')
             },
             markBestReply(){
                 this.isBest = true

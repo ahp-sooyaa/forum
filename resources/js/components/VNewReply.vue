@@ -22,19 +22,27 @@
           Reply to
         </div>
         <hr class="border border-gray-500" />
-        <div class="mb-3">
-          <textarea
-            id="body"
-            name="body"
-            rows="6"
-            class="text-white border-0 focus:ring-0 block w-full sm:text-sm bg-gray-700 px-0"
-            v-model="body"
-          ></textarea>
-        </div>
-        <button @click="addReply" class="btn-indigo text-sm">Post</button>
-        <button @click="isOpen = false" class="btn-outline-indigo text-sm">
-          Cancel
-        </button>
+        <!-- <form @submit.prevent="addReply"> -->
+          <div class="hidden">
+            <label class="sr-only">Don’t fill this out if you're human: </label>
+            <input v-model="bot" name="bot-field" placeholder="This field is only for the robots." 
+              class="form-input block w-full py-3 px-4 placeholder-gray-500 transition ease-in-out duration-150"
+            />
+          </div>
+          <div class="mb-3">
+            <textarea
+              id="body" name="body"
+              rows="6" class="text-white border-0 focus:ring-0 block w-full sm:text-sm bg-gray-700 px-0"
+              v-model="body"
+            ></textarea>
+          </div>
+          <vue-recaptcha sitekey="6LcEHLYaAAAAAGLAYvJ_TeGR3y0FjT0AbLjGIHvj">
+            <button @click="addReply" class="btn-indigo text-sm">Post</button>
+          </vue-recaptcha>
+          <!-- <button @click="isOpen = false" class="btn-outline-indigo text-sm">
+            Cancel
+          </button> -->
+        <!-- </form> -->
       </div>
     </div>
     <div v-else class="text-center">
@@ -45,10 +53,15 @@
 
 <script>
 import Tribute from "tributejs";
+import VueRecaptcha from 'vue-recaptcha';
+
 export default {
+  components: {VueRecaptcha},
+  
   data() {
     return {
-      isOpen: false,
+      // isOpen: false,
+      bot: null,
       body: "",
       endPoint: location.pathname + "/replies",
     };
@@ -77,22 +90,28 @@ export default {
 
   methods: {
     addReply() {
-      axios
-        .post(this.endPoint, { body: this.body })
-        .catch((error) => {
-          this.isOpen = false;
-          this.body = "";
+      if(this.bot != null)
+      {
+        flash("Bot detected! Are You Bot?", 'red')
+      } 
+      else 
+      {
+        axios.post(this.endPoint, { body: this.body })
+          .catch((error) => {
+            this.isOpen = false;
+            this.body = "";
 
-          flash(error.response.data.message, "red");
-        })
-        .then(({ data }) => {
-          this.body = "";
-          this.isOpen = false;
+            flash(error.response.data.message, "red");
+          })
+          .then(({ data }) => {
+            this.body = "";
+            this.isOpen = false;
 
-          flash("Your reply has been posted!");
+            flash("Your reply has been posted!");
 
-          this.$emit("addedReply", data);
-        });
+            this.$emit("addedReply", data);
+          });
+      }
     },
     // openModal() {
     //   this.isOpen = true;

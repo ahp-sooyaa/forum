@@ -44,6 +44,7 @@ class RepliesController extends Controller
      */
     public function store($channelId, Thread $thread, CreateReplyRequest $request)
     {
+        // dd('hi');
         if($thread->locked){
             return response('Thread is locked', 422);
         }

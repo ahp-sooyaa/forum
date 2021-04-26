@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Events\ThreadHasNewReply;
 use App\Traits\RecordThreadVisits;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class Thread extends Model
 {
@@ -109,5 +110,10 @@ class Thread extends Model
     public function markBestReply($id)
     {
         $this->update(['best_reply_id' => $id]);
+    }
+
+    public function wasJustPublished()
+    {
+        return $this->created_at->gt(Carbon::now()->subMinute());
     }
 }

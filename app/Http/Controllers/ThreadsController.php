@@ -14,6 +14,7 @@ class ThreadsController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('honeypot')->only('store');
         $this->middleware(['auth', 'verified'])->except(['index', 'show']);
     }
 
@@ -54,7 +55,7 @@ class ThreadsController extends Controller
      */
     public function store(CreateThreadRequest $request)
     {
-        $validated = $request->except(['isSubscribed', 'subscriptions', 'g-recaptcha-response']);
+        $validated = $request->only(['_token', 'title', 'body', 'channel_id']);
         $validated['slug'] = Str::slug($request->title).'_'.uniqid();
 
         $thread = auth_user()->threads()->create($validated);

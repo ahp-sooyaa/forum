@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@section('head')
+    <script src="https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit" async defer>
+    </script>
+@endsection
+
 @section('content')
     <v-thread-show :data="{{$thread}}" inline-template>
         <div class="w-full lg:w-4/5 mx-auto md:px-6">

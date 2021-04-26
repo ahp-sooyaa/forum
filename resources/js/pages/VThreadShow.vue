@@ -42,7 +42,7 @@
                         this.isEdit = false
                         this.body = this.data.body
                         this.title = this.data.title
-                        
+
                         flash(error.response.data.message, 'red')
                     })
             },

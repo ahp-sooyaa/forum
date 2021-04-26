@@ -7,6 +7,7 @@ use App\Models\Reply;
 use App\Rules\SpamFree;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use App\Rules\Recaptcha;
 
 class CreateReplyRequest extends FormRequest
 {
@@ -33,7 +34,8 @@ class CreateReplyRequest extends FormRequest
     public function rules()
     {
         return [
-            'body' => ['required', new SpamFree]
+            'body' => ['required', new SpamFree],
+            'g-recaptcha-response' => ['required',  app(Recaptcha::class)]
         ];
     }
 }

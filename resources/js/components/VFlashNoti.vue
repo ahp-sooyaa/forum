@@ -1,8 +1,10 @@
 <template>
-    <div v-if="show" :class="'border-'+level+'-400 text-'+level+'-500'" class="bg-white border-2 shadow-lg rounded-lg fixed top-2 inset-x-1/3 py-2 px-3" role="alert">
-        <div class="text-center" v-text="body">
+    <transition name="slide-fade">
+        <div v-if="show" :class="'bg-'+level+'-500'" class="text-white shadow-lg rounded-lg fixed top-2 inset-x-1/3 py-2 px-3" role="alert">
+            <div class="text-center transition ease-in-out duration-500 transform -translate-y-1 scale-110" v-text="body">
+            </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script>
@@ -45,3 +47,15 @@
         }
     }
 </script>
+
+<style scoped>
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all .5s;
+}
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateY(-100px);
+  opacity: 0;
+}
+</style>

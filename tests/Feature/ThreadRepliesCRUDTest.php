@@ -4,8 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-
-// use PHPUnit\Framework\TestCase;
+use App\Rules\Recaptcha;
 
 class ThreadRepliesCRUDTest extends TestCase
 {
@@ -16,6 +15,10 @@ class ThreadRepliesCRUDTest extends TestCase
         parent::setUp();
 
         $this->thread = create('Thread');
+
+        $this->mock(Recaptcha::class, function ($mock) {
+            $mock->shouldReceive('passes')->andReturn(true);
+        });
     }
 
     /**
@@ -33,7 +36,7 @@ class ThreadRepliesCRUDTest extends TestCase
 
         $reply = create('Reply');
 
-        $this->post("{$this->thread->path()}/replies", $reply->toArray());
+        $this->post("{$this->thread->path()}/replies", $reply->toArray() + ['g-recaptcha-response' => 'token']);
 
         $this->assertDatabaseHas('replies', ['body' => $reply->body]);
         $this->assertEquals(1, $this->thread->fresh()->replies_count);
@@ -118,10 +121,10 @@ class ThreadRepliesCRUDTest extends TestCase
             'body' => 'Not spam reply'
         ]);
 
-        $this->post("{$this->thread->path()}/replies", $reply->toArray())
+        $this->post("{$this->thread->path()}/replies", $reply->toArray() + ['g-recaptcha-response' => 'token'])
             ->assertStatus(201);
 
-        $this->post("{$this->thread->path()}/replies", $reply->toArray())
+        $this->post("{$this->thread->path()}/replies", $reply->toArray() + ['g-recaptcha-response' => 'token'])
             ->assertStatus(429);
     }
 }
