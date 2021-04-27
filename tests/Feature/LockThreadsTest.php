@@ -25,7 +25,7 @@ class LockThreadsTest extends TestCase
             $mock->shouldReceive('passes')->andReturn(true);
         });
 
-        $this->post("{$thread->path()}/replies" , $reply->toArray()+ ['g-recaptcha-response' => 'token'])
+        $this->post("{$thread->path()}/replies" , $reply->toArray() + ['g-recaptcha-response' => 'token'])
             ->assertStatus(422);
     }
 

@@ -36,9 +36,15 @@
               v-model="body"
             ></textarea>
           </div>
-          <vue-recaptcha sitekey="6LcEHLYaAAAAAGLAYvJ_TeGR3y0FjT0AbLjGIHvj">
-            <button @click="addReply" class="btn-indigo text-sm">Post</button>
+          <vue-recaptcha
+              ref="recaptcha"
+              @verify="onCaptchaVerified"
+              @expired="resetCaptcha"
+              size="invisible"
+              sitekey="6LcEHLYaAAAAAGLAYvJ_TeGR3y0FjT0AbLjGIHvj">
           </vue-recaptcha>
+
+          <button @click="addReply" class="btn-indigo text-sm">Post</button>
           <!-- <button @click="isOpen = false" class="btn-outline-indigo text-sm">
             Cancel
           </button> -->
@@ -90,28 +96,41 @@ export default {
 
   methods: {
     addReply() {
+      // checking honeypot pattern field
       if(this.bot != null)
       {
         flash("Bot detected! Are You Bot?", 'red')
       } 
       else 
       {
-        axios.post(this.endPoint, { body: this.body })
-          .catch((error) => {
-            this.isOpen = false;
-            this.body = "";
-
-            flash(error.response.data.message, "red");
-          })
-          .then(({ data }) => {
-            this.body = "";
-            this.isOpen = false;
-
-            flash("Your reply has been posted!");
-
-            this.$emit("addedReply", data);
-          });
+        this.$refs.recaptcha.execute()
       }
+    },
+    onCaptchaVerified(token) {
+        this.resetCaptcha()
+
+        let fData = new FormData()
+        fData.append('body', this.body)
+        fData.append('g-recaptcha-response', token)
+
+        axios.post(this.endPoint, fData)
+        .catch((error) => {
+          this.isOpen = false;
+          this.body = "";
+
+          flash(error.response.data.message, "red");
+        })
+        .then(({ data }) => {
+          this.body = "";
+          this.isOpen = false;
+
+          flash("Your reply has been posted!");
+
+          this.$emit("addedReply", data);
+        });
+    },
+    resetCaptcha() {
+        this.$refs.recaptcha.reset()
     },
     // openModal() {
     //   this.isOpen = true;

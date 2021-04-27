@@ -2354,6 +2354,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2392,26 +2398,35 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     addReply: function addReply() {
-      var _this = this;
-
+      // checking honeypot pattern field
       if (this.bot != null) {
         flash("Bot detected! Are You Bot?", 'red');
       } else {
-        axios.post(this.endPoint, {
-          body: this.body
-        })["catch"](function (error) {
-          _this.isOpen = false;
-          _this.body = "";
-          flash(error.response.data.message, "red");
-        }).then(function (_ref) {
-          var data = _ref.data;
-          _this.body = "";
-          _this.isOpen = false;
-          flash("Your reply has been posted!");
-
-          _this.$emit("addedReply", data);
-        });
+        this.$refs.recaptcha.execute();
       }
+    },
+    onCaptchaVerified: function onCaptchaVerified(token) {
+      var _this = this;
+
+      this.resetCaptcha();
+      var fData = new FormData();
+      fData.append('body', this.body);
+      fData.append('g-recaptcha-response', token);
+      axios.post(this.endPoint, fData)["catch"](function (error) {
+        _this.isOpen = false;
+        _this.body = "";
+        flash(error.response.data.message, "red");
+      }).then(function (_ref) {
+        var data = _ref.data;
+        _this.body = "";
+        _this.isOpen = false;
+        flash("Your reply has been posted!");
+
+        _this.$emit("addedReply", data);
+      });
+    },
+    resetCaptcha: function resetCaptcha() {
+      this.$refs.recaptcha.reset();
     } // openModal() {
     //   this.isOpen = true;
     //   this.$nextTick(() => this.$refs.textArea.focus());
@@ -61818,21 +61833,22 @@ var render = function() {
                 })
               ]),
               _vm._v(" "),
-              _c(
-                "vue-recaptcha",
-                {
-                  attrs: { sitekey: "6LcEHLYaAAAAAGLAYvJ_TeGR3y0FjT0AbLjGIHvj" }
+              _c("vue-recaptcha", {
+                ref: "recaptcha",
+                attrs: {
+                  size: "invisible",
+                  sitekey: "6LcEHLYaAAAAAGLAYvJ_TeGR3y0FjT0AbLjGIHvj"
                 },
-                [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn-indigo text-sm",
-                      on: { click: _vm.addReply }
-                    },
-                    [_vm._v("Post")]
-                  )
-                ]
+                on: { verify: _vm.onCaptchaVerified, expired: _vm.resetCaptcha }
+              }),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn-indigo text-sm",
+                  on: { click: _vm.addReply }
+                },
+                [_vm._v("Post")]
               )
             ],
             1
