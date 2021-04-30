@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Events\ThreadHasNewReply;
 use App\Traits\RecordThreadVisits;
-use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Laravel\Scout\Searchable;
 
 class Thread extends Model
 {
-    use HasFactory, RecordActivity, RecordThreadVisits;
+    use HasFactory, RecordActivity, RecordThreadVisits, Searchable;
 
     protected $guarded = [];
 
@@ -115,5 +115,10 @@ class Thread extends Model
     public function wasJustPublished()
     {
         return $this->created_at->gt(Carbon::now()->subMinute());
+    }
+
+    public function toSearchableArray()
+    {
+        return $this->toArray() + ['path' => $this->path()];
     }
 }

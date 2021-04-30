@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\TrendingThreads;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Support\Facades\Redis;
 use Tests\TestCase;
 
 class TrendingThreadTest extends TestCase

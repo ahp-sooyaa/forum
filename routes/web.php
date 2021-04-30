@@ -8,6 +8,7 @@ Route::get('/', function () {
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 Auth::routes(['verify' => true]);
 
+Route::get('threads/search', 'SearchController@show');
 /**
  * thread routes
  */

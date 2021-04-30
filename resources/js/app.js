@@ -5,8 +5,10 @@
  */
 
 require('./bootstrap');
+import InstantSearch from 'vue-instantsearch';
 
 window.Vue = require('vue');
+Vue.use(InstantSearch);
 
 let authorization = require('./authorization')
 
@@ -21,6 +23,7 @@ Vue.prototype.authorize = function (...params) {
 };
 
 Vue.prototype.$signIn = window.App.signIn;
+Vue.prototype.$q = window.App.search;
 
 window.events = new Vue();
 
