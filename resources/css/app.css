@@ -84,6 +84,65 @@
     .tribute-container .menu-highlighted {
         @apply font-bold;
     }
+
+    .ais-SearchBox-input {
+        @apply w-full rounded-full py-3 px-4 text-gray-500 text-sm border-0;
+    }
+
+    .ais-SearchBox-reset {
+        @apply hidden;
+    }
+
+    .ais-SearchBox-submit {
+        @apply hidden;
+    }
+
+    .ais-RefinementList-label {
+        @apply flex items-center hover:bg-gray-700 px-2 rounded-lg;
+    }
+
+    .ais-RefinementList-labelText {
+        @apply flex-grow px-3;
+    }
+
+    .ais-RefinementList-count {
+        @apply bg-white rounded-lg w-min px-2 text-black text-sm;
+    }
+
+    .ais-CurrentRefinements-item {
+        @apply flex flex-wrap;
+    }
+
+    .ais-ClearRefinements-button, 
+    .ais-CurrentRefinements-category {
+        @apply border px-4 py-1 rounded-full mr-2 hover:border-blue-400 text-sm font-semibold mb-4;
+    }
+
+    .ais-CurrentRefinements-category {
+        @apply py-1.5;
+    }
+
+    .ais-ClearRefinements-button--disabled,
+    .ais-RefinementList-showMore--disabled, 
+    .ais-CurrentRefinements-label {
+        @apply hidden;
+    }
+
+    .ais-CurrentRefinements-delete {
+        @apply border px-1 rounded-full hover:bg-blue-400 hover:border-blue-400 text-xs;
+    }
+
+    .ais-RefinementList-showMore {
+        @apply ml-2 mt-4;
+    }
+
+    .ais-Hits-item {
+        @apply hover:bg-gray-700 rounded-2xl p-4 mb-4;
+    }
+
+    .ais-Highlight-highlighted {
+        @apply bg-blue-400 rounded-md px-1;
+    }
 }
 
 @tailwind utilities;

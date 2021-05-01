@@ -4,11 +4,14 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
-import InstantSearch from 'vue-instantsearch';
+require('./bootstrap')
+import InstantSearch from 'vue-instantsearch'
+import VModal from 'vue-js-modal'
 
-window.Vue = require('vue');
-Vue.use(InstantSearch);
+window.md5 = require('md5')
+window.Vue = require('vue')
+Vue.use(InstantSearch)
+Vue.use(VModal)
 
 let authorization = require('./authorization')
 
@@ -22,8 +25,7 @@ Vue.prototype.authorize = function (...params) {
     return params[1](window.App.user);
 };
 
-Vue.prototype.$signIn = window.App.signIn;
-Vue.prototype.$q = window.App.search;
+Vue.prototype.$signIn = window.App.signIn
 
 window.events = new Vue();
 

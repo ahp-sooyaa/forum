@@ -29,7 +29,7 @@
 <body>
     <div id="app">
 
-        <main class="bg-gray-800">
+        <main class="p-4 min-h-screen bg-gray-900">
             @yield('content')
         </main>
 
