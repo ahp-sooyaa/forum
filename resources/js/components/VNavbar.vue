@@ -36,7 +36,7 @@
               </div>
             </div>
             <!-- @auth -->
-              <div v-if="signIn" class="hidden sm:block sm:ml-6">
+              <div v-if="$signIn" class="hidden sm:block sm:ml-6">
                 <div class="flex space-x-4">
                   <v-dropdown :width="'w-56'" :position="'left-0'">
                     <template #button>
@@ -82,49 +82,21 @@
 
           <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <!-- @guest -->
-              <div v-if="!signIn" class="flex justify-between w-28">
+              <div v-if="!$signIn" class="flex justify-between w-28">
                 <a class="text-indigo-200 hover:text-white" href="/login">Login</a>
 
                 <a class="text-indigo-200 hover:text-white" href="/register">Register</a>
               </div>
             <!-- @else -->
                 <div v-else class="flex">
-                    <v-notifications></v-notifications>
-
                     <a href="/threads/create" class="hidden md:block">
                       <button class="flex btn-indigo text-sm font-medium ml-3">
                         New Discussion
                       </button>
                     </a>
 
-                  <!-- Profile dropdown -->
-                    <v-dropdown class="ml-3" :width="'w-60'" :position="'right-0'">
-                      <template #button>
-                        <div class="bg-gray-800 hover:bg-gray-700 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white cursor-pointer" id="user-menu" aria-haspopup="true">
-                            <span class="sr-only">Open user menu</span>
-                            <img class="h-9 w-9 border-2 border-gray-800 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                            <span class="inline-block px-3 py-2 text-sm font-medium text-gray-300 hover:text-white">
-                                {{user.name}}
-                            </span>
-                        </div>
-                      </template>
-
-                      <template #menu>
-                        <div class="p-1">
-                            <div class="-mx-1 mb-2 border-b-2 border-gray-400 flex">
-                              <div class="-mb-0.5 font-semibold py-2 text-gray-700 border-b-2 border-indigo-400 flex-1 text-center">Me</div>
-                              <div class="-mb-0.5 font-semibold py-2 text-gray-700 flex-1 text-center">Notifications</div>
-                            </div>
-                            <a :href="'/profiles/'+user.name" class="dropdown-link">Your Profile h</a>
-                            <a :href="'/threads?by='+user.name" class="dropdown-link">Your Threads</a>
-                            <a href="#" class="dropdown-link">Setting</a>
-                            
-                            <button @click="logout" type="submit" class="dropdown-link text-left">
-                              Sign out
-                            </button>
-                        </div>
-                      </template>
-                    </v-dropdown>
+                  <!-- Profile modal -->
+                    <v-profile-modal></v-profile-modal>
                 </div>
             <!-- @endguest -->
             </div>
@@ -178,7 +150,9 @@
 </template>
 
 <script>
+import VProfileModal from './VProfileModal.vue';
     export default {
+  components: { VProfileModal },
         props: ['channels'],
 
         data(){
@@ -187,19 +161,6 @@
                 isOpen: false
             }
         },
-
-        computed: {
-            signIn(){
-                return window.App.signIn;
-            }
-        },
-
-        methods: {
-            logout(){
-                axios.post('/logout')
-                    .then(window.location.href="/login")
-            }
-        }
     }
 </script>
 

@@ -4,12 +4,14 @@
             <slot name="button"></slot>
         </div>
         
-        <div 
-            class="z-10 origin-top-left absolute mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
-            :class="classes"
-            v-if="isOpen"
-        >
-            <slot name="menu"></slot>
+        <div v-if="isOpen">
+            <div @click="isOpen = false" class="fixed top-0 right-0 w-full h-full"></div>
+            <div 
+                class="z-10 origin-top-left absolute mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+                :class="classes"
+            >
+                <slot name="menu"></slot>
+            </div>
         </div>
     </div>
 </template>

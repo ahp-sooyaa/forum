@@ -13,8 +13,7 @@
                 </svg>
             </a>
         </div>
-        <modal name="test"></modal>
-        <a href="" @click.prevent="$modal.show('test')">show test</a>
+        
         <div class="flex-1">
             @forelse ($threads as $thread)
                 @include('threads.thread')

@@ -49,15 +49,6 @@
                         this.replies = response.data.data
                     })
             },
-            // remove(index){
-            //     // this.replies.splice(this.replies.findIndex(reply => reply.id == id), 1)
-            //     this.replies.splice(index, 1)
-            //     this.$emit('deleted')
-            // },
-            // add(reply){
-            //     this.replies.push(reply)
-            //     this.$emit('created')
-            // }
         }
     }
 </script>
