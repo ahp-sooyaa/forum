@@ -5,7 +5,7 @@
         class="relative flex p-5 mb-3 rounded-2xl bg-gray-700 hover:bg-gray-800 border-2 text-white" 
         :class="isBest ? 'border-indigo-400' : 'border-gray-800'"
     >
-        <img class="rounded-xl mr-3 w-16 h-16" :src="'https://gravatar.com/avatar/'+data.owner.email+'?s=60'" :alt="data.owner.name">
+        <img class="rounded-xl mr-3 w-16 h-16" :src="'https://gravatar.com/avatar/'+data.owner.email+'?s=128'" :alt="data.owner.name">
         <div class="w-full">
             <div class="mb-3">
                 <h3 class="font-semibold">
@@ -21,24 +21,25 @@
                 <div class="text-gray-400 text-xs">Posted {{ date }}</div>
             </div>
 
-            <div v-if="isEdit">
+            <!-- v-if doesn't work when component is mounted, so i used v-show -->
+            <div v-show="isEdit">
                 <textarea 
-                    class="text-area w-full text-sm text-gray-700 mb-2" 
-                    v-model="body" rows="5"
+                    :id="'editBody-'+data.id" class="text-area w-full text-sm text-gray-700 mb-2" 
+                    rows="5" v-model="body"
                 ></textarea>
                 <div class="flex">
                     <v-favorite v-if="$signIn" :data="this.data"></v-favorite>
                     <button @click="update" class="text-xs font-semibold border bg-gray-800 border-gray-500 hover:border-gray-400 text-gray-400 rounded-xl inline-block px-2 md:px-3 ml-2">
                         Update
                     </button>
-                    <button @click="()=>{isEdit = false ,body=this.data.body}" class="text-xs font-semibold border bg-red-700 text-red-300 border-red-500 hover:border-red-400 rounded-xl inline-block px-2 md:px-3 ml-2">
+                    <button @click="cancel" class="text-xs font-semibold border bg-red-700 text-red-300 border-red-500 hover:border-red-400 rounded-xl inline-block px-2 md:px-3 ml-2">
                         Cancel
                     </button>
                 </div>
             </div>
 
-            <div v-else> 
-                <p class="mb-2 text-sm" v-html="body"></p>
+            <div v-show="!isEdit"> 
+                <p class="mb-2 text-sm" v-html="reply.body"></p>
                 <div class="flex">
                     <v-favorite v-if="$signIn" :data="this.data"></v-favorite>
                     <div v-if="authorize('owns', reply) && hover">
@@ -68,6 +69,7 @@
 </template>
 
 <script>
+    import Tribute from "tributejs";
     import moment from 'moment'
     import VFavorite from './VFavorite'
 
@@ -78,13 +80,29 @@
         
         data(){
             return {
-                body: this.data.body,
+                body: '',
                 hover: false,
                 endPoint: `/replies/${this.data.id}`,
                 isEdit: false,
                 isBest: this.data.isBest,
                 reply: this.data
             }
+        },
+
+        mounted() {
+          let tribute = new Tribute({
+            // column to search against in the object (accepts function or string)
+            lookup: "value",
+            // column that contains the content to insert by default
+            fillAttr: "value",
+            values: function (query, cb) {
+              axios.get("/api/users", { params: { name: query } })
+                .then(function (response) {
+                  cb(response.data);
+                });
+            },
+          });
+          tribute.attach(document.getElementById(`editBody-${this.data.id}`));
         },
 
         computed: {
@@ -100,23 +118,32 @@
             window.events.$on('markedBestReply', id => {
                 this.isBest = (id == this.data.id)
             })
+            this.body = this.data.body.replace(/<\/?[^>]+>/ig, "")
         },
 
         methods: {
             update(){
-                axios.patch(this.endPoint, {body: this.body})
+                let formatBody = this.body.replace(/@([\w\-]+)/, "<a href='/profiles/$1'>@$1</a>")
+
+                axios.patch(this.endPoint, {
+                    body: formatBody
+                })
                     .then(response => {
                         this.isEdit= false,
-                        this.data.body = this.body
+                        this.data.body = formatBody
 
                         flash('Your reply has been updated!')
                     })
                     .catch(error => {
                         this.isEdit = false
-                        this.body = this.data.body
+                        this.reply.body = this.data.body
 
                         flash(error.response.data.message, 'red')
                     })
+            },
+            cancel(){
+                this.isEdit = false 
+                this.body = this.data.body.replace(/<\/?[^>]+>/ig, "")
             },
             destroy(){
                 axios.delete(this.endPoint)

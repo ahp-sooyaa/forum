@@ -7601,7 +7601,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -7610,15 +7609,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      // isOpen: false,
+      isOpen: false,
       bot: null,
       body: "",
       endPoint: location.pathname + "/replies"
     };
   },
-  //   created() {
-  //     window.events.$on("reply", this.openModal);
-  //   },
+  created: function created() {
+    window.events.$on("reply", this.openModal);
+  },
   mounted: function mounted() {
     var tribute = new tributejs__WEBPACK_IMPORTED_MODULE_0___default.a({
       // column to search against in the object (accepts function or string)
@@ -7631,12 +7630,11 @@ __webpack_require__.r(__webpack_exports__);
             name: query
           }
         }).then(function (response) {
-          console.log(response);
           cb(response.data);
         });
       }
     });
-    tribute.attach(document.querySelectorAll("#body"));
+    tribute.attach(document.getElementById("body"));
   },
   methods: {
     addReply: function addReply() {
@@ -7669,11 +7667,15 @@ __webpack_require__.r(__webpack_exports__);
     },
     resetCaptcha: function resetCaptcha() {
       this.$refs.recaptcha.reset();
-    } // openModal() {
-    //   this.isOpen = true;
-    //   this.$nextTick(() => this.$refs.textArea.focus());
-    // },
+    },
+    openModal: function openModal() {
+      var _this2 = this;
 
+      this.isOpen = true;
+      this.$nextTick(function () {
+        return _this2.$refs.textArea.focus();
+      });
+    }
   }
 });
 
@@ -7957,9 +7959,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _VFavorite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VFavorite */ "./resources/js/components/VFavorite.vue");
+/* harmony import */ var tributejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tributejs */ "./node_modules/tributejs/dist/tribute.min.js");
+/* harmony import */ var tributejs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tributejs__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _VFavorite__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./VFavorite */ "./resources/js/components/VFavorite.vue");
 //
 //
 //
@@ -8029,16 +8033,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['data'],
   components: {
-    VFavorite: _VFavorite__WEBPACK_IMPORTED_MODULE_1__["default"]
+    VFavorite: _VFavorite__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
-      body: this.data.body,
+      body: '',
       hover: false,
       endPoint: "/replies/".concat(this.data.id),
       isEdit: false,
@@ -8046,9 +8052,27 @@ __webpack_require__.r(__webpack_exports__);
       reply: this.data
     };
   },
+  mounted: function mounted() {
+    var tribute = new tributejs__WEBPACK_IMPORTED_MODULE_0___default.a({
+      // column to search against in the object (accepts function or string)
+      lookup: "value",
+      // column that contains the content to insert by default
+      fillAttr: "value",
+      values: function values(query, cb) {
+        axios.get("/api/users", {
+          params: {
+            name: query
+          }
+        }).then(function (response) {
+          cb(response.data);
+        });
+      }
+    });
+    tribute.attach(document.getElementById("editBody-".concat(this.data.id)));
+  },
   computed: {
     date: function date() {
-      return moment__WEBPACK_IMPORTED_MODULE_0___default()(this.data.created_at).fromNow();
+      return moment__WEBPACK_IMPORTED_MODULE_1___default()(this.data.created_at).fromNow();
     },
     isOp: function isOp() {
       return this.data.thread.creator.id == this.data.owner.id;
@@ -8060,21 +8084,27 @@ __webpack_require__.r(__webpack_exports__);
     window.events.$on('markedBestReply', function (id) {
       _this.isBest = id == _this.data.id;
     });
+    this.body = this.data.body.replace(/<\/?[^>]+>/ig, "");
   },
   methods: {
     update: function update() {
       var _this2 = this;
 
+      var formatBody = this.body.replace(/@([\w\-]+)/, "<a href='/profiles/$1'>@$1</a>");
       axios.patch(this.endPoint, {
-        body: this.body
+        body: formatBody
       }).then(function (response) {
-        _this2.isEdit = false, _this2.data.body = _this2.body;
+        _this2.isEdit = false, _this2.data.body = formatBody;
         flash('Your reply has been updated!');
       })["catch"](function (error) {
         _this2.isEdit = false;
-        _this2.body = _this2.data.body;
+        _this2.reply.body = _this2.data.body;
         flash(error.response.data.message, 'red');
       });
+    },
+    cancel: function cancel() {
+      this.isEdit = false;
+      this.body = this.data.body.replace(/<\/?[^>]+>/ig, "");
     },
     destroy: function destroy() {
       axios["delete"](this.endPoint);
@@ -8287,9 +8317,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    // reply(){
-    //     window.events.$emit('reply', 'open');
-    // }
+    reply: function reply() {
+      window.events.$emit('reply', 'open');
+    },
     lock: function lock() {
       axios[this.locked ? 'delete' : 'post'](this.endPoint);
       this.locked = !this.locked;
@@ -81216,131 +81246,163 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "mb-3" }, [
-    _vm.$signIn
-      ? _c("div", [
-          _c(
-            "div",
-            { staticClass: "mx-auto bg-gray-700 shadow-md p-5 rounded-3xl" },
-            [
-              _c(
-                "div",
-                {
-                  staticClass: "flex items-center text-white font-semibold mb-3"
-                },
-                [
-                  _c(
-                    "svg",
-                    {
-                      staticClass: "w-4 h-4 mr-2",
-                      attrs: {
-                        xmlns: "http://www.w3.org/2000/svg",
-                        fill: "none",
-                        viewBox: "0 0 24 24",
-                        stroke: "currentColor"
-                      }
-                    },
-                    [
-                      _c("path", {
+  return _c(
+    "div",
+    {
+      directives: [
+        {
+          name: "show",
+          rawName: "v-show",
+          value: _vm.isOpen,
+          expression: "isOpen"
+        }
+      ],
+      staticClass: "mb-3"
+    },
+    [
+      _vm.$signIn
+        ? _c("div", [
+            _c(
+              "div",
+              { staticClass: "mx-auto bg-gray-700 shadow-md p-5 rounded-3xl" },
+              [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "flex items-center text-white font-semibold mb-3"
+                  },
+                  [
+                    _c(
+                      "svg",
+                      {
+                        staticClass: "w-4 h-4 mr-2",
                         attrs: {
-                          "stroke-linecap": "round",
-                          "stroke-linejoin": "round",
-                          "stroke-width": "2",
-                          d: "M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"
+                          xmlns: "http://www.w3.org/2000/svg",
+                          fill: "none",
+                          viewBox: "0 0 24 24",
+                          stroke: "currentColor"
                         }
-                      })
-                    ]
-                  ),
-                  _vm._v("\n        Reply to\n      ")
-                ]
-              ),
-              _vm._v(" "),
-              _c("hr", { staticClass: "border border-gray-500" }),
-              _vm._v(" "),
-              _c("div", { staticClass: "hidden" }, [
-                _c("label", { staticClass: "sr-only" }, [
-                  _vm._v("Don’t fill this out if you're human: ")
+                      },
+                      [
+                        _c("path", {
+                          attrs: {
+                            "stroke-linecap": "round",
+                            "stroke-linejoin": "round",
+                            "stroke-width": "2",
+                            d: "M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"
+                          }
+                        })
+                      ]
+                    ),
+                    _vm._v("\n        Reply to\n      ")
+                  ]
+                ),
+                _vm._v(" "),
+                _c("hr", { staticClass: "border border-gray-500" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "hidden" }, [
+                  _c("label", { staticClass: "sr-only" }, [
+                    _vm._v("Don’t fill this out if you're human: ")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.bot,
+                        expression: "bot"
+                      }
+                    ],
+                    staticClass:
+                      "form-input block w-full py-3 px-4 placeholder-gray-500 transition ease-in-out duration-150",
+                    attrs: {
+                      name: "bot-field",
+                      placeholder: "This field is only for the robots."
+                    },
+                    domProps: { value: _vm.bot },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.bot = $event.target.value
+                      }
+                    }
+                  })
                 ]),
                 _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.bot,
-                      expression: "bot"
+                _c("div", { staticClass: "mb-3" }, [
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.body,
+                        expression: "body"
+                      }
+                    ],
+                    ref: "textArea",
+                    staticClass:
+                      "text-white border-0 focus:ring-0 block w-full sm:text-sm bg-gray-700 px-0",
+                    attrs: { id: "body", name: "body", rows: "6" },
+                    domProps: { value: _vm.body },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.body = $event.target.value
+                      }
                     }
-                  ],
-                  staticClass:
-                    "form-input block w-full py-3 px-4 placeholder-gray-500 transition ease-in-out duration-150",
+                  })
+                ]),
+                _vm._v(" "),
+                _c("vue-recaptcha", {
+                  ref: "recaptcha",
                   attrs: {
-                    name: "bot-field",
-                    placeholder: "This field is only for the robots."
+                    size: "invisible",
+                    sitekey: "6LcEHLYaAAAAAGLAYvJ_TeGR3y0FjT0AbLjGIHvj"
                   },
-                  domProps: { value: _vm.bot },
                   on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.bot = $event.target.value
-                    }
+                    verify: _vm.onCaptchaVerified,
+                    expired: _vm.resetCaptcha
                   }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "mb-3" }, [
-                _c("textarea", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.body,
-                      expression: "body"
-                    }
-                  ],
-                  staticClass:
-                    "text-white border-0 focus:ring-0 block w-full sm:text-sm bg-gray-700 px-0",
-                  attrs: { id: "body", name: "body", rows: "6" },
-                  domProps: { value: _vm.body },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn-indigo text-sm",
+                    on: { click: _vm.addReply }
+                  },
+                  [_vm._v("Post")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn-outline-indigo text-sm",
+                    on: {
+                      click: function($event) {
+                        _vm.isOpen = false
                       }
-                      _vm.body = $event.target.value
                     }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("vue-recaptcha", {
-                ref: "recaptcha",
-                attrs: {
-                  size: "invisible",
-                  sitekey: "6LcEHLYaAAAAAGLAYvJ_TeGR3y0FjT0AbLjGIHvj"
-                },
-                on: { verify: _vm.onCaptchaVerified, expired: _vm.resetCaptcha }
-              }),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn-indigo text-sm",
-                  on: { click: _vm.addReply }
-                },
-                [_vm._v("Post")]
-              )
-            ],
-            1
-          )
-        ])
-      : _c("div", { staticClass: "text-center" }, [
-          _vm._v("\n    Please "),
-          _c("a", { attrs: { href: "/login" } }, [_vm._v("Login")]),
-          _vm._v(" to participate in forum discussion!\n  ")
-        ])
-  ])
+                  },
+                  [_vm._v("\n        Cancel\n      ")]
+                )
+              ],
+              1
+            )
+          ])
+        : _c("div", { staticClass: "text-center" }, [
+            _vm._v("\n    Please "),
+            _c("a", { attrs: { href: "/login" } }, [_vm._v("Login")]),
+            _vm._v(" to participate in forum discussion!\n  ")
+          ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -81814,7 +81876,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 var render = function() {
-  var this$1 = this
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
@@ -81838,7 +81899,7 @@ var render = function() {
       _c("img", {
         staticClass: "rounded-xl mr-3 w-16 h-16",
         attrs: {
-          src: "https://gravatar.com/avatar/" + _vm.data.owner.email + "?s=60",
+          src: "https://gravatar.com/avatar/" + _vm.data.owner.email + "?s=128",
           alt: _vm.data.owner.name
         }
       }),
@@ -81877,140 +81938,162 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm.isEdit
-          ? _c("div", [
-              _c("textarea", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.body,
-                    expression: "body"
-                  }
-                ],
-                staticClass: "text-area w-full text-sm text-gray-700 mb-2",
-                attrs: { rows: "5" },
-                domProps: { value: _vm.body },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.body = $event.target.value
-                  }
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isEdit,
+                expression: "isEdit"
+              }
+            ]
+          },
+          [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.body,
+                  expression: "body"
                 }
-              }),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "flex" },
-                [
-                  _vm.$signIn
-                    ? _c("v-favorite", { attrs: { data: this.data } })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass:
-                        "text-xs font-semibold border bg-gray-800 border-gray-500 hover:border-gray-400 text-gray-400 rounded-xl inline-block px-2 md:px-3 ml-2",
-                      on: { click: _vm.update }
-                    },
-                    [_vm._v("\n                    Update\n                ")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass:
-                        "text-xs font-semibold border bg-red-700 text-red-300 border-red-500 hover:border-red-400 rounded-xl inline-block px-2 md:px-3 ml-2",
-                      on: {
-                        click: function() {
-                          ;(_vm.isEdit = false), (_vm.body = this$1.data.body)
-                        }
-                      }
-                    },
-                    [_vm._v("\n                    Cancel\n                ")]
-                  )
-                ],
-                1
-              )
-            ])
-          : _c("div", [
-              _c("p", {
-                staticClass: "mb-2 text-sm",
-                domProps: { innerHTML: _vm._s(_vm.body) }
-              }),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "flex" },
-                [
-                  _vm.$signIn
-                    ? _c("v-favorite", { attrs: { data: this.data } })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.authorize("owns", _vm.reply) && _vm.hover
-                    ? _c("div", [
-                        _c(
-                          "button",
-                          {
-                            staticClass:
-                              "h-full text-xs font-semibold bg-gray-800 border-gray-500 text-gray-400 hover:border-gray-400 border rounded-xl inline-block px-2 md:px-3 ml-2",
-                            on: {
-                              click: function($event) {
-                                _vm.isEdit = true
-                              }
-                            }
-                          },
-                          [
-                            _vm._v(
-                              "\n                        Edit\n                    "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass:
-                              "h-full text-xs font-semibold bg-red-500 text-white border border-red-300 hover:border-red-200 rounded-xl inline-block px-2 md:px-3 ml-2",
-                            on: { click: _vm.destroy }
-                          },
-                          [
-                            _vm._v(
-                              "\n                        Delete\n                    "
-                            )
-                          ]
-                        )
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      directives: [
+              ],
+              staticClass: "text-area w-full text-sm text-gray-700 mb-2",
+              attrs: { id: "editBody-" + _vm.data.id, rows: "5" },
+              domProps: { value: _vm.body },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.body = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "flex" },
+              [
+                _vm.$signIn
+                  ? _c("v-favorite", { attrs: { data: this.data } })
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "text-xs font-semibold border bg-gray-800 border-gray-500 hover:border-gray-400 text-gray-400 rounded-xl inline-block px-2 md:px-3 ml-2",
+                    on: { click: _vm.update }
+                  },
+                  [_vm._v("\n                    Update\n                ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "text-xs font-semibold border bg-red-700 text-red-300 border-red-500 hover:border-red-400 rounded-xl inline-block px-2 md:px-3 ml-2",
+                    on: { click: _vm.cancel }
+                  },
+                  [_vm._v("\n                    Cancel\n                ")]
+                )
+              ],
+              1
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: !_vm.isEdit,
+                expression: "!isEdit"
+              }
+            ]
+          },
+          [
+            _c("p", {
+              staticClass: "mb-2 text-sm",
+              domProps: { innerHTML: _vm._s(_vm.reply.body) }
+            }),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "flex" },
+              [
+                _vm.$signIn
+                  ? _c("v-favorite", { attrs: { data: this.data } })
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.authorize("owns", _vm.reply) && _vm.hover
+                  ? _c("div", [
+                      _c(
+                        "button",
                         {
-                          name: "show",
-                          rawName: "v-show",
-                          value:
-                            !_vm.isBest &&
-                            _vm.authorize("owns", _vm.reply.thread) &&
-                            _vm.hover,
-                          expression:
-                            "!isBest && authorize('owns', reply.thread) && hover"
-                        }
-                      ],
-                      staticClass:
-                        "justify-self-end text-xs font-semibold hover:border-gray-400 border rounded-xl inline-block px-2 md:px-3 ml-auto",
-                      on: { click: _vm.markBestReply }
-                    },
-                    [_vm._v("\n                    Best?\n                ")]
-                  )
-                ],
-                1
-              )
-            ])
+                          staticClass:
+                            "h-full text-xs font-semibold bg-gray-800 border-gray-500 text-gray-400 hover:border-gray-400 border rounded-xl inline-block px-2 md:px-3 ml-2",
+                          on: {
+                            click: function($event) {
+                              _vm.isEdit = true
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                        Edit\n                    "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass:
+                            "h-full text-xs font-semibold bg-red-500 text-white border border-red-300 hover:border-red-200 rounded-xl inline-block px-2 md:px-3 ml-2",
+                          on: { click: _vm.destroy }
+                        },
+                        [
+                          _vm._v(
+                            "\n                        Delete\n                    "
+                          )
+                        ]
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value:
+                          !_vm.isBest &&
+                          _vm.authorize("owns", _vm.reply.thread) &&
+                          _vm.hover,
+                        expression:
+                          "!isBest && authorize('owns', reply.thread) && hover"
+                      }
+                    ],
+                    staticClass:
+                      "justify-self-end text-xs font-semibold hover:border-gray-400 border rounded-xl inline-block px-2 md:px-3 ml-auto",
+                    on: { click: _vm.markBestReply }
+                  },
+                  [_vm._v("\n                    Best?\n                ")]
+                )
+              ],
+              1
+            )
+          ]
+        )
       ]),
       _vm._v(" "),
       _c(

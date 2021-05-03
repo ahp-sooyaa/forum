@@ -4,6 +4,6 @@
         <a href="{{$activity->subject->thread->path()}}">{{$activity->subject->thread->title}}</a>
     </template>
     <template #body>
-        <p>{{$activity->subject->body}}</p>
+        <p>{!! $activity->subject->body !!}</p>
     </template>
 </v-activity-card>

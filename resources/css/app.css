@@ -58,7 +58,7 @@
     }
 
     .tribute-container {
-        @apply absolute top-0 left-0 h-auto max-h-52 max-w-2xl overflow-auto block z-auto;
+        @apply absolute top-0 left-0 h-auto max-h-52 w-auto max-w-sm overflow-auto block z-auto;
     }
 
     .tribute-container ul {

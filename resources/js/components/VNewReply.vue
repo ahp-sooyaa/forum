@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-3">
+  <div v-show="isOpen" class="mb-3">
     <div v-if="$signIn">
       <div
         class="mx-auto bg-gray-700 shadow-md p-5 rounded-3xl"
@@ -22,33 +22,32 @@
           Reply to
         </div>
         <hr class="border border-gray-500" />
-        <!-- <form @submit.prevent="addReply"> -->
-          <div class="hidden">
-            <label class="sr-only">Don’t fill this out if you're human: </label>
-            <input v-model="bot" name="bot-field" placeholder="This field is only for the robots." 
-              class="form-input block w-full py-3 px-4 placeholder-gray-500 transition ease-in-out duration-150"
-            />
-          </div>
-          <div class="mb-3">
-            <textarea
-              id="body" name="body"
-              rows="6" class="text-white border-0 focus:ring-0 block w-full sm:text-sm bg-gray-700 px-0"
-              v-model="body"
-            ></textarea>
-          </div>
-          <vue-recaptcha
-              ref="recaptcha"
-              @verify="onCaptchaVerified"
-              @expired="resetCaptcha"
-              size="invisible"
-              sitekey="6LcEHLYaAAAAAGLAYvJ_TeGR3y0FjT0AbLjGIHvj">
-          </vue-recaptcha>
 
-          <button @click="addReply" class="btn-indigo text-sm">Post</button>
-          <!-- <button @click="isOpen = false" class="btn-outline-indigo text-sm">
-            Cancel
-          </button> -->
-        <!-- </form> -->
+        <div class="hidden">
+          <label class="sr-only">Don’t fill this out if you're human: </label>
+          <input v-model="bot" name="bot-field" placeholder="This field is only for the robots." 
+            class="form-input block w-full py-3 px-4 placeholder-gray-500 transition ease-in-out duration-150"
+          />
+        </div>
+        <div class="mb-3">
+          <textarea
+            id="body" name="body"
+            rows="6" class="text-white border-0 focus:ring-0 block w-full sm:text-sm bg-gray-700 px-0"
+            v-model="body" ref="textArea"
+          ></textarea>
+        </div>
+        <vue-recaptcha
+            ref="recaptcha"
+            @verify="onCaptchaVerified"
+            @expired="resetCaptcha"
+            size="invisible"
+            sitekey="6LcEHLYaAAAAAGLAYvJ_TeGR3y0FjT0AbLjGIHvj">
+        </vue-recaptcha>
+
+        <button @click="addReply" class="btn-indigo text-sm">Post</button>
+        <button @click="isOpen = false" class="btn-outline-indigo text-sm">
+          Cancel
+        </button>
       </div>
     </div>
     <div v-else class="text-center">
@@ -66,16 +65,16 @@ export default {
   
   data() {
     return {
-      // isOpen: false,
+      isOpen: false,
       bot: null,
       body: "",
       endPoint: location.pathname + "/replies",
     };
   },
 
-//   created() {
-//     window.events.$on("reply", this.openModal);
-//   },
+  created() {
+    window.events.$on("reply", this.openModal);
+  },
 
   mounted() {
     let tribute = new Tribute({
@@ -86,12 +85,11 @@ export default {
       values: function (query, cb) {
         axios.get("/api/users", { params: { name: query } })
           .then(function (response) {
-            console.log(response);
             cb(response.data);
           });
       },
     });
-    tribute.attach(document.querySelectorAll("#body"));
+    tribute.attach(document.getElementById("body"));
   },
 
   methods: {
@@ -132,10 +130,10 @@ export default {
     resetCaptcha() {
         this.$refs.recaptcha.reset()
     },
-    // openModal() {
-    //   this.isOpen = true;
-    //   this.$nextTick(() => this.$refs.textArea.focus());
-    // },
+    openModal() {
+      this.isOpen = true;
+      this.$nextTick(() => this.$refs.textArea.focus());
+    },
   },
 };
 </script>

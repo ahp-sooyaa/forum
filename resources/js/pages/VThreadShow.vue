@@ -19,9 +19,9 @@
         },
 
         methods: {
-            // reply(){
-            //     window.events.$emit('reply', 'open');
-            // }
+            reply(){
+                window.events.$emit('reply', 'open');
+            },
             lock(){
                 axios[
                     (this.locked ? 'delete' : 'post')

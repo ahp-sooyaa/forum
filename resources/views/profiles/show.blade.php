@@ -8,7 +8,7 @@
                     <div class="md:flex justify-between items-start">
                         <div class="md:flex items-start">
                             <div class="mb-0 md:mb-3 mr-3">
-                                <img class="mx-auto mb-3 md:mb-0 rounded-full w-32 h-32 border-8 border-gray-700" src="https://gravatar.com/avatar/{{md5($profileUser->email)}}?s=60" alt="{{$profileUser->name}}'s avatar">
+                                <img class="mx-auto mb-3 md:mb-0 rounded-full w-32 h-32 border-8 border-gray-700" src="https://gravatar.com/avatar/{{md5($profileUser->email)}}?s=128" alt="{{$profileUser->name}}'s avatar">
                             </div>
                             <div class="mb-3 md:mb-0 bg-gray-700 rounded-xl px-5 py-4 shadow-inner text-center">
                                 <div class="text-xl text-white">

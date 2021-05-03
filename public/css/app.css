@@ -1025,11 +1025,12 @@ body {
   display: block;
   height: auto;
   max-height: 13rem;
-  max-width: 42rem;
+  max-width: 24rem;
   overflow: auto;
   position: absolute;
   top: 0px;
   left: 0px;
+  width: auto;
   z-index: auto;
 }
 
