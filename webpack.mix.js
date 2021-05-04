@@ -13,7 +13,7 @@ const mix = require('laravel-mix');
 
 const tailwindcss = require('tailwindcss');
 
-mix.js('resources/js/app.js', 'public/js')
+mix.js('resources/js/app.js', 'public/js').extract(['vue'])
     .postCss("resources/css/app.css", "public/css", [
         require("tailwindcss"),
     ])
@@ -21,4 +21,9 @@ mix.js('resources/js/app.js', 'public/js')
         externals: {
             'vue-server-renderer/basic': 'vue-server-renderer/basic'
         }
-    });
+    })
+    .version();
+
+if (mix.inProduction()) {
+    mix.version();
+}

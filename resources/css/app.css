@@ -1,158 +1,152 @@
 @tailwind base;
 
-@layer base {
-    h1 {
-        @apply text-2xl;
-    }
+h1 {
+    @apply text-2xl;
+}
 
-    h2 {
-        @apply text-xl;
-    }
+h2 {
+    @apply text-xl;
+}
 
-    h3 {
-        @apply text-lg;
-    }
+h3 {
+    @apply text-lg;
+}
 
-    a {
-        @apply text-indigo-300;
-    }
+a {
+    @apply text-indigo-300;
+}
 
-    body {
-        @apply bg-gray-50;
-    }
+body {
+    @apply bg-gray-50;
 }
 
 @tailwind components;
 
-@layer components {
-    .btn-indigo {
-        @apply py-2 px-4 bg-indigo-500 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
-    }
+.btn-indigo {
+    @apply py-2 px-4 bg-indigo-500 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+}
 
-    .btn-outline-indigo {
-        @apply py-2 px-4 text-white font-semibold rounded-lg shadow-md hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
-    }
+.btn-outline-indigo {
+    @apply py-2 px-4 text-white font-semibold rounded-lg shadow-md hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+}
 
-    .text-area {
-        @apply text-gray-700 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-md;
-    }
+.text-area {
+    @apply text-gray-700 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-md;
+}
 
-    .text-input {
-        @apply text-gray-700 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md;
-    }
+.text-input {
+    @apply text-gray-700 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md;
+}
 
-    .nav-link {
-        @apply px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700;
-    }
+.nav-link {
+    @apply px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700;
+}
 
-    .dropdown-link {
-        @apply block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-md;
-    }
+.dropdown-link {
+    @apply block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-md;
+}
 
-    .timeline-icon {
-        @apply w-8 h-8 bg-white shadow-lg rounded-xl p-1;
-    }
+.timeline-icon {
+    @apply w-8 h-8 bg-white shadow-lg rounded-xl p-1;
+}
 
-    .timeline-icon::after {
-        @apply content border-2 border-indigo-400 border-solid absolute top-10 -left-12;
-    }
+.timeline-icon::after {
+    @apply content border-2 border-indigo-400 border-solid absolute top-10 -left-12;
+}
 
-    .tribute-container {
-        @apply absolute top-0 left-0 h-auto max-h-52 w-auto max-w-sm overflow-auto block z-auto;
-    }
+.tribute-container {
+    @apply absolute top-0 left-0 h-auto max-h-52 w-auto max-w-sm overflow-auto block z-auto;
+}
 
-    .tribute-container ul {
-        @apply mt-2 p-0 bg-gray-100;
-    }
+.tribute-container ul {
+    @apply mt-2 p-0 bg-gray-100;
+}
 
-    .tribute-container li {
-        @apply p-5 cursor-pointer;
-    }
+.tribute-container li {
+    @apply p-5 cursor-pointer;
+}
 
-    .tribute-container li.highlight {
-        @apply bg-gray-200;
-    }
+.tribute-container li.highlight {
+    @apply bg-gray-200;
+}
 
-    .tribute-container li span {
-        @apply font-bold;
-    }
+.tribute-container li span {
+    @apply font-bold;
+}
 
-    .tribute-container li.no-match {
-        @apply cursor-default;
-    }
+.tribute-container li.no-match {
+    @apply cursor-default;
+}
 
-    .tribute-container .menu-highlighted {
-        @apply font-bold;
-    }
+.tribute-container .menu-highlighted {
+    @apply font-bold;
+}
 
-    .ais-SearchBox-input {
-        @apply w-full rounded-full py-3 px-4 text-gray-500 text-sm border-0;
-    }
+.ais-SearchBox-input {
+    @apply w-full rounded-full py-3 px-4 text-gray-500 text-sm border-0;
+}
 
-    .ais-SearchBox-reset {
-        @apply hidden;
-    }
+.ais-SearchBox-reset {
+    @apply hidden;
+}
 
-    .ais-SearchBox-submit {
-        @apply hidden;
-    }
+.ais-SearchBox-submit {
+    @apply hidden;
+}
 
-    .ais-RefinementList-label {
-        @apply flex items-center hover:bg-gray-700 px-2 rounded-lg;
-    }
+.ais-RefinementList-label {
+    @apply flex items-center hover:bg-gray-700 px-2 rounded-lg;
+}
 
-    .ais-RefinementList-labelText {
-        @apply flex-grow px-3;
-    }
+.ais-RefinementList-labelText {
+    @apply flex-grow px-3;
+}
 
-    .ais-RefinementList-count {
-        @apply bg-white rounded-lg w-min px-2 text-black text-sm;
-    }
+.ais-RefinementList-count {
+    @apply bg-white rounded-lg w-min px-2 text-black text-sm;
+}
 
-    .ais-CurrentRefinements-item {
-        @apply flex flex-wrap;
-    }
+.ais-CurrentRefinements-item {
+    @apply flex flex-wrap;
+}
 
-    .ais-ClearRefinements-button, 
-    .ais-CurrentRefinements-category {
-        @apply border px-4 py-1 rounded-full mr-2 hover:border-blue-400 text-sm font-semibold mb-4;
-    }
+.ais-ClearRefinements-button, 
+.ais-CurrentRefinements-category {
+    @apply border px-4 py-1 rounded-full mr-2 hover:border-blue-400 text-sm font-semibold mb-4;
+}
 
-    .ais-CurrentRefinements-category {
-        @apply py-1.5;
-    }
+.ais-CurrentRefinements-category {
+    @apply py-1.5;
+}
 
-    .ais-ClearRefinements-button--disabled,
-    .ais-RefinementList-showMore--disabled, 
-    .ais-CurrentRefinements-label {
-        @apply hidden;
-    }
+.ais-ClearRefinements-button--disabled,
+.ais-RefinementList-showMore--disabled, 
+.ais-CurrentRefinements-label {
+    @apply hidden;
+}
 
-    .ais-CurrentRefinements-delete {
-        @apply border px-1 rounded-full hover:bg-blue-400 hover:border-blue-400 text-xs;
-    }
+.ais-CurrentRefinements-delete {
+    @apply border px-1 rounded-full hover:bg-blue-400 hover:border-blue-400 text-xs;
+}
 
-    .ais-RefinementList-showMore {
-        @apply ml-2 mt-4;
-    }
+.ais-RefinementList-showMore {
+    @apply ml-2 mt-4;
+}
 
-    .ais-Hits-item {
-        @apply hover:bg-gray-700 rounded-2xl p-4 mb-4;
-    }
+.ais-Hits-item {
+    @apply hover:bg-gray-700 rounded-2xl p-4 mb-4;
+}
 
-    .ais-Highlight-highlighted {
-        @apply bg-blue-400 rounded-md px-1;
-    }
+.ais-Highlight-highlighted {
+    @apply bg-blue-400 rounded-md px-1;
 }
 
 @tailwind utilities;
 
-@layer utilities {
-    .h-calc {
-        height: calc(100% - 20px);
-    }
+.h-calc {
+    height: calc(100% - 20px);
+}
 
-    .content {
-        content: "";
-    }
+.content {
+    content: "";
 }

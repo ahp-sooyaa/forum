@@ -61,7 +61,7 @@
             <ul class="ais-Hits-list" slot-scope="{ items, sendEvent }">
                 <li class="ais-Hits-item flex items-start" v-for="item in items" :key="item.objectID">
                     <a :href="'/profiles/'+item.creator.name" class="md:mr-5 flex items-center">
-                        <img class="flex-shrink-0 order-first rounded-xl w-16 h-16" :src="'https://gravatar.com/avatar/'+item.creator.email+'?s=60 alt='+item.creator.name+' avatar'">
+                        <img class="flex-shrink-0 order-first rounded-xl w-16 h-16" :src="'https://gravatar.com/avatar/'+md5(item.creator.email)+'?s=128'" :alt="item.creator.name+'s avatar'">
                         <span class="md:hidden text-gray-400 ml-3 font-bold">{{item.creator.name}}</span>
                     </a>
                     <div class="w-full">
@@ -94,8 +94,9 @@
 </template>
 
 <script>
+import md5 from 'md5'
 import moment from 'moment'
-import algoliasearch from 'algoliasearch/lite';
+import algoliasearch from 'algoliasearch/lite'
 
 export default {
   data() {
@@ -115,6 +116,9 @@ export default {
   methods: {
       moment(date){
           return moment(date).format("MMMM DD");
+      },
+      md5(value){
+          return md5(value)
       }
   }
 };

@@ -13,7 +13,9 @@
     <title>{{ config('app.name', 'Forum') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ mix('/js/manifest.js')}}" defer></script>
+    <script src="{{ mix('/js/vendor.js')}}" defer></script>
+    <script src="{{ mix('js/app.js') }}" defer></script>
     <script>
       window.App = {!!json_encode([
         'signIn' => Auth::check(),
@@ -23,15 +25,14 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/vendor/tribute.css') }}" rel="stylesheet">
 
     @yield('head')
 </head>
-<body>
+<body class="">
     <div id="app">
         <v-navbar :channels="{{$channels}}"></v-navbar>
 

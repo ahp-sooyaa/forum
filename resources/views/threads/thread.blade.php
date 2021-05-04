@@ -1,7 +1,7 @@
 <div class="md:flex mb-3 md:hover:bg-gray-800 bg-gray-700 hover:bg-gray-800 border-2 border-gray-800 text-white p-7 rounded-3xl justify-between items-start">
     <div class="flex justify-between items-center mb-5">
         <a href="{{route('profile', $thread->creator->name)}}" class="md:mr-5 flex items-center">
-            <img class="flex-shrink-0 order-first rounded-xl w-16 h-16" src="https://gravatar.com/avatar/{{md5($thread->creator->email)}}?s=128" alt="{{$thread->creator->name}}'s avatar">
+            <img class="flex-shrink-0 order-first rounded-xl w-16 h-16" width="64px" height="64px" src="https://gravatar.com/avatar/{{md5($thread->creator->email)}}?s=128" alt="{{$thread->creator->name}}'s avatar">
             <span class="md:hidden text-gray-400 ml-3 font-bold">{{$thread->creator->name}}</span>
         </a>
         <div class="block md:hidden">

@@ -150,18 +150,18 @@
 </template>
 
 <script>
-import VProfileModal from './VProfileModal.vue';
-    export default {
-  components: { VProfileModal },
-        props: ['channels'],
+  import VProfileModal from './VProfileModal.vue';
+  export default {
+    components: { VProfileModal },
+    props: ['channels'],
 
-        data(){
-            return {
-                user: window.App.user,
-                isOpen: false
-            }
-        },
-    }
+    data(){
+        return {
+            user: window.App.user,
+            isOpen: false
+        }
+    },
+  }
 </script>
 
 <style lang="scss" scoped>

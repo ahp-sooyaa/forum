@@ -30,8 +30,8 @@ Vue.prototype.$signIn = window.App.signIn
 window.events = new Vue();
 
 // level green mean success
-window.flash = function (message, level = 'green') {
-    window.events.$emit('flash', {message, level});
+window.flash = function (message, status = 'green') {
+    window.events.$emit('flash', {message, status});
 };
 /**
  * The following block of code may be used to automatically register your

@@ -1,6 +1,6 @@
 <template>
     <transition name="slide-fade">
-        <div v-if="show" :class="'bg-'+level+'-500'" class="text-white shadow-lg rounded-lg fixed top-2 inset-x-1/3 py-2 px-3" role="alert">
+        <div v-if="show" :class="[status == 'red' ? 'bg-red-500' : 'bg-green-500']" class="text-white shadow-lg rounded-lg fixed top-2 inset-x-1/3 py-2 px-3" role="alert">
             <div class="text-center transition ease-in-out duration-500 transform -translate-y-1 scale-110" v-text="body">
             </div>
         </div>
@@ -14,7 +14,7 @@
         data(){
             return {
                 body: this.message,
-                level: 'green',
+                status: 'green',
                 show: false
             }
         },
@@ -31,7 +31,7 @@
             flash(data){
                 if(data){
                     this.body = data.message;
-                    this.level = data.level;
+                    this.status = data.status;
                 }
 
                 this.show = true;
