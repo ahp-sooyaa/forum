@@ -12,38 +12,46 @@ h3 {
     @apply text-lg;
 }
 
-a {
-    @apply text-indigo-300;
-}
-
 body {
     @apply bg-gray-50;
 }
 
 @tailwind components;
 
-.btn-indigo {
-    @apply py-2 px-4 bg-indigo-500 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+.card {
+    @apply bg-light-secondary dark:bg-dark-secondary text-black dark:text-white border-2 border-gray-100 dark:border-gray-800;
 }
 
-.btn-outline-indigo {
+.text-mute {
+    @apply text-white text-opacity-50;
+}
+
+.text-muted-light {
+    @apply text-black text-opacity-50;
+}
+
+.btn-accent {
+    @apply py-2 px-4 bg-accent text-white font-semibold rounded-lg shadow-md hover:bg-accent-darker focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+}
+
+.btn-accent-outline {
     @apply py-2 px-4 text-white font-semibold rounded-lg shadow-md hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
 }
 
 .text-area {
-    @apply text-gray-700 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-md;
+    @apply text-gray-700 focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm rounded-md;
 }
 
 .text-input {
-    @apply text-gray-700 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md;
+    @apply text-gray-700 focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm rounded-md;
 }
 
 .nav-link {
-    @apply px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700;
+    @apply px-3 py-2 rounded-md text-sm font-medium focus:outline-none focus:bg-light-primary dark:focus:bg-dark-primary hover:text-black hover:bg-light-primary dark:hover:bg-dark-primary dark:hover:text-white;
 }
 
 .dropdown-link {
-    @apply block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-md;
+    @apply block w-full px-4 py-2 text-sm text-black text-opacity-50 dark:text-white dark:text-opacity-50 hover:bg-light-primary hover:text-black dark:hover:bg-dark-primary dark:hover:text-white rounded-md;
 }
 
 .timeline-icon {
@@ -51,7 +59,7 @@ body {
 }
 
 .timeline-icon::after {
-    @apply content border-2 border-indigo-400 border-solid absolute top-10 -left-12;
+    @apply content border-2 border-accent border-solid absolute top-10 -left-12;
 }
 
 .tribute-container {
@@ -83,7 +91,7 @@ body {
 }
 
 .ais-SearchBox-input {
-    @apply w-full rounded-full py-3 px-4 text-gray-500 text-sm border-0;
+    @apply w-full rounded-full py-3 px-4 bg-light-primary dark:bg-dark-primary text-sm border-0;
 }
 
 .ais-SearchBox-reset {
@@ -95,7 +103,7 @@ body {
 }
 
 .ais-RefinementList-label {
-    @apply flex items-center hover:bg-gray-700 px-2 rounded-lg;
+    @apply flex items-center hover:bg-light-primary hover:text-black dark:hover:bg-dark-primary dark:hover:text-white px-2 rounded-lg;
 }
 
 .ais-RefinementList-labelText {
@@ -103,16 +111,16 @@ body {
 }
 
 .ais-RefinementList-count {
-    @apply bg-white rounded-lg w-min px-2 text-black text-sm;
+    @apply bg-light-primary dark:bg-dark-primary rounded-lg w-min px-2 text-black dark:text-white text-sm;
 }
 
 .ais-CurrentRefinements-item {
     @apply flex flex-wrap;
 }
 
-.ais-ClearRefinements-button, 
+.ais-ClearRefinements-button,
 .ais-CurrentRefinements-category {
-    @apply border px-4 py-1 rounded-full mr-2 hover:border-blue-400 text-sm font-semibold mb-4;
+    @apply border px-4 py-1 rounded-full mr-2 hover:border-accent text-sm font-semibold mb-4;
 }
 
 .ais-CurrentRefinements-category {
@@ -120,13 +128,13 @@ body {
 }
 
 .ais-ClearRefinements-button--disabled,
-.ais-RefinementList-showMore--disabled, 
+.ais-RefinementList-showMore--disabled,
 .ais-CurrentRefinements-label {
     @apply hidden;
 }
 
 .ais-CurrentRefinements-delete {
-    @apply border px-1 rounded-full hover:bg-blue-400 hover:border-blue-400 text-xs;
+    @apply border px-1 rounded-full hover:bg-accent hover:border-accent text-xs;
 }
 
 .ais-RefinementList-showMore {
@@ -134,11 +142,11 @@ body {
 }
 
 .ais-Hits-item {
-    @apply hover:bg-gray-700 rounded-2xl p-4 mb-4;
+    @apply hover:bg-black hover:bg-opacity-10 dark:hover:bg-white dark:hover:bg-opacity-10 rounded-2xl p-4 mb-4;
 }
 
 .ais-Highlight-highlighted {
-    @apply bg-blue-400 rounded-md px-1;
+    @apply bg-accent rounded-md px-1;
 }
 
 @tailwind utilities;

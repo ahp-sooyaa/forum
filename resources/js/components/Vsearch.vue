@@ -5,9 +5,9 @@
     index-name="threads"
     class="flex min-h-screen mt-6"
   >
-    <ais-panel class="mr-5 rounded-2xl p-4 bg-gray-800 border border-gray-500 h-full w-1/5">
+    <ais-panel class="card mr-5 rounded-2xl p-4 h-full w-1/5">
         <ais-search-box autofocus v-model="q" class="mb-2"/>
-        <ais-powered-by />
+        <ais-powered-by class="mb-4"/>
 
         <ais-state-results>
             <p :class="!hits.length ? 'hidden' : ''" slot-scope="{ state: { query }, results: { hits } }">
@@ -68,10 +68,10 @@
                         <div class="flex justify-between">
                             <div class="flex">
                                 <div v-for="date in moment(item.created_at).split(' ')">
-                                    <div class="bg-white rounded-lg p-2 mr-2 mb-2 text-black text-xs font-semibold shadow-lg">{{date}}</div>
+                                    <div class="bg-white dark:bg-black rounded-lg p-2 mr-2 mb-2 text-black text-xs font-semibold shadow-md">{{date}}</div>
                                 </div>
                             </div>
-                            <div class="flex text-gray-500 rounded-full px-3 items-center">
+                            <div class="flex text-gray-400 rounded-full px-3 items-center">
                                 <svg class="w-3 h-4 mb-1 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 10" fill="currentColor">
                                     <path d="M7.5 0C3.344 0 0 2.818 0 6.286c0 1.987 1.094 3.757 2.781 4.914l.117 2.35c.022.438.338.58.704.32l2.023-1.442c.594.144 1.219.18 1.875.18 4.156 0 7.5-2.817 7.5-6.285C15 2.854 11.656 0 7.5 0z"></path>
                                 </svg>
@@ -80,9 +80,9 @@
                         </div>
                     
                         <h1>
-                            <a :href="item.path" class="text-white">
+                            <a :href="item.path" class="text-black dark:text-white">
                                 <ais-highlight class="hover:underline mb-3 block" attribute="title" :hit="item" />
-                                <ais-highlight class="text-sm no-underline block text-gray-300" attribute="body" :hit="item" />
+                                <ais-highlight class="text-sm no-underline block text-black text-opacity-50 dark:text-white dark:text-opacity-50" attribute="body" :hit="item" />
                             </a>
                         </h1>
                     </div>

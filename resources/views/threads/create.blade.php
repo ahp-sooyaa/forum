@@ -11,8 +11,8 @@
 @endsection
 
 @section('content')
-    <div class="bg-gray-800 w-full md:w-2/3 lg:w-1/2 h-auto mx-auto mt-30 p-7 rounded-3xl mt-14 text-gray-300 shadow-lg">
-        <a href="/threads" class="z-10 fixed bottom-7 left-7 btn-indigo text-sm rounded-full w-16 h-16">
+    <div class="card w-full md:w-2/3 lg:w-1/2 h-auto mx-auto mt-30 p-7 rounded-3xl mt-14 text-gray-300 shadow-lg">
+        <a href="/threads" class="z-10 fixed bottom-7 left-7 btn-accent text-sm rounded-full w-16 h-16">
             <svg class="my-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
             </svg>
@@ -23,7 +23,7 @@
             @honeypot
             
             <div class="mb-3">
-                <label for="channel_id" class="block text-sm font-medium text-gray-300">Channel</label>
+                <label for="channel_id" class="block text-sm font-medium text-black text-opacity-50 dark:text-white dark:text-opacity-50">Channel</label>
                 <select name="channel_id" class="text-input" required>
                     <option value="">Choose Channel...</option>
                     <!-- the following $channels is sharing from app service provider -->
@@ -36,20 +36,20 @@
             </div>
 
             <div class="mb-3">
-                <label for="title" class="block text-sm font-medium text-gray-300">Title</label>
+                <label for="title" class="block text-sm font-medium text-black text-opacity-50 dark:text-white dark:text-opacity-50">Title</label>
                 <div class="mt-1 relative rounded-md shadow-sm">
                   <input type="text" name="title" class="text-input @error('email') is-invalid @enderror" value="{{old('title')}}" required>
                 </div>
             </div>
 
             <div class="mb-3">
-                <label for="body" class="block font-medium text-gray-300">body</label>
+                <label for="body" class="block font-medium text-black text-opacity-50 dark:text-white dark:text-opacity-50">body</label>
                 <div class="mt-1 relative rounded-md shadow-sm">
                   <textarea name="body" rows="10" class="text-area" required>{{old('body')}}</textarea>
                 </div>
             </div>
 
-            <button class="g-recaptcha btn-indigo" 
+            <button class="g-recaptcha btn-accent" 
                 data-sitekey="6LcEHLYaAAAAAGLAYvJ_TeGR3y0FjT0AbLjGIHvj" 
                 data-callback='onSubmit' 
                 data-action='submit'

@@ -1,13 +1,13 @@
 <template>
-    <div class="text-gray-400">
+    <div>
         <div v-if="notifications.length">
             <a @click="markAsRead(notification)" :href="notification.data.link"
-              v-for="notification in notifications" class="dropdown-link text-gray-400"
+              v-for="notification in notifications" class="dropdown-link"
               v-html="notification.data.message"
             >
             </a>
         </div>
-        <div v-else>You have no notifications at this time.</div>
+        <div class="text-black text-opacity-50 dark:text-white dark:text-opacity-50" v-else>You have no notifications at this time.</div>
     </div>
 </template>
 

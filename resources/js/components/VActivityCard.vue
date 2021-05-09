@@ -1,10 +1,10 @@
 <template>
-    <div class="bg-gray-800 shadow-md mb-2 p-5 rounded-2xl tracking-wide">
-        <div class="text-lg text-white">
+    <div class="card shadow-md mb-2 p-5 rounded-2xl tracking-wide">
+        <div class="text-lg text-black dark:text-white">
             <slot name="header"></slot>
         </div>
 
-        <div class="text-gray-300">
+        <div class="text-black text-opacity-50 dark:text-white dark:text-opacity-50">
             <slot name="body"></slot>
         </div>
     </div>

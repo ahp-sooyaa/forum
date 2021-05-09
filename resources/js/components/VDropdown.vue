@@ -5,9 +5,9 @@
         </div>
         
         <div v-if="isOpen">
-            <div @click="isOpen = false" class="fixed top-0 right-0 w-full h-full"></div>
+            <div @click="isOpen = false" class="fixed top-0 right-0 w-full h-full bg-black bg-opacity-40 z-40"></div>
             <div 
-                class="z-10 origin-top-left absolute mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+                class="z-50 origin-top-left absolute mt-2 rounded-md shadow-lg bg-light-secondary dark:bg-dark-secondary dark:text-white ring-1 ring-black ring-opacity-5"
                 :class="classes"
             >
                 <slot name="menu"></slot>

@@ -13,7 +13,7 @@
                 </svg>
             </a>
         </div>
-        
+
         <div class="flex-1">
             @forelse ($threads as $thread)
                 @include('threads.thread')
@@ -24,23 +24,23 @@
         </div>
 
         <div>
-          <div class="mb-4 w-60 lg:w-70 hidden lg:block bg-gray-700 border-2 border-gray-800 py-7 px-3 rounded-3xl text-white h-full ml-3">
+          <div class="mb-4 w-60 lg:w-70 hidden lg:block bg-light-secondary dark:bg-dark-secondary border-2 border-gray-100 dark:border-gray-800 text-black dark:text-white py-7 px-3 rounded-3xl h-full ml-3">
             <form action="/threads/search" method="GET">
               <input type="text" placeholder="Search Something ...." class="text-input w-full" name="q">
-              <button class="btn-indigo text-xs mt-4">Search</button>
+              <button class="btn-accent text-xs mt-4">Search</button>
             </form>
           </div>
 
           @if (count($trendings))
-              <div class="w-60 lg:w-70 hidden lg:block bg-gray-700 border-2 border-gray-800 py-7 px-3 rounded-3xl text-white h-full ml-3">
-                <h2 class="font-semibold tracking-wider mb-3 text-center">Trending Threads</h2>
+              <div class="w-60 lg:w-70 hidden lg:block bg-light-secondary dark:bg-dark-secondary border-2 border-gray-100 dark:border-gray-800 py-7 px-3 rounded-3xl h-full ml-3">
+                <h2 class="font-semibold tracking-wider mb-3 text-center text-black dark:text-white">Trending Threads</h2>
                 <div class="space-y-2">
                   @foreach ($trendings as $trending)
                       <div class="flex text-sm">
-                        <div class="flex-none rounded-full border-2 bg-indigo-600 text-white border-indigo-600 w-6 h-6 mr-2 text-center">
-                          {{$loop->index + 1}}
+                        <div class="flex-shrink-0 rounded-full bg-accent text-white w-6 h-6 mr-2 text-center">
+                          <span class="align-middle">{{$loop->index + 1}}</span>
                         </div>
-                        <a href="{{$trending->path}}" class="text-white hover:underline block">{{$trending->title}}</a>
+                        <a href="{{$trending->path}}" class="text-black dark:text-white hover:underline block">{{$trending->title}}</a>
                       </div>
                   @endforeach
                 </div>

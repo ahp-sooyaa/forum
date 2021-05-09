@@ -6,6 +6,6 @@
         </a>
     </template>
     <template #body>
-        <p>{{$activity->subject->favorited->body}}</p>
+        <p>{!!$activity->subject->favorited->body!!}</p>
     </template>
 </v-activity-card>

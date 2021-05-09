@@ -2,23 +2,25 @@
     <div 
         @mouseover="hover = true" @mouseleave="hover = false"
         :id="'reply-'+data.id" 
-        class="relative flex p-5 mb-3 rounded-2xl bg-gray-700 hover:bg-gray-800 border-2 text-white" 
-        :class="isBest ? 'border-indigo-400' : 'border-gray-800'"
+        class="relative flex p-5 mb-3 rounded-2xl card hover:bg-gray-50 dark:hover:bg-gray-700" 
+        :class="isBest ? 'border-accent' : ''"
     >
         <img class="rounded-xl mr-3 w-16 h-16" :src="'https://gravatar.com/avatar/'+data.owner.email+'?s=128'" :alt="data.owner.name">
         <div class="w-full">
             <div class="mb-3">
-                <h3 class="font-semibold">
-                    <a 
-                        class="text-base text-white" :href="'profiles/'+data.owner.name"
-                    >
-                        {{data.owner.name}}
-                    </a>
-                    <span v-if="isOp" class="bg-white text-black rounded-xl px-2 text-sm">
-                        op
-                    </span>
-                </h3>
-                <div class="text-gray-400 text-xs">Posted {{ date }}</div>
+                <div class="flex items-center">
+                    <h3 class="font-semibold mr-2">
+                        <a 
+                            class="text-base text-black dark:text-white" :href="'profiles/'+data.owner.name"
+                        >
+                            {{data.owner.name}}
+                        </a>
+                    </h3>
+                    <div v-if="isOp" class="inline-block h-6 bg-white text-black dark:bg-black dark:text-white rounded-xl px-2 text-sm">
+                        <span class="align-middle">op</span>
+                    </div>
+                </div>
+                <div class="text-black text-opacity-50 dark:text-white dark:text-opacity-50 text-xs">Posted {{ date }}</div>
             </div>
 
             <!-- v-if doesn't work when component is mounted, so i used v-show -->
@@ -29,10 +31,10 @@
                 ></textarea>
                 <div class="flex">
                     <v-favorite v-if="$signIn" :data="this.data"></v-favorite>
-                    <button @click="update" class="text-xs font-semibold border bg-gray-800 border-gray-500 hover:border-gray-400 text-gray-400 rounded-xl inline-block px-2 md:px-3 ml-2">
+                    <button @click="update" class="text-xs font-semibold bg-light-primary dark:bg-dark-primary border-gray-400 text-gray-400 border hover:border-gray-500 rounded-xl inline-block px-2 md:px-3 ml-2">
                         Update
                     </button>
-                    <button @click="cancel" class="text-xs font-semibold border bg-red-700 text-red-300 border-red-500 hover:border-red-400 rounded-xl inline-block px-2 md:px-3 ml-2">
+                    <button @click="cancel" class="text-xs font-semibold text-red-500 rounded-xl inline-block px-2 md:px-3 ml-2">
                         Cancel
                     </button>
                 </div>
@@ -44,10 +46,10 @@
                     <v-favorite v-if="$signIn" :data="this.data"></v-favorite>
                     <div v-if="authorize('owns', reply) && hover">
                         <!-- bg-gray-200 hover:border-gray-400 border-gray-300 for light theme -->
-                        <button @click="isEdit = true" class="h-full text-xs font-semibold bg-gray-800 border-gray-500 text-gray-400 hover:border-gray-400 border rounded-xl inline-block px-2 md:px-3 ml-2">
+                        <button @click="isEdit = true" class="h-full text-xs font-semibold bg-light-primary dark:bg-dark-primary border-gray-400 text-gray-400 border hover:border-gray-500 rounded-xl inline-block px-2 md:px-3 ml-2">
                             Edit
                         </button>
-                        <button @click="destroy" class="h-full text-xs font-semibold bg-red-500 text-white border border-red-300 hover:border-red-200 rounded-xl inline-block px-2 md:px-3 ml-2">
+                        <button @click="destroy" class="h-full text-xs font-semibold bg-light-primary dark:bg-dark-primary border-red-500 text-red-500 border hover:border-red-600 rounded-xl inline-block px-2 md:px-3 ml-2">
                             Delete
                         </button>
                     </div>

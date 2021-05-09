@@ -1,7 +1,7 @@
 @extends('layouts.guest')
 
 @section('content')
-<div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+<div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-light-primary dark:bg-dark-primary">
     <div>
         <a href="/threads">
             <svg viewBox="0 0 316 316" xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 fill-current text-gray-500">
@@ -10,21 +10,21 @@
         </a>
     </div>
 
-    <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+    <div class="w-full sm:max-w-md mt-6 px-6 py-4 card shadow-md overflow-hidden sm:rounded-lg">
         <form method="POST" action="{{ route('password.update') }}">
             @csrf
 
             <input type="hidden" name="token" value="{{ $token }}">
             <div class="mb-4">
-                <label for="email" class="block text-sm text-gray-600 tracking-wider">{{ __('Email') }}</label>
+                <label for="email" class="block text-sm text-black text-opacity-50 dark:text-white dark:text-opacity-60 tracking-wider">{{ __('Email') }}</label>
 
                 <input id="email" type="email" 
-                    class="{{ $errors->has('password') ? 'focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50':'focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50'}} w-full mt-1 rounded-md shadow-sm border-gray-300" 
-                    name="email" value="{{ $email ?? old('email') }}" autocomplete="email" autofocus
+                    class="{{ $errors->has('email') ? 'focus:border-red-400 focus:ring focus:ring-red-300 focus:ring-opacity-50':'text-black focus:border-indigo-400 focus:ring focus:ring-indigo-300 focus:ring-opacity-50'}} w-full mt-1 rounded-md shadow-sm border-gray-300" 
+                    name="email" value="{{ $email ?? old('email') }}" autocomplete="email" @error('email') autofocus @enderror
                 >
 
                 @error('email')
-                    <span class="mt-3 text-sm text-red-600 tracking-wider font-light" role="alert">
+                    <span class="mt-3 text-sm text-red-500 tracking-wider font-light" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
@@ -32,15 +32,15 @@
 
             {{-- password --}}
             <div class="mb-4">
-                <label for="password" class="block text-sm text-gray-600 tracking-wider">{{ __('Password') }}</label>
+                <label for="password" class="block text-sm text-black text-opacity-50 dark:text-white dark:text-opacity-60 tracking-wider">{{ __('Password') }}</label>
 
                 <input id="password" type="password" 
-                    class="{{ $errors->has('password') ? 'focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50':'focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50'}} w-full mt-1 rounded-md shadow-sm border-gray-300" 
-                    name="password" autocomplete="new-password"
+                    class="{{ $errors->has('password') ? 'focus:border-red-400 focus:ring focus:ring-red-300 focus:ring-opacity-50':'text-black focus:border-indigo-400 focus:ring focus:ring-indigo-300 focus:ring-opacity-50'}} w-full mt-1 rounded-md shadow-sm border-gray-300" 
+                    name="password" autocomplete="new-password" @error('password') autofocus @enderror
                 >
 
                 @error('password')
-                    <span class="mt-3 text-sm text-red-600 tracking-wider font-light" role="alert">
+                    <span class="mt-3 text-sm text-red-500 tracking-wider font-light" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
@@ -48,18 +48,18 @@
 
             {{-- confirm password --}}
             <div>
-                <label for="password_confirmation" class="block text-sm text-gray-600 tracking-wider">{{ __('Password Confirmation') }}</label>
+                <label for="password_confirmation" class="block text-sm text-black text-opacity-50 dark:text-white dark:text-opacity-60 tracking-wider">{{ __('Password Confirmation') }}</label>
 
                 <input id="password_confirmation" type="password" 
-                    class="w-full mt-1 rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
+                    class="w-full mt-1 rounded-md shadow-sm border-gray-300 text-black focus:border-indigo-400 focus:ring focus:ring-indigo-300 focus:ring-opacity-50" 
                     name="password_confirmation" autocomplete="new-password"
                 >
             </div>
 
             <div class="mt-4">
-                <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-dark-primary hover:bg-dark-secondary dark:bg-light-secondary dark:hover:bg-light-primary text-white dark:text-black border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75 disabled:opacity-25 transition ease-in-out duration-150">
                     {{ __('Reset Password') }}
-                </button>.
+                </button>
             </div>
         </form>
     </div>

@@ -1,7 +1,7 @@
-<div class="md:flex mb-3 md:hover:bg-gray-800 bg-gray-700 hover:bg-gray-800 border-2 border-gray-800 text-white p-7 rounded-3xl justify-between items-start">
+<div class="md:flex mb-3 md:hover:bg-gray-50 md:dark:hover:bg-gray-700 card hover:bg-gray-50 dark:hover:bg-gray-700 border-2 border-gray-100 dark:border-gray-800 p-7 rounded-3xl justify-between items-start">
     <div class="flex justify-between items-center mb-5">
         <a href="{{route('profile', $thread->creator->name)}}" class="md:mr-5 flex items-center">
-            <img class="flex-shrink-0 order-first rounded-xl w-16 h-16" width="64px" height="64px" src="https://gravatar.com/avatar/{{md5($thread->creator->email)}}?s=128" alt="{{$thread->creator->name}}'s avatar">
+            <img class="flex-shrink-0 order-first rounded-xl" width="64px" height="64px" src="https://gravatar.com/avatar/{{md5($thread->creator->email)}}?s=128" alt="{{$thread->creator->name}}'s avatar">
             <span class="md:hidden text-gray-400 ml-3 font-bold">{{$thread->creator->name}}</span>
         </a>
         <div class="block md:hidden">
@@ -22,25 +22,25 @@
     <div class="flex-1 flex-nowrap">
         <div class="flex justify-between mb-3">
             <div class="flex-1 mr-5"> {{-- flex-1 require otherwise it will cause overflow to other flex member --}}
-                <a class="hover:underline text-lg text-black" href="{{$thread->path()}}">
+                <a class="hover:underline text-lg font-semibold" href="{{$thread->path()}}">
                     @if (auth()->check() && $thread->updatedSince())
-                        <span class="font-semibold text-indigo-400">
+                        <span class="text-blue-700 dark:text-blue-400">
                             {{Str::limit($thread->title, 200,'...')}}
                         </span>
                     @else
-                        <span class="font-semibold text-white">{{Str::limit($thread->title, 200,'...')}}</span>
+                        <span class="text-black dark:text-white">{{Str::limit($thread->title, 200,'...')}}</span>
                     @endif
                 </a>
             </div>
             <div class="hidden md:block">
                 <div class="flex items-center">
-                    <div class="flex text-gray-500 rounded-full px-2">
+                    <div class="flex text-black text-opacity-60 dark:text-white dark:text-opacity-50 rounded-full px-2">
                         <svg class="w-4 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 10" fill="currentColor">
                             <path d="M7.5 0C3.344 0 0 2.818 0 6.286c0 1.987 1.094 3.757 2.781 4.914l.117 2.35c.022.438.338.58.704.32l2.023-1.442c.594.144 1.219.18 1.875.18 4.156 0 7.5-2.817 7.5-6.285C15 2.854 11.656 0 7.5 0z"></path>
                         </svg>
                         {{$thread->replies_count}}
                     </div>
-                    <div class="flex text-gray-500 rounded-full px-2">
+                    <div class="flex text-black text-opacity-60 dark:text-white dark:text-opacity-50 rounded-full px-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 15" fill="currentColor">
                           <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
                           <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />

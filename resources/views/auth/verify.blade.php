@@ -1,7 +1,7 @@
 @extends('layouts.guest')
 
 @section('content')
-<div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+<div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
     <div>
         <a href="/threads">
             <svg viewBox="0 0 316 316" xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 fill-current text-gray-500">
@@ -10,19 +10,19 @@
         </a>
     </div>
 
-    <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-        <div class="mb-4 text-sm text-gray-600">
+    <div class="w-full sm:max-w-md mt-6 px-6 py-4 card shadow-md overflow-hidden sm:rounded-lg">
+        <div class="mb-4 text-sm text-black text-opacity-50 dark:text-white dark:text-opacity-60">
             {{ __('Before proceeding, please check your email for a verification link.') }}
             {{ __('If you did not receive the email') }},
         </div>
         <div class="mt-4 flex items-center justify-between">
             <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
                 @csrf
-                <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-dark-primary hover:bg-dark-secondary dark:bg-light-secondary dark:hover:bg-light-primary text-white dark:text-black border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
                     {{ __('resend verification email') }}
                 </button>.
             </form>
-            <a href="/threads" class="underline text-sm text-gray-600 hover:text-gray-900">
+            <a href="/threads" class="underline text-sm text-black text-opacity-50 hover:text-black dark:text-white dark:text-opacity-60 dark:hover:text-white">
                 {{ __('Back') }}
             </a>
         </div>

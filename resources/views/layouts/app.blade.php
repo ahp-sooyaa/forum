@@ -32,15 +32,15 @@
 
     @yield('head')
 </head>
-<body class="">
+<body>
     <div id="app">
         <v-navbar :channels="{{$channels}}"></v-navbar>
 
-        <main class="p-4 min-h-screen bg-gray-900">
+        <main class="p-4 min-h-screen bg-light-primary dark:bg-dark-primary">
             @yield('content')
         </main>
 
-        <footer class="h-48 bg-gray-800">hi</footer>
+        <footer class="h-48 bg-light-secondary dark:bg-dark-secondary">hi</footer>
         <v-flash-noti message="{{ session('flash') }}"/>
     </div>
 </body>
