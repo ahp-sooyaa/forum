@@ -1163,6 +1163,16 @@ body {
   flex-wrap: wrap;
 }
 
+.ais-ClearRefinements-button, .ais-CurrentRefinements-category {
+  --tw-bg-opacity: 1;
+  background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
+}
+
+.dark .ais-ClearRefinements-button, .dark .ais-CurrentRefinements-category {
+  --tw-bg-opacity: 1;
+  background-color: rgba(37, 44, 49, var(--tw-bg-opacity));
+}
+
 .ais-ClearRefinements-button:hover, .ais-CurrentRefinements-category:hover {
   --tw-border-opacity: 1;
   border-color: rgba(50, 130, 184, var(--tw-border-opacity));
@@ -1180,6 +1190,13 @@ body {
   padding-bottom: 0.25rem;
   padding-left: 1rem;
   padding-right: 1rem;
+  --tw-text-opacity: 1;
+  color: rgba(0, 0, 0, var(--tw-text-opacity));
+}
+
+.dark .ais-ClearRefinements-button, .dark .ais-CurrentRefinements-category {
+  --tw-text-opacity: 1;
+  color: rgba(255, 255, 255, var(--tw-text-opacity));
 }
 
 .ais-CurrentRefinements-category {
@@ -1205,6 +1222,16 @@ body {
   line-height: 1rem;
   padding-left: 0.25rem;
   padding-right: 0.25rem;
+}
+
+.ais-CurrentRefinements-delete:hover {
+  --tw-text-opacity: 1;
+  color: rgba(255, 255, 255, var(--tw-text-opacity));
+}
+
+.dark .ais-CurrentRefinements-delete:hover {
+  --tw-text-opacity: 1;
+  color: rgba(0, 0, 0, var(--tw-text-opacity));
 }
 
 .ais-RefinementList-showMore {
@@ -2387,11 +2414,6 @@ body {
 .focus\:ring-gray-400:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgba(156, 163, 175, var(--tw-ring-opacity));
-}
-
-.focus\:ring-red-200:focus {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgba(254, 202, 202, var(--tw-ring-opacity));
 }
 
 .focus\:ring-red-300:focus {

@@ -82412,7 +82412,7 @@ var render = function() {
                                         "div",
                                         {
                                           staticClass:
-                                            "bg-white dark:bg-black rounded-lg p-2 mr-2 mb-2 text-black text-xs font-semibold shadow-md"
+                                            "bg-white text-black dark:bg-black dark:text-white rounded-lg p-2 mr-2 mb-2 text-xs font-semibold shadow-md"
                                         },
                                         [_vm._v(_vm._s(date))]
                                       )

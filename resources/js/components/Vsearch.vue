@@ -68,7 +68,7 @@
                         <div class="flex justify-between">
                             <div class="flex">
                                 <div v-for="date in moment(item.created_at).split(' ')">
-                                    <div class="bg-white dark:bg-black rounded-lg p-2 mr-2 mb-2 text-black text-xs font-semibold shadow-md">{{date}}</div>
+                                    <div class="bg-white text-black dark:bg-black dark:text-white rounded-lg p-2 mr-2 mb-2 text-xs font-semibold shadow-md">{{date}}</div>
                                 </div>
                             </div>
                             <div class="flex text-gray-400 rounded-full px-3 items-center">

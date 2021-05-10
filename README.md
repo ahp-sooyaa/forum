@@ -1,61 +1,125 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Forum
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a laravel project built by following the screencast series of laracasts. This is for my learning purpose. Learning by doing is good :).
 
-## About Laravel
+If you want to know about the screencast, it is [Lets build a forum with laravel and TDD](https://laracasts.com/series/lets-build-a-forum-with-laravel). It is good serie but it is published at 2017 and now it is archieved. So my repository come up with different things - laravel 8, tailwind, vue instantSearch V3 etc.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+And if you wondering about my ui is similar with laracasts, i referenced laracasts ui but not all the same.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Built with
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- [Laravel](https://laravel.com/docs/routing) -  version 8.
 
-## Learning Laravel
+- [Vue](https://laravel.com/docs/container) - version 2.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- [Tailwind](https://laravel.com/docs/session) - version 2.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- [Redis](https://laravel.com/docs/session) - is for remembering the view count and trending threads.
 
-## Laravel Sponsors
+- [Algolia](https://laravel.com/docs/session) - is for search function (vue instantSearch V3).
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- [Recaptcha]() - is for spam protection.
 
-### Premium Partners
+- [Gravatar]()
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+## Features
+
+- create threads.
+- edit threads.
+- create reply.
+- edit reply.
+- thread subscription
+- dark mode.
+- filtering by popularity, unanswered and user own threads.
+- locking every threads by administrator.
+- instantSearch by algolia
+
+## Screenshots
+
+Light mode
+![light mode](/Doc/lightmode.png)
+
+Dark mode
+![dark mode](/Doc/darkmode.png)
+
+You can see all of the screenshots at https://imgur.com/a/Jbnwj
+
+## Installation
+
+Setting up in local environment:
+
+```
+git clone https://github.com/ahp-sooyaa/forum.git
+cd forum
+cp .env.example .env
+composer install
+php artisan serve
+```
+
+Now basic setup is finished. You can go to welcome page via link in ```php artisan serve```. If you already set up valet, clone repo inside your valet park dir and access via https://forum.test.
+
+### Algolia & Recaptcha
+Set up algolia & recaptcha in .env file
+
+```
+RECAPTCHA_SITEKEY=6LcEHLYaAAAAAGLAYvJ_TeGR3y0FjT0AbLjGIHvj
+RECAPTCHA_SECRET=6LcEHLYaAAAAAO6YUT_46b8tgWKRwmHWR2oBeS1Q
+
+ALGOLIA_APP_ID=yourAlgoliaAppID
+ALGOLIA_SECRET=yourAlgoliaAppSecretKey
+```
+
+### Database
+Set up database in .env file
+
+```
+DB_DATABASE=forum
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+and then seed the data into database. For testing & seeding, i use model factory.
+```
+php artisan migrate
+php aritsan tinker
+>>>Thread::factory(30)->create();
+```
+
+### Email verification
+This project uses email verification as a protection of spam so you need to set up mailing configuration in the .env file. If you use mailtrap, set the your mailtrap keys.
+```
+MAIL_USERNAME=yourMailtrapInboxCrendentials
+MAIL_PASSWORD=yourMailtrapInboxCrendentials
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=forum@email.com (or asyoulike)
+```
+
+## Tests
+
+Running All Tests:
+```
+php artisan test
+```
+
+Running Specific Tests:
+```
+php artisan test --filter testName
+```
+
+You can make alias in terminal for short command such as 
+```
+alias p="php artisan test"
+alias pf="php artisan test --filter testName"
+```
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Do not hesitate to contribute to the project by adapting or adding features ! Bug reports or pull requests are welcome.
 
-## Code of Conduct
+## Security Vulnerabilities, Bugs or something else
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability, bugs or something wrong within Forum, please send an e-mail to me via apaing894@gmail.com . 
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is released under the MIT license.

@@ -120,7 +120,7 @@ body {
 
 .ais-ClearRefinements-button,
 .ais-CurrentRefinements-category {
-    @apply border px-4 py-1 rounded-full mr-2 hover:border-accent text-sm font-semibold mb-4;
+    @apply border px-4 py-1 rounded-full mr-2 hover:border-accent bg-light-secondary text-black dark:bg-dark-secondary dark:text-white text-sm font-semibold mb-4;
 }
 
 .ais-CurrentRefinements-category {
@@ -134,7 +134,7 @@ body {
 }
 
 .ais-CurrentRefinements-delete {
-    @apply border px-1 rounded-full hover:bg-accent hover:border-accent text-xs;
+    @apply border px-1 rounded-full hover:bg-accent hover:border-accent hover:text-white dark:hover:text-black text-xs;
 }
 
 .ais-RefinementList-showMore {
