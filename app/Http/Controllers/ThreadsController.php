@@ -83,18 +83,7 @@ class ThreadsController extends Controller
 
         return view('threads.show', compact('thread'));
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Thread  $thread
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Thread $thread)
-    {
-        //
-    }
-
+    
     /**
      * Update the specified resource in storage.
      *

@@ -14,7 +14,7 @@ class UsersController extends Controller
         $val = User::where('name', 'LIKE', "$search%")
             ->pluck('name')
             ->take(5);
-
+            
         return $val->map(function ($name) {
             return ['value' => $name];
         });

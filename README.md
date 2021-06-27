@@ -8,15 +8,15 @@ And if you wondering about my ui is similar with laracasts, i referenced laracas
 
 ## Built with
 
-- [Laravel](https://laravel.com/docs/routing) -  version 8.
+- [Laravel](https://laravel.com) -  version 8.
 
-- [Vue](https://laravel.com/docs/container) - version 2.
+- [Vue](https://vuejs.org/) - version 2.
 
-- [Tailwind](https://laravel.com/docs/session) - version 2.
+- [Tailwind](https://tailwindcss.com/) - version 2.
 
-- [Redis](https://laravel.com/docs/session) - is for remembering the view count and trending threads.
+- [Redis](https://laravel.com/docs/8.x/redis#introduction) - is for remembering the view count and trending threads.
 
-- [Algolia](https://laravel.com/docs/session) - is for search function (vue instantSearch V3).
+- [Algolia](https://www.algolia.com/) - is for search function (vue instantSearch V3).
 
 - [Recaptcha]() - is for spam protection.
 

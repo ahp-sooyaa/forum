@@ -24,9 +24,11 @@ Route::delete('locked-threads/{thread:slug}', 'LockedThreadsController@destroy')
 /**
  * thread's replies routes
  */
-Route::resource('threads.replies', 'RepliesController')->except(['store', 'index']);
+// Route::resource('threads.replies', 'RepliesController')->except(['store', 'index']);
 Route::get('threads/{channel}/{thread:slug}/replies', 'RepliesController@index');
 Route::post('threads/{channel}/{thread:slug}/replies', 'RepliesController@store');
+Route::patch('replies/{reply}', 'RepliesController@update')->name('replies.update');
+Route::delete('replies/{reply}', 'RepliesController@destroy')->name('replies.destroy');
 
 /**
  * best replies routes
@@ -50,13 +52,6 @@ Route::get('profiles/{user:name}/notifications', 'NotificationsController@index'
  */
 Route::post('replies/{reply}/favorite', 'FavoritesController@store')->name('favorites.store');
 Route::delete('replies/{reply}/favorite', 'FavoritesController@destroy')->name('favorites.destroy');
-
-/**
- * reply routes
- */
-Route::resource('replies', 'RepliesController');
-// Route::patch('replies/{reply}', 'RepliesController@update')->name('replies.update');
-// Route::delete('replies/{reply}', 'RepliesController@destroy')->name('replies.destroy');
 
 /**
  * profile routes

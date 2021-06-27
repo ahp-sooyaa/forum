@@ -10,7 +10,7 @@ trait RecordActivity
     {
         // if (auth()->guest()) {
         //     return;
-        // } this cause the errors in test i can't figureout the reason
+        // } this cause the errors in test i can't figure out the reason
 
         foreach (static::getActivityEvents() as $event) {
             static::$event(function ($model) use ($event) {
