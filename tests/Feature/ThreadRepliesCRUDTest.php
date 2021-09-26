@@ -88,11 +88,14 @@ class ThreadRepliesCRUDTest extends TestCase
         $this->signIn();
 
         $reply = create('Reply', ['user_id' => auth_id()]);
-
+        
+        $this->assertEquals(1, auth()->user()->replies->count());
+        
         $this->delete("/replies/{$reply->id}");
-
+        
+        $this->assertEquals(0, auth()->user()->fresh()->replies->count());
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
-        $this->assertEquals(0, $this->thread->fresh()->replies_count);
+        // $this->assertEquals(0, $this->thread->fresh()->replies_count); I think this is wrong testing, we should check auth user's replies count
     }
 
     public function testSpamRepliesCanNotBeAdded()

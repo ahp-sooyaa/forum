@@ -23,6 +23,16 @@ class ThreadsCRUDTest extends TestCase
         });
     }
 
+    public function validatePublishThread(Array $overrides = null, $column)
+    {
+        $this->signIn();
+
+        $thread = make('Thread', $overrides);
+
+        return $this->post('/threads', $thread->toArray())
+                    ->assertSessionHasErrors($column);
+    }
+
     public function testGuestsCanNotCreateThreads()
     {
         $this->get('/threads/create')
@@ -61,7 +71,10 @@ class ThreadsCRUDTest extends TestCase
     {
         unset(app()[Recaptcha::class]);
 
-        $this->validatePublishThread(['g-recaptcha-response' => 'invalid'], 'g-recaptcha-response');
+        $this->validatePublishThread(
+            ['g-recaptcha-response' => 'invalid'], 
+            'g-recaptcha-response'
+        );
     }
 
     public function testThreadSlugMustBeUnique()
@@ -91,16 +104,6 @@ class ThreadsCRUDTest extends TestCase
 
         /** test the channel_id is valid or not */
         $this->validatePublishThread(['channel_id' => 9999], 'channel_id');
-    }
-
-    public function validatePublishThread(Array $overrides = null, $column)
-    {
-        $this->signIn();
-
-        $thread = make('Thread', $overrides);
-
-        return $this->post('/threads', $thread->toArray())
-                    ->assertSessionHasErrors($column);
     }
 
     /**

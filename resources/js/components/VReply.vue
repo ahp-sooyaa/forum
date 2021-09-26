@@ -2,7 +2,7 @@
     <div 
         @mouseover="hover = true" @mouseleave="hover = false"
         :id="'reply-'+data.id" 
-        class="relative flex p-5 mb-3 rounded-2xl card hover:bg-gray-50 dark:hover:bg-gray-700" 
+        class="relative flex p-5 mb-3 rounded-2xl card hover:bg-gray-50 dark:hover:bg-gray-500" 
         :class="isBest ? 'border-accent' : ''"
     >
         <img class="rounded-xl mr-3 w-16 h-16" :src="'https://gravatar.com/avatar/'+data.owner.email+'?s=128'" :alt="data.owner.name">
@@ -11,7 +11,7 @@
                 <div class="flex items-center">
                     <h3 class="font-semibold mr-2">
                         <a 
-                            class="text-base text-black dark:text-white" :href="'profiles/'+data.owner.name"
+                            class="text-base text-black dark:text-white" :href="'/profiles/' + data.owner.name"
                         >
                             {{data.owner.name}}
                         </a>
@@ -44,12 +44,13 @@
                 <p class="mb-2 text-sm" v-html="reply.body"></p>
                 <div class="flex">
                     <v-favorite v-if="$signIn" :data="this.data"></v-favorite>
-                    <div v-if="authorize('owns', reply) && hover">
+                    <div v-if="authorize('owns', reply)">
                         <!-- bg-gray-200 hover:border-gray-400 border-gray-300 for light theme -->
-                        <button @click="isEdit = true" class="h-full text-xs font-semibold bg-light-primary dark:bg-dark-primary border-gray-400 text-gray-400 border hover:border-gray-500 rounded-xl inline-block px-2 md:px-3 ml-2">
+                        
+                        <button @click="isEdit = true" class="border dark:border-gray-500 dark:hover:border-gray-100 dark:text-gray-300 font-semibold h-full hover:border-gray-500 inline-block md:px-3 ml-2 px-2 rounded-xl text-gray-700 text-xs">
                             Edit
                         </button>
-                        <button @click="destroy" class="h-full text-xs font-semibold bg-light-primary dark:bg-dark-primary border-red-500 text-red-500 border hover:border-red-600 rounded-xl inline-block px-2 md:px-3 ml-2">
+                        <button @click="destroy" class="h-full text-xs font-semibold text-red-400 hover:text-red-500 rounded-xl inline-block px-2 md:px-3 ml-2">
                             Delete
                         </button>
                     </div>

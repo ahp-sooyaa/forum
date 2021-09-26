@@ -20,8 +20,8 @@
             </button>
             <div class="flex mt-7 justify-start items-end">
                 <div class="w-8 h-8 ml-5 mr-3 border-t-4 border-l-4 border-gray-400 block align-bottom"></div>
-                <div class="flex items-center justify-between w-full card text-black text-opacity-60 dark:text-white dark:text-opacity-50 px-6 py-4 rounded-2xl shadow-md">
-                    <div class="flex-1 text-sm hidden md:inline-block">
+                <div class="flex items-center justify-between w-full card text-black text-sm text-opacity-60 dark:text-white dark:text-opacity-50 px-4 py-2 rounded-2xl shadow-md">
+                    <div class="flex-1 hidden md:inline-block">
                         <a href="{{$thread->creator->path()}}">{{ucfirst($thread->creator->name)}}</a> started this conversation {{$thread->created_at->diffForHumans()}}.
                         {{$thread->replies_count}} people have replied.
                     </div>
@@ -54,27 +54,27 @@
                     </div>
                     
                     <div v-if="isEdit">
-                        <input type="text" v-model="title" class="text-input w-full mb-4">
+                        <input type="text" v-model="title" class="text-input bg-gray-200 border-0 focus:ring-accent w-full mb-4">
                         <textarea name="body" rows="5" 
-                            class="text-area w-full text-sm text-gray-700 mb-2"
+                            class="text-area bg-gray-200 border-0 focus:ring-accent w-full text-sm text-gray-700 mb-2"
                             v-model="body"
                         ></textarea>
                         <button
                             @click="update"
-                            class="text-xs font-semibold bg-light-primary dark:bg-dark-primary border-gray-400 text-gray-400 border hover:border-gray-500 rounded-xl inline-block px-2 py-2 md:px-3 mt-4"
+                            class="text-xs font-semibold bg-accent hover:bg-accent-darker border-accent text-white border rounded-xl inline-block px-2 py-2 md:px-3 mt-4"
                         >Update</button>
                         <button
-                            @click="()=>{isEdit = false ,body= data.body, title= data.title}"
-                            class="text-xs font-semibold text-red-500 hover:text-red-600 rounded-xl inline-block px-2 py-2 md:px-3 mt-4 focus:outline-none ml-2"
+                            @click="()=>{isEdit = false ,body = data.body, title = data.title}" 
+                            class="text-xs font-semibold text-gray-500 hover:text-gray-600 rounded-xl inline-block px-2 py-2 md:px-3 mt-4 focus:outline-none ml-2"
                         >Cancel</button>
                     </div>
                     <div v-else>
-                        <div class="text-base font-semibold mb-5 bg-light-primary dark:bg-dark-primary shadow-sm p-3 rounded-lg" v-text="title"></div>
-                        <p class="text-black dark:text-white text-sm" v-text="body"></p>
+                        <div class="text-base font-semibold mb-5 bg-gray-100 dark:bg-dark-primary shadow-sm p-3 rounded-lg" v-text="title"></div>
+                        <p class="text-gray-700 leading-normal dark:text-white text-sm" v-text="body"></p>
                         <div v-if="authorize('owns', data)">
                             <button
                                 @click="isEdit = true"
-                                class="text-xs font-semibold bg-light-primary dark:bg-dark-primary border-gray-400 text-gray-400 border hover:border-gray-500 rounded-xl inline-block px-2 py-2 md:px-3 mt-4"
+                                class="text-xs font-semibold bg-accent border-accent text-white border hover:bg-accent-darker rounded-xl inline-block px-2 py-2 md:px-3 mt-4"
                             >Edit</button>
                         </div>
                     </div>

@@ -94,7 +94,7 @@ class ThreadsController extends Controller
     public function update($channelSlug , UpdateThreadRequest $request, Thread $thread)
     {
         $this->authorize('update', $thread);
-
+        
         $thread->update($request->validated());
     }
 
