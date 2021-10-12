@@ -102,8 +102,8 @@ export default {
   data() {
     return {
       searchClient: algoliasearch(
-        'DFCALV7TGN',
-        'eb5b50406ef21c7dd8cb68e0326f73b6'
+        '2N3H07LMGS',
+        '1d670b2d3e185a53f7a85fc9572a2b77'
       ),
       q: ''
     };

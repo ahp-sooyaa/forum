@@ -36,8 +36,9 @@
                 <div class="hidden md:block">
                     <div class="flex items-center">
                         <div class="flex text-black text-sm text-opacity-60 dark:text-white dark:text-opacity-50 rounded-full px-2">
-                            <svg class="w-4 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 13" fill="currentColor">
-                                <path d="M7.5 0C3.344 0 0 2.818 0 6.286c0 1.987 1.094 3.757 2.781 4.914l.117 2.35c.022.438.338.58.704.32l2.023-1.442c.594.144 1.219.18 1.875.18 4.156 0 7.5-2.817 7.5-6.285C15 2.854 11.656 0 7.5 0z"></path>
+                            <svg class="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                              <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" />
+                              <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
                             </svg>
                             {{$thread->replies_count}}
                         </div>

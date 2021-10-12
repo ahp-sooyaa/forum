@@ -23,7 +23,7 @@
                 <div class="flex items-center justify-between w-full card text-black text-sm text-opacity-60 dark:text-white dark:text-opacity-50 px-4 py-2 rounded-2xl shadow-md">
                     <div class="flex-1 hidden md:inline-block">
                         <a href="{{$thread->creator->path()}}">{{ucfirst($thread->creator->name)}}</a> started this conversation {{$thread->created_at->diffForHumans()}}.
-                        {{$thread->replies_count}} people have replied.
+                        {{$thread->repliedPeople}} people have replied.
                     </div>
                     <div class="flex items-center ml-4">
                         <svg class="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -31,6 +31,13 @@
                           <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
                         </svg>
                         <span v-text="repliesCount"></span>
+                    </div>
+                    <div class="flex items-center ml-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                          <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                          <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                        </svg>
+                        <span>{{ $thread->visits() }}</span>
                     </div>
                     <div class="flex ml-4">
                         <v-subscribe :data="{{json_encode($thread->isSubscribed)}}"></v-subscribe>

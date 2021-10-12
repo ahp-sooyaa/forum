@@ -83,6 +83,11 @@ class Thread extends Model
         return $this->updated_at > cache($key);
     }
 
+    public function getRepliedPeopleAttribute()
+    {
+        return $this->replies()->get()->groupBy('user_id')->count();
+    }
+
     public function getIsSubscribedAttribute()
     {
         return $this->subscriptions->contains('user_id', auth_id());

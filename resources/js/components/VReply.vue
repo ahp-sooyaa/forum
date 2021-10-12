@@ -44,7 +44,7 @@
                 <p class="mb-2 text-sm" v-html="reply.body"></p>
                 <div class="flex">
                     <v-favorite v-if="$signIn" :data="this.data"></v-favorite>
-                    <div v-if="authorize('owns', reply)">
+                    <div v-if="authorize('owns', reply) && hover">
                         <!-- bg-gray-200 hover:border-gray-400 border-gray-300 for light theme -->
                         
                         <button @click="isEdit = true" class="border dark:border-gray-500 dark:hover:border-gray-100 dark:text-gray-300 font-semibold h-full hover:border-gray-500 inline-block md:px-3 ml-2 px-2 rounded-xl text-gray-700 text-xs">
