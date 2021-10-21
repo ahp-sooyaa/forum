@@ -12,7 +12,7 @@ Route::get('threads/search', 'SearchController@show');
 /**
  * thread routes
  */
-Route::resource('threads', 'ThreadsController')->except(['update','show', 'destroy']);
+Route::resource('threads', 'ThreadsController')->except(['update', 'show', 'destroy']);
 Route::get('threads/{channel:slug}', 'ThreadsController@index');
 Route::get('threads/{channel}/{thread:slug}', 'ThreadsController@show')->name('threads.show');
 Route::patch('threads/{channel}/{thread:slug}', 'ThreadsController@update')->name('threads.update');
@@ -25,8 +25,8 @@ Route::delete('locked-threads/{thread:slug}', 'LockedThreadsController@destroy')
  * thread's replies routes
  */
 // Route::resource('threads.replies', 'RepliesController')->except(['store', 'index']);
-Route::get('threads/{channel}/{thread:slug}/replies', 'RepliesController@index');
-Route::post('threads/{channel}/{thread:slug}/replies', 'RepliesController@store');
+Route::get('threads/{channel}/{thread:slug}/replies', 'RepliesController@index')->name('replies.index');
+Route::post('threads/{channel}/{thread:slug}/replies', 'RepliesController@store')->name('replies.store');
 Route::patch('replies/{reply}', 'RepliesController@update')->name('replies.update');
 Route::delete('replies/{reply}', 'RepliesController@destroy')->name('replies.destroy');
 
@@ -38,8 +38,8 @@ Route::post('replies/{reply}/best', 'BestRepliesController@store')->name('best-r
 /**
  * thread's subscription routes
  */
-Route::post('threads/{channel}/{thread:slug}/subscriptions', 'ThreadsSubscriptionController@store');
-Route::delete('threads/{channel}/{thread:slug}/subscriptions', 'ThreadsSubscriptionController@destroy');
+Route::post('threads/{channel}/{thread:slug}/subscriptions', 'ThreadsSubscriptionController@store')->name('subscriptions.store');
+Route::delete('threads/{channel}/{thread:slug}/subscriptions', 'ThreadsSubscriptionController@destroy')->name('subscriptions.destroy');
 
 /**
  * notification routes

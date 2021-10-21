@@ -7,9 +7,8 @@ use App\Models\User;
 use App\Notifications\ThreadWasUpdated;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Redis;
+use Tests\TestCase;
 
 class ThreadTest extends TestCase
 {
@@ -20,13 +19,6 @@ class ThreadTest extends TestCase
         parent::setUp();
 
         $this->thread = create('Thread');
-    }
-
-    public function testThreadHasPath()
-    {
-        $this->assertEquals(
-            "/threads/{$this->thread->channel->slug}/{$this->thread->slug}", $this->thread->path()
-        );
     }
 
     /**

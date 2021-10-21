@@ -6,8 +6,8 @@ use App\Exceptions\ThrottleException;
 use App\Models\Thread;
 use App\Rules\Recaptcha;
 use App\Rules\SpamFree;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class CreateThreadRequest extends FormRequest
 {
@@ -35,7 +35,7 @@ class CreateThreadRequest extends FormRequest
     public function rules()
     {
         return [
-            'channel_id' => ['required','exists:channels,id'],
+            'channel_id' => ['required', 'exists:channels,id'],
             'title' => ['required', new SpamFree],
             'body' => ['required', new SpamFree],
             'g-recaptcha-response' => ['required',  app(Recaptcha::class)]

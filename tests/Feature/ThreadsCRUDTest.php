@@ -23,7 +23,7 @@ class ThreadsCRUDTest extends TestCase
         });
     }
 
-    public function validatePublishThread(Array $overrides = null, $column)
+    public function validatePublishThread(array $overrides = null, $column)
     {
         $this->signIn();
 
@@ -72,7 +72,7 @@ class ThreadsCRUDTest extends TestCase
         unset(app()[Recaptcha::class]);
 
         $this->validatePublishThread(
-            ['g-recaptcha-response' => 'invalid'], 
+            ['g-recaptcha-response' => 'invalid'],
             'g-recaptcha-response'
         );
     }
@@ -81,16 +81,16 @@ class ThreadsCRUDTest extends TestCase
     {
         $this->signIn();
 
-        $thread = create('Thread', ['title' => 'Thread slug','slug' => 'thread-slug']);
+        $thread = create('Thread', ['title' => 'Thread slug', 'slug' => 'thread-slug']);
 
         $this->assertEquals($thread->fresh()->slug, 'thread-slug');
 
-        $thread2 = make('Thread', ['title' => 'Thread slug','slug' => 'thread-slug']); 
+        $thread2 = make('Thread', ['title' => 'Thread slug', 'slug' => 'thread-slug']);
         // dd($thread2->toArray() + ['g-recaptcha-response' => 'token']); we need to check data if an error occured
 
         $this->post('/threads', $thread2->toArray() + ['g-recaptcha-response' => 'token']);
 
-        $this->assertCount(2, Thread::whereTitle('Thread slug')->get()); 
+        $this->assertCount(2, Thread::whereTitle('Thread slug')->get());
         //actually i should slug but slug is using unique id so i can't guess about that id in test case
         // e.g after created post that should redirect to thread->path() /threads/channelSlug/thread-slug_uniqueid
         // that unique id is problem to guess in test
@@ -117,7 +117,7 @@ class ThreadsCRUDTest extends TestCase
 
     public function testUserCanSeeSingleThread()
     {
-        $this->get($this->thread->path())
+        $this->get(route('threads.show', [$this->thread->channel->slug, $this->thread->slug]))
             ->assertSee($this->thread->title);
     }
 
@@ -189,9 +189,9 @@ class ThreadsCRUDTest extends TestCase
 
         $thread = create('Thread', ['user_id' => auth_id()]);
 
-        $this->patch($thread->path(), ['title' => 'changed', 'body' => 'changed body']);
+        $this->patch(route('threads.update', [$thread->channel->slug, $thread->slug]), ['title' => 'changed', 'body' => 'changed body']);
 
-        tap($thread->fresh(), function($thread){
+        tap($thread->fresh(), function ($thread) {
             $this->assertEquals('changed', $thread->title);
             $this->assertEquals('changed body', $thread->body);
         });
@@ -201,7 +201,7 @@ class ThreadsCRUDTest extends TestCase
     {
         $this->signIn();
 
-        $this->patch($this->thread->path(), ['title' => 'changed', 'body' => 'changed body'])
+        $this->patch(route('threads.update', [$this->thread->channel->slug, $this->thread->slug]), ['title' => 'changed', 'body' => 'changed body'])
             ->assertStatus(403);
     }
 
@@ -211,7 +211,7 @@ class ThreadsCRUDTest extends TestCase
 
         $thread = create('Thread', ['user_id' => auth_id()]);
 
-        $this->patch($thread->path(), [
+        $this->patch(route('threads.update', [$thread->channel->slug, $thread->slug]), [
             'title' => null
         ])->assertSessionHasErrors('title');
     }
@@ -222,7 +222,7 @@ class ThreadsCRUDTest extends TestCase
 
         $thread = create('Thread', ['user_id' => auth_id()]);
 
-        $this->patch($thread->path(), [
+        $this->patch(route('threads.update', [$thread->channel->slug, $thread->slug]), [
             'body' => null
         ])->assertSessionHasErrors('body');
     }
@@ -232,11 +232,11 @@ class ThreadsCRUDTest extends TestCase
      */
     public function testAnUnauthorizedUserCanNotDeleteThreads()
     {
-        $this->delete($this->thread->path())
+        $this->delete(route('threads.destroy', [$this->thread->channel->slug, $this->thread->slug]))
             ->assertRedirect('login');
 
         $this->signIn();
-        $this->delete($this->thread->path())
+        $this->delete(route('threads.destroy', [$this->thread->channel->slug, $this->thread->slug]))
             ->assertStatus(403);
     }
 
@@ -247,7 +247,7 @@ class ThreadsCRUDTest extends TestCase
         $thread = create('Thread', ['user_id' => auth_id()]);
         $reply = create('Reply', ['thread_id' => $thread->id]);
 
-        $this->delete($thread->path());
+        $this->delete(route('threads.destroy', [$thread->channel->slug, $thread->slug]));
 
         $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);

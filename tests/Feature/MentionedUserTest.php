@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Rules\Recaptcha;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Rules\Recaptcha;
 
 class MentionedUserTest extends TestCase
 {
@@ -28,7 +28,7 @@ class MentionedUserTest extends TestCase
             $mock->shouldReceive('passes')->andReturn(true);
         });
 
-        $this->post("{$thread->path()}/replies", $reply->toArray() + ['g-recaptcha-response' => 'token']);
+        $this->post(route('replies.store', [$thread->channel->slug, $thread->slug]), $reply->toArray() + ['g-recaptcha-response' => 'token']);
 
         $this->assertCount(1, $jone->notifications);
     }

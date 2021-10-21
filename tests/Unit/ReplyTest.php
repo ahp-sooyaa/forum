@@ -2,13 +2,13 @@
 
 namespace Tests\Unit;
 
-use App\Models\User;
 use App\Models\Reply;
 use App\Models\Thread;
+use App\Models\User;
 use Carbon\Carbon;
-use Tests\TestCase;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ReplyTest extends TestCase
 {
@@ -25,7 +25,7 @@ class ReplyTest extends TestCase
     {
         $thread = create('Thread');
         $reply = create('Reply', ['thread_id' => $thread->id]);
-        $this->assertEquals($thread->path() . "#reply-{$reply->id}", $reply->path());
+        $this->assertEquals(route('threads.show', [$thread->channel->slug, $thread->slug]) . "#reply-{$reply->id}", $reply->path());
     }
 
     public function testReplyHasOwner()

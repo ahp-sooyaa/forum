@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;
 use App\Models\Channel;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,12 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // View::share('channels', Channel::all()); this will cause errors in all test cases.
-
-        View::composer('*', function ($view) {
-            // $channels = \Cache::rememberForever('channels', function () {
-            $channels = Channel::all();
-            // });
+        View::composer(['layouts.app', 'threads.create'], function ($view) {
+            $channels = Channel::query()->select('id', 'name', 'slug')->get();
             $view->with('channels', $channels);
         });
     }

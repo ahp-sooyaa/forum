@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Traits\RecordActivity;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 class Reply extends Model
 {
@@ -32,8 +32,8 @@ class Reply extends Model
             $reply->favorites->each->delete();
             $reply->thread->decrement('replies_count');
 
-            if($reply->isBest()){
-                $reply->thread->update(['best_reply_id'=> null]);
+            if ($reply->isBest()) {
+                $reply->thread->update(['best_reply_id' => null]);
             }
         });
 
@@ -44,7 +44,7 @@ class Reply extends Model
 
     public function path()
     {
-        return $this->thread->path() . "#reply-{$this->id}";
+        return route('threads.show', [$this->thread->channel->slug, $this->thread->slug]) . "#reply-{$this->id}";
     }
 
     public function owner()

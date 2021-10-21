@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Rules\Recaptcha;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Rules\Recaptcha;
 
 class ThreadRepliesCRUDTest extends TestCase
 {
@@ -26,7 +26,7 @@ class ThreadRepliesCRUDTest extends TestCase
      */
     public function testGuestsCanNotAddRepliesInThreads()
     {
-        $this->post("{$this->thread->path()}/replies", [])
+        $this->post(route('replies.store', [$this->thread->channel->slug, $this->thread->slug]), [])
             ->assertRedirect('login');
     }
 
@@ -36,7 +36,7 @@ class ThreadRepliesCRUDTest extends TestCase
 
         $reply = create('Reply');
 
-        $this->post("{$this->thread->path()}/replies", $reply->toArray() + ['g-recaptcha-response' => 'token']);
+        $this->post(route('replies.store', [$this->thread->channel->slug, $this->thread->slug]), $reply->toArray() + ['g-recaptcha-response' => 'token']);
 
         $this->assertDatabaseHas('replies', ['body' => $reply->body]);
         $this->assertEquals(1, $this->thread->fresh()->replies_count);
@@ -48,7 +48,7 @@ class ThreadRepliesCRUDTest extends TestCase
 
         $reply = make('Reply', ['body' => null]);
 
-        $this->post("{$this->thread->path()}/replies", $reply->toArray())
+        $this->post(route('replies.store', [$this->thread->channel->slug, $this->thread->slug]), $reply->toArray())
             ->assertSessionHasErrors('body');
     }
 
@@ -61,7 +61,7 @@ class ThreadRepliesCRUDTest extends TestCase
         $this->signIn();
         $reply = create('Reply', ['user_id' => auth_id()]);
 
-        $this->patch("replies/{$reply->id}", ['body' => 'updated']);
+        $this->patch(route('replies.update', $reply->id), ['body' => 'updated']);
 
         $this->assertDatabaseHas('replies', [
             'id' => $reply->id,
@@ -75,11 +75,11 @@ class ThreadRepliesCRUDTest extends TestCase
     public function testUnauthorizedUserCanNotDeleteReplies()
     {
         $reply = create('Reply');
-        $this->delete("/replies/{$reply->id}")
+        $this->delete(route('replies.destroy', $reply->id))
             ->assertRedirect('login');
 
         $this->signIn();
-        $this->delete("/replies/{$reply->id}")
+        $this->delete(route('replies.destroy', $reply->id))
             ->assertStatus(403);
     }
 
@@ -88,11 +88,11 @@ class ThreadRepliesCRUDTest extends TestCase
         $this->signIn();
 
         $reply = create('Reply', ['user_id' => auth_id()]);
-        
+
         $this->assertEquals(1, auth()->user()->replies->count());
-        
-        $this->delete("/replies/{$reply->id}");
-        
+
+        $this->delete(route('replies.destroy', $reply->id));
+
         $this->assertEquals(0, auth()->user()->fresh()->replies->count());
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
         // $this->assertEquals(0, $this->thread->fresh()->replies_count); I think this is wrong testing, we should check auth user's replies count
@@ -107,13 +107,13 @@ class ThreadRepliesCRUDTest extends TestCase
         ]);
 
         // Check validation error message
-        $this->post("{$this->thread->path()}/replies", $reply->toArray())
+        $this->post(route('replies.store', [$this->thread->channel->slug, $this->thread->slug]), $reply->toArray())
                 ->assertSessionHasErrors('body');
 
         // Check validation exception
         $this->withoutExceptionHandling();
         $this->expectException('Illuminate\Validation\ValidationException');
-        $this->post("{$this->thread->path()}/replies", $reply->toArray());
+        $this->post(route('replies.store', [$this->thread->channel->slug, $this->thread->slug]), $reply->toArray());
     }
 
     public function testUserCanNotRepliesMoreThanOncePerMinute()
@@ -124,10 +124,10 @@ class ThreadRepliesCRUDTest extends TestCase
             'body' => 'Not spam reply'
         ]);
 
-        $this->post("{$this->thread->path()}/replies", $reply->toArray() + ['g-recaptcha-response' => 'token'])
+        $this->post(route('replies.store', [$this->thread->channel->slug, $this->thread->slug]), $reply->toArray() + ['g-recaptcha-response' => 'token'])
             ->assertStatus(201);
 
-        $this->post("{$this->thread->path()}/replies", $reply->toArray() + ['g-recaptcha-response' => 'token'])
+        $this->post(route('replies.store', [$this->thread->channel->slug, $this->thread->slug]), $reply->toArray() + ['g-recaptcha-response' => 'token'])
             ->assertStatus(429);
     }
 }

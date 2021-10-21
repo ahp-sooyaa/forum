@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use App\Traits\RecordActivity;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use App\Events\ThreadHasNewReply;
+use App\Traits\RecordActivity;
 use App\Traits\RecordThreadVisits;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 
 class Thread extends Model
@@ -24,8 +24,6 @@ class Thread extends Model
         'locked' => 'boolean',
     ];
 
-    // protected $withCount = ['replies'];
-
     protected static function boot()
     {
         parent::boot();
@@ -37,7 +35,7 @@ class Thread extends Model
 
     public function path()
     {
-        return "/threads/{$this->channel->slug}/{$this->slug}";
+        return route('threads.show', [$this->channel->slug, $this->slug]);
     }
 
     public function replies()

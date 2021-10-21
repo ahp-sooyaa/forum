@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\ThreadFilter;
 use App\Http\Requests\CreateThreadRequest;
-use Illuminate\Support\Str;
+use App\Http\Requests\UpdateThreadRequest;
 use App\Models\Channel;
 use App\Models\Thread;
-use App\Filters\ThreadFilter;
-use App\Http\Requests\UpdateThreadRequest;
 use App\TrendingThreads;
+use Illuminate\Support\Str;
 
 class ThreadsController extends Controller
 {
@@ -33,7 +33,7 @@ class ThreadsController extends Controller
 
         return view('threads.index', [
             'threads' => $threads,
-            'trendings' =>$trending->get()
+            'trendings' => $trending->get()
         ]);
     }
 
@@ -56,7 +56,7 @@ class ThreadsController extends Controller
     public function store(CreateThreadRequest $request)
     {
         $validated = $request->only(['_token', 'title', 'body', 'channel_id']);
-        $validated['slug'] = Str::slug($request->title).'_'.uniqid();
+        $validated['slug'] = Str::slug($request->title) . '_' . uniqid();
 
         $thread = auth_user()->threads()->create($validated);
 
@@ -83,7 +83,7 @@ class ThreadsController extends Controller
 
         return view('threads.show', compact('thread'));
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -91,10 +91,10 @@ class ThreadsController extends Controller
      * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function update($channelSlug , UpdateThreadRequest $request, Thread $thread)
+    public function update($channelSlug, UpdateThreadRequest $request, Thread $thread)
     {
         $this->authorize('update', $thread);
-        
+
         $thread->update($request->validated());
     }
 

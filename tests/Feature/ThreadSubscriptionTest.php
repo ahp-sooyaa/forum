@@ -15,7 +15,7 @@ class ThreadSubscriptiontest extends TestCase
 
         $thread = create('Thread');
 
-        $this->post("{$thread->path()}/subscriptions");
+        $this->post(route('subscriptions.store', [$thread->channel->slug, $thread->slug]));
 
         $this->assertCount(1, $thread->fresh()->subscriptions);
     }
@@ -30,7 +30,7 @@ class ThreadSubscriptiontest extends TestCase
 
         $this->assertCount(1, $thread->fresh()->subscriptions);
 
-        $this->delete("{$thread->path()}/subscriptions");
+        $this->delete(route('subscriptions.destroy', [$thread->channel->slug, $thread->slug]));
 
         $this->assertCount(0, $thread->fresh()->subscriptions);
     }

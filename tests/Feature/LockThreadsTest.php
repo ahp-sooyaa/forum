@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Rules\Recaptcha;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Rules\Recaptcha;
 
 class LockThreadsTest extends TestCase
 {
@@ -25,7 +25,7 @@ class LockThreadsTest extends TestCase
             $mock->shouldReceive('passes')->andReturn(true);
         });
 
-        $this->post("{$thread->path()}/replies" , $reply->toArray() + ['g-recaptcha-response' => 'token'])
+        $this->post(route('replies.store', [$thread->channel->slug, $thread->slug]), $reply->toArray() + ['g-recaptcha-response' => 'token'])
             ->assertStatus(422);
     }
 
@@ -48,7 +48,6 @@ class LockThreadsTest extends TestCase
 
         $this->delete(route('locked-thread.destroy', $thread));
 
-        // $this->assertFalse(!!$thread->fresh()->locked); if there is no attribute casting !! should use to cast 1,0 to true, false
         $this->assertFalse($thread->fresh()->locked);
     }
 
@@ -61,6 +60,6 @@ class LockThreadsTest extends TestCase
         $this->post(route('locked-thread.store', $thread))
             ->assertStatus(302);
 
-        $this->assertFalse(!!$thread->fresh()->locked);
+        $this->assertFalse($thread->fresh()->locked);
     }
 }
