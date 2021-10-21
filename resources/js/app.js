@@ -16,23 +16,23 @@ Vue.use(VModal)
 let authorization = require('./authorization')
 
 Vue.prototype.authorize = function (...params) {
-    if(! window.App.signIn) return false;
+    if(! window.App.signIn) return false
 
     if(typeof params[0] === 'string'){
-        return authorization[params[0]](params[1]);
+        return authorization[params[0]](params[1])
     }
 
-    return params[1](window.App.user);
-};
+    return params[1](window.App.user)
+}
 
 Vue.prototype.$signIn = window.App.signIn
 
-window.events = new Vue();
+window.events = new Vue()
 
 // level green mean success
 window.flash = function (message, status = 'green') {
-    window.events.$emit('flash', {message, status});
-};
+    window.events.$emit('flash', {message, status})
+}
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -44,7 +44,7 @@ window.flash = function (message, status = 'green') {
 const files = require.context('./', true, /\.vue$/i)
 files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('v-thread-show', require('./pages/VThreadShow.vue').default);
+Vue.component('VThreadShow', require('./pages/VThreadShow.vue').default)
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -54,4 +54,4 @@ Vue.component('v-thread-show', require('./pages/VThreadShow.vue').default);
 
 const app = new Vue({
     el: '#app',
-});
+})

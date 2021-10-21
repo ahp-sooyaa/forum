@@ -1,49 +1,82 @@
 <template>
-    <div>
-        <div @click="isOpen = !isOpen" 
-            class="my-auto ml-2 bg-light-secondary dark:bg-dark-secondary text-black dark:text-white hover:bg-gray-700 dark:hover:bg-light-primary hover:text-white dark:hover:text-black
-                flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white cursor-pointer" id="user-menu" aria-haspopup="true"
-        >
-            <!-- <span class="sr-only">Open user menu</span> -->
-            <img class="border border-light-secondary dark:border-dark-secondary rounded-full" width="36px" height="36px" :src="'https://gravatar.com/avatar/'+md5+'?s=68'" :alt="user.name+'s avatar'">
-            <!-- <span class="inline-block px-3 py-2 text-sm font-medium">
+  <div>
+    <div
+      id="user-menu" 
+      @click="isOpen = !isOpen"
+      class="my-auto ml-2 bg-light-secondary dark:bg-dark-secondary text-black dark:text-white hover:bg-gray-700 dark:hover:bg-light-primary hover:text-white dark:hover:text-black flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white cursor-pointer"
+      aria-haspopup="true"
+    >
+      <!-- <span class="sr-only">Open user menu</span> -->
+      <img
+        width="36px"
+        height="36px"
+        :src="'https://gravatar.com/avatar/'+md5+'?s=68'"
+        :alt="user.name+'s avatar'"
+        class="border border-light-secondary dark:border-dark-secondary rounded-full"
+      >
+      <!-- <span class="inline-block px-3 py-2 text-sm font-medium">
                 {{user.name}}
             </span> -->
-        </div>
-        
-        <div v-if="isOpen" @click="isOpen = false" class="profile-modal-overlay z-40 fixed top-0 right-0 w-full h-full bg-black bg-opacity-40"></div>
-        <transition name="slide-fade">
-            <div v-if="isOpen" class="profile-modal z-50 overflow-y-auto fixed top-8 bottom-5 right-0 bg-light-secondary dark:bg-dark-secondary text-black dark:text-white m-5 rounded-3xl w-1/5">
-                <div class="p-6">
-                    <v-theme-switcher></v-theme-switcher>
-                    <div class="-mx-1 mb-4 border-b-4 border-gray-400 flex">
-                        <div @click="toggleTabs('me')" 
-                            :class="[classes, openTab == 'me' ? 'border-b-4 border-accent text-black dark:text-white' : 'text-black text-opacity-50 dark:text-white dark:text-opacity-50']"
-                        >
-                            Me
-                        </div>
-                        <div @click="toggleTabs('noti')" 
-                            :class="[classes, openTab == 'noti' ? 'border-b-4 border-accent text-black dark:text-white' : 'text-black text-opacity-50 dark:text-white dark:text-opacity-50']"
-                        >
-                            Notifications
-                        </div>
-                    </div>
-                    <div :class="[openTab == 'me' ? 'block' : 'hidden']" class="space-y-3">
-                        <a :href="'/profiles/'+user.name" class="dropdown-link text-center text-lg">Your Profile</a>
-                        <a :href="'/threads?by='+user.name" class="dropdown-link text-center text-lg">Your Threads</a>
-                        <a href="#" class="dropdown-link text-center text-lg">Setting</a>
-
-                        <button @click="logout" type="submit" class="dropdown-link text-center text-lg">
-                            Sign out
-                        </button>
-                    </div>
-                    <div :class="[openTab == 'noti' ? 'block' : 'hidden']">
-                        <v-notifications></v-notifications>
-                    </div>
-                </div>
-            </div>
-        </transition>
     </div>
+        
+    <div
+      v-if="isOpen"
+      @click="isOpen = false"
+      class="profile-modal-overlay z-40 fixed top-0 right-0 w-full h-full bg-black bg-opacity-40"
+    />
+    <transition name="slide-fade">
+      <div
+        v-if="isOpen"
+        class="profile-modal z-50 overflow-y-auto fixed top-8 bottom-5 right-0 bg-light-secondary dark:bg-dark-secondary text-black dark:text-white m-5 rounded-3xl w-1/5"
+      >
+        <div class="p-6">
+          <v-theme-switcher />
+          <div class="-mx-1 mb-4 border-b-4 border-gray-400 flex">
+            <div
+              @click="toggleTabs('me')" 
+              :class="[classes, openTab == 'me' ? 'border-b-4 border-accent text-black dark:text-white' : 'text-black text-opacity-50 dark:text-white dark:text-opacity-50']"
+            >
+              Me
+            </div>
+            <div
+              @click="toggleTabs('noti')" 
+              :class="[classes, openTab == 'noti' ? 'border-b-4 border-accent text-black dark:text-white' : 'text-black text-opacity-50 dark:text-white dark:text-opacity-50']"
+            >
+              Notifications
+            </div>
+          </div>
+          <div
+            :class="[openTab == 'me' ? 'block' : 'hidden']"
+            class="space-y-3"
+          >
+            <a
+              :href="'/profiles/'+user.name"
+              class="dropdown-link text-center text-lg"
+            >Your Profile</a>
+            <a
+              :href="'/threads?by='+user.name"
+              class="dropdown-link text-center text-lg"
+            >Your Threads</a>
+            <a
+              href="#"
+              class="dropdown-link text-center text-lg"
+            >Setting</a>
+
+            <button
+              @click="logout"
+              type="submit"
+              class="dropdown-link text-center text-lg"
+            >
+              Sign out
+            </button>
+          </div>
+          <div :class="[openTab == 'noti' ? 'block' : 'hidden']">
+            <v-notifications />
+          </div>
+        </div>
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -76,8 +109,8 @@ export default {
             this.openTab = tab
         },
         logout(){
-            axios.post('/logout')
-                .then(window.location.href="/login")
+            window.axios.post('/logout')
+                .then(window.location.href='/login')
         }
     }
 }
