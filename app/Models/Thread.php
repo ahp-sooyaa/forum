@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Events\ThreadHasNewReply;
 use App\Traits\RecordActivity;
-use App\Traits\RecordThreadVisits;
+use App\Traits\RecordThreadvisits;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +12,7 @@ use Laravel\Scout\Searchable;
 
 class Thread extends Model
 {
-    use HasFactory, RecordActivity, RecordThreadVisits, Searchable;
+    use HasFactory, RecordActivity, RecordThreadvisits, Searchable;
 
     protected $guarded = [];
 

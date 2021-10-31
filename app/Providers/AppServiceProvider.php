@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Channel;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        URL::forceScheme('https');
+
         View::composer(['layouts.app', 'threads.create'], function ($view) {
             $channels = Channel::query()->select('id', 'name', 'slug')->get();
             $view->with('channels', $channels);
