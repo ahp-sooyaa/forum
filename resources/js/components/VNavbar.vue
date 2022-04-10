@@ -107,12 +107,12 @@
                   <div class="p-1 max-h-80 overflow-y-auto">
                     <!-- the following $channels is sharing from app service provider -->
                     <!-- @foreach ($channels as $channel) -->
-                    <!-- <a
+                    <a
                       v-for="channel in channels"
                       :key="channel.id"
                       :href="'/threads/'+channel.slug"
                       class="dropdown-link"
-                    >{{ channel.name }}</a> -->
+                    >{{ channel.name }}</a>
                     <!-- @endforeach -->
                   </div>
                 </template>

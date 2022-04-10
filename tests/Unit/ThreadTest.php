@@ -21,6 +21,14 @@ class ThreadTest extends TestCase
         $this->thread = create('Thread');
     }
 
+    public function testThreadHasPath()
+    {
+        $this->assertEquals(
+            route('threads.show', [$this->thread->channel->slug, $this->thread->slug]),
+            $this->thread->path()
+        );
+    }
+
     /**
     * Testing database relationship between thread & reply
     *

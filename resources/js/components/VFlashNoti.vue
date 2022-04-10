@@ -7,7 +7,7 @@
       role="alert"
     >
       <div
-        class="text-center transition ease-in-out duration-500 transform -translate-y-1 scale-110"
+        class="text-center transition ease-in-out duration-500 transform scale-110"
         v-text="body"
       />
     </div>

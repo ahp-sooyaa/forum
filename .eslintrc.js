@@ -32,21 +32,26 @@ module.exports = {
             'error',
             'never'
         ],
-        'vue/attributes-order': ['error', {
-            'order': [
-                'DEFINITION',
-                'LIST_RENDERING',
-                'CONDITIONALS',
-                'RENDER_MODIFIERS',
-                'GLOBAL',
-                ['UNIQUE', 'SLOT'],
-                'TWO_WAY_BINDING',
-                'OTHER_DIRECTIVES',
-                'EVENTS',
-                'OTHER_ATTR',
-                'CONTENT'
-            ],
-            'alphabetical': false
-        }]
+        'no-undef': 'off',
+        'vue/require-prop-types': 'off',
+        'vue/attributes-order': [
+            'error', 
+            {
+                'order': [
+                    'DEFINITION',
+                    'LIST_RENDERING',
+                    'CONDITIONALS',
+                    'RENDER_MODIFIERS',
+                    'GLOBAL',
+                    ['UNIQUE', 'SLOT'],
+                    'TWO_WAY_BINDING',
+                    'OTHER_DIRECTIVES',
+                    'EVENTS',
+                    'OTHER_ATTR',
+                    'CONTENT'
+                ],
+                'alphabetical': false
+            }
+        ]
     }
 }
