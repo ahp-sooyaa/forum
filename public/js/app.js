@@ -7631,6 +7631,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -81528,7 +81534,7 @@ var render = function() {
             { staticClass: "px-2 pt-2 pb-3 space-y-1" },
             [
               _c("v-dropdown", {
-                attrs: { width: "w-full" },
+                attrs: { width: "w-full", position: "left-0" },
                 scopedSlots: _vm._u(
                   [
                     {
@@ -81603,7 +81609,7 @@ var render = function() {
               }),
               _vm._v(" "),
               _c("v-dropdown", {
-                attrs: { width: "w-full" },
+                attrs: { width: "w-full", position: "left-0" },
                 scopedSlots: _vm._u(
                   [
                     {

@@ -216,7 +216,10 @@
       class="block sm:hidden"
     >
       <div class="px-2 pt-2 pb-3 space-y-1">
-        <v-dropdown :width="'w-full'">
+        <v-dropdown
+          :width="'w-full'"
+          :position="'left-0'"
+        >
           <template #button>
             <button
               type="button"
@@ -249,7 +252,10 @@
             </div>
           </template>
         </v-dropdown>
-        <v-dropdown :width="'w-full'">
+        <v-dropdown
+          :width="'w-full'"
+          :position="'left-0'"
+        >
           <template #button>
             <button
               type="button"

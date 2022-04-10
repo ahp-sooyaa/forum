@@ -15,8 +15,7 @@ trait RecordThreadvisits
 
     public function visits()
     {
-        // return Redis::get($this->visitsThreadCacheKey()) ?? 0;
-        return 0;
+        return Redis::get($this->visitsThreadCacheKey()) ?? 0;
     }
 
     public function resetVisits()
